@@ -113,7 +113,7 @@ class BackendController extends ActionController
         if ($comment !== null) {
             $comments['__identity'][] = $comment;
         }
-        foreach ($comments['__identity'] as $commentId) {
+        foreach ($comments['__identity'] ?? [] as $commentId) {
             /** @var Comment|null $comment */
             $comment = $this->commentRepository->findByUid((int)$commentId);
             if ($comment !== null) {

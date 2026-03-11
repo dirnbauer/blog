@@ -95,8 +95,14 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
         return $absoluteWebPath;
     }
 
+    private const ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+
     private function deriveFileTypeFromContentType(string $contentType): string
     {
-        return substr($contentType, (int)strrpos($contentType, '/') + 1);
+        $extension = substr($contentType, (int)strrpos($contentType, '/') + 1);
+        if (!in_array($extension, self::ALLOWED_IMAGE_EXTENSIONS, true)) {
+            return 'png';
+        }
+        return $extension;
     }
 }

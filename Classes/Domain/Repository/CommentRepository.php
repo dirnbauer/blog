@@ -14,6 +14,7 @@ use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -120,8 +121,8 @@ class CommentRepository extends Repository
         $rows = $queryBuilder
             ->select('uid')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('doktype', Constants::DOKTYPE_BLOG_POST))
-            ->andWhere($queryBuilder->expr()->eq('pid', $blogRootPid))
+            ->where($queryBuilder->expr()->eq('doktype', $queryBuilder->createNamedParameter(Constants::DOKTYPE_BLOG_POST, Connection::PARAM_INT)))
+            ->andWhere($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($blogRootPid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
