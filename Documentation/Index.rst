@@ -24,5 +24,6 @@ TYPO3 Blog Extension
    Setup/Index
    Guides/Index
    Plugins/Index
+   Workspaces/Index
    Extending/Index
    FAQ/Index
