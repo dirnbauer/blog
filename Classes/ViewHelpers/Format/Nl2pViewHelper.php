@@ -14,9 +14,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class Nl2pViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var bool
-     */
+    protected $escapeChildren = false;
     protected $escapeOutput = false;
 
     public function initializeArguments(): void
