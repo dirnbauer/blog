@@ -1,0 +1,20 @@
+<f:layout name="Default" />
+<f:section name="Main">
+    <div class="container">
+        <div class="row gx-5">
+            <main class="col-lg-8" role="main">
+                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
+            </main>
+            <aside class="col-lg-4" role="complementary">
+                <div class="sticky-top" style="top: 2rem;">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+                </div>
+            </aside>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="renderPlugin">
+    {blogvh:data.contentListOptions(listType: listType)}
+    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+</f:section>
