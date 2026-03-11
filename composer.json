@@ -80,7 +80,7 @@
         "typo3/cms-fluid-styled-content": "Content rendering definition based on fluid"
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-json": "*",
         "ext-pdo": "*",
         "psr/http-client": "^1.0",
