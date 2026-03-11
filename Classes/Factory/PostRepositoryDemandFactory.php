@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -18,15 +18,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PostRepositoryDemandFactory
 {
-    private CategoryRepository $categoryRepository;
-    private TagRepository $tagRepository;
-
     public function __construct(
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        private readonly CategoryRepository $categoryRepository,
+        private readonly TagRepository $tagRepository,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     public function createFromSettings(array $settings): PostRepositoryDemand

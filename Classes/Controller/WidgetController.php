@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -21,24 +21,13 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class WidgetController extends ActionController
 {
-    protected CategoryRepository $categoryRepository;
-    protected TagRepository $tagRepository;
-    protected PostRepository $postRepository;
-    protected CommentRepository $commentRepository;
-    protected CacheService $cacheService;
-
     public function __construct(
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository,
-        PostRepository $postRepository,
-        CommentRepository $commentRepository,
-        CacheService $cacheService
+        protected readonly CategoryRepository $categoryRepository,
+        protected readonly TagRepository $tagRepository,
+        protected readonly PostRepository $postRepository,
+        protected readonly CommentRepository $commentRepository,
+        protected readonly CacheService $cacheService,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
-        $this->postRepository = $postRepository;
-        $this->commentRepository = $commentRepository;
-        $this->cacheService = $cacheService;
     }
 
     public function categoriesAction(): ResponseInterface

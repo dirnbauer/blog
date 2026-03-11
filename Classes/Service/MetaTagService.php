@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -14,9 +14,6 @@ use T3G\AgencyPack\Blog\TitleTagProvider\BlogTitleTagProvider;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class MetaTagService.
- */
 class MetaTagService
 {
     public const META_TITLE = 'title';

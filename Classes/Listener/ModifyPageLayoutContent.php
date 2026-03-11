@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -16,11 +16,9 @@ use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 
 class ModifyPageLayoutContent
 {
-    protected BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer;
-
-    public function __construct(BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer)
-    {
-        $this->blogPostHeaderContentRenderer = $blogPostHeaderContentRenderer;
+    public function __construct(
+        protected readonly BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer,
+    ) {
     }
 
     public function __invoke(ModifyPageLayoutContentEvent $event): void
