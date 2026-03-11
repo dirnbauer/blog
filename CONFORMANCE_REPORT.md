@@ -1,43 +1,52 @@
-# Conformance Report — TYPO3 Extension Standards
+# Conformance Report — Recheck
 
-**Extension:** t3g/blog v14.0.0
+**Extension:** t3g/blog v14.0.0  
 **Date:** 2026-03-11
 
 ## Scoring
 
 | Category | Score | Max | Notes |
 |----------|-------|-----|-------|
-| Architecture | 18 | 20 | Good structure, proper namespacing, Services.yaml present |
-| Coding Guidelines | 10 | 20 | 86 files with wrong strict_types format, missing final, no constructor promotion |
-| PHP Quality | 14 | 20 | Untyped properties in models, 20+ files with makeInstance instead of DI |
-| Testing | 15 | 20 | Existing unit + functional tests, but no workspace tests, no architecture tests |
-| Best Practices | 14 | 20 | CI configured, PHPStan configured, but missing coverage reporting |
-| **Total** | **71** | **100** | **Grade: B — Development Ready** |
+| Architecture | 18 | 20 | Project structure and namespaces are consistent |
+| Coding Guidelines | 16 | 20 | strict types now consistent in active code paths |
+| PHP Quality | 14 | 20 | PHPStan still reports nullable rendering context and test array-offset issues |
+| Testing | 16 | 20 | unit + functional suites exist; current unit run has regressions |
+| Best Practices | 16 | 20 | DDEV + composer scripts + static analysis workflow in place |
+| **Total** | **80** | **100** | **Grade: A — Production Ready with follow-up fixes** |
 
-## Findings
+## Recheck Findings
 
-### Critical (86 files): `declare(strict_types = 1)` spacing
-All but 2 files use `declare(strict_types = 1)` with spaces. PSR-12/PER requires `declare(strict_types=1)` without spaces.
+### High — Nullable rendering context handling in ViewHelpers
 
-### High (45+ classes): Missing `final` keyword
-Most concrete classes lack `final`. Only classes designed for inheritance (abstract, base controllers extending Extbase) should omit it.
+PHPStan reports `method.nonObject` for these files:
 
-### High (14 classes): Missing constructor property promotion
-Controllers, services, and listeners manually assign `$this->x = $x` instead of using PHP 8.0+ constructor promotion.
+- `Classes/ViewHelpers/CacheViewHelper.php`
+- `Classes/ViewHelpers/Data/ContentListOptionsViewHelper.php`
+- `Classes/ViewHelpers/Link/ArchiveViewHelper.php`
+- `Classes/ViewHelpers/Link/AuthorViewHelper.php`
+- `Classes/ViewHelpers/Link/CategoryViewHelper.php`
+- `Classes/ViewHelpers/Link/PostViewHelper.php`
+- `Classes/ViewHelpers/Link/TagViewHelper.php`
 
-### Medium (18 properties): Untyped properties
-Domain models (Comment, Category, Post) have untyped properties with `@var` annotations.
+**Required change:** guard nullable `$this->renderingContext` before method calls.
 
-### Medium (2 files): Missing `declare(strict_types=1)`
-- `Classes/TitleTagProvider/BlogTitleTagProvider.php`
-- `Classes/Updates/FeaturedImageUpdate.php`
+### Medium — Functional test assertions access nullable arrays
 
-### Low (5 files): Useless `/** Class FooBar */` comments
-Classes with doc comments that just repeat the class name.
+`Tests/Functional/Hooks/DataHandlerHookWorkspaceTest.php` indexes arrays returned
+by `BackendUtility::getRecord*()` without asserting non-null first.
 
-## Action Items
-1. Fix strict_types declaration format across all 86 files
-2. Add `final` to non-inheritable classes
-3. Apply constructor property promotion to controllers, services, listeners
-4. Add missing strict_types declarations to 2 files
-5. Remove useless class doc comments
+**Required change:** assert array shape before offset access.
+
+### Medium — Unit test type references no longer match TYPO3 core
+
+`Tests/Unit/ExpressionLanguage/BlogVariableProviderTest.php` mocks
+`TYPO3\CMS\Core\Routing\PageInformation`, which is not available in the current
+dependency graph.
+
+**Required change:** use a lightweight test double with `getPageRecord()`.
+
+## Planned Conformance Change Set
+
+1. Add nullable-rendering-context guards in affected ViewHelpers
+2. Harden workspace functional tests with explicit non-null assertions
+3. Update BlogVariableProvider unit test doubles for current TYPO3 APIs
