@@ -1,73 +1,43 @@
-# Security Audit Report
+# Security Audit Report — Recheck
 
-**Extension:** t3g/blog v14.0.0
-**Date:** 2026-03-11
+**Extension:** t3g/blog v14.0.0  
+**Date:** 2026-03-11  
 **Framework:** OWASP Top 10 (2021), CVSS v3.1
 
-## Critical Findings
+## Recheck Outcome
 
-### 1. Stored XSS via Nl2pViewHelper (CVSS 8.4)
+Most previously identified issues are now remediated:
 
-**File:** `Classes/ViewHelpers/Format/Nl2pViewHelper.php`
-**Type:** A03 Injection / XSS
+- comment text escaping in `Nl2pViewHelper` is in place
+- Gravatar file-type handling is restricted
+- SQL parameterization in `CommentRepository` is present
+- reCAPTCHA validator logic and request handling are corrected and hardened
+- model-level comment URL scheme enforcement now limits links to `http/https`
 
-The ViewHelper has `$escapeOutput = false` and outputs user-submitted comment text without HTML encoding. An attacker can inject `<script>` tags in comments that execute in other users' browsers.
+## Remaining Findings
 
-**Fix:** Apply `htmlspecialchars()` to content before wrapping in `<p>` tags.
+### Medium — External link opener isolation not fully enforced
 
-## High Findings
+**File:** `Resources/Private/Partials/Comments/Comment.html`  
+**OWASP:** A05 Security Misconfiguration
 
-### 2. reCAPTCHA Validator Logic Bug (CVSS 7.5)
+Comment author links open with `target="_blank"` and currently use
+`rel="external nofollow"`. Add `noopener` and `noreferrer` to prevent reverse
+tabnabbing and opener leakage.
 
-**File:** `Classes/Domain/Validator/GoogleCaptchaValidator.php`
-**Type:** A07 Authentication Failures
+**Recommended fix:** `rel="noopener noreferrer nofollow ugc"`.
 
-The validation condition contains contradictory logic (`!(bool)$x && $x === 'value'`), meaning reCAPTCHA validation may never execute. Additionally, the validator reads from query params instead of request body for POST forms.
-
-**Fix:** Correct the boolean logic and merge query+body params.
-
-### 3. Unsafe File Type in Gravatar Proxy (CVSS 6.1)
-
-**File:** `Classes/AvatarProvider/GravatarProvider.php`
-**Type:** A03 Injection
-
-The file type is derived from Content-Type header without validation. SVG files (which can contain JavaScript) could be served as avatars.
-
-**Fix:** Whitelist allowed extensions (png, jpg, gif, webp) and reject SVG.
-
-## Medium Findings
-
-### 4. Comment URL Without Scheme Validation
-
-**File:** `Resources/Private/Partials/Comments/Comment.html`
-**Type:** A03 Injection
-
-User-submitted URLs used in `f:link.external` could use `javascript:` or `data:` schemes.
-
-**Fix:** Validate URL scheme in form validator (allow only http/https).
-
-### 5. Missing createNamedParameter in CommentRepository
-
-**File:** `Classes/Domain/Repository/CommentRepository.php` (line 122-124)
-**Type:** A03 Injection (defense in depth)
-
-QueryBuilder `eq()` calls without `createNamedParameter()`. Low risk since values are typed int, but should use parameterized queries consistently.
-
-### 6. Potential TypeError in updateCommentStatusAction
-
-**File:** `Classes/Controller/BackendController.php` (line 115)
-**Type:** A09 Logging Failures
-
-`$comments['__identity']` accessed without null check could cause TypeError with stack trace.
-
-**Fix:** Add `?? []` fallback.
-
-## Summary
+## Residual Risk Summary
 
 | Severity | Count |
 |----------|-------|
-| Critical | 1 |
-| High | 2 |
-| Medium | 3 |
-| Low | 2 |
-| Total | 8 |
+| Critical | 0 |
+| High | 0 |
+| Medium | 1 |
+| Low | 0 |
+| Total | 1 |
+
+## Planned Final Audit Remediation
+
+1. Harden external link `rel` attributes in comment template
+2. Re-run PHPStan and targeted tests to ensure no regression
