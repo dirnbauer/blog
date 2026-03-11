@@ -41,7 +41,11 @@ class ContentListOptionsViewHelper extends AbstractViewHelper
         );
 
         $arguments['as'] = $arguments['as'] ?? 'contentObjectData';
-        $variableProvider = $this->renderingContext->getVariableProvider();
+        $renderingContext = $this->renderingContext;
+        if ($renderingContext === null) {
+            return '';
+        }
+        $variableProvider = $renderingContext->getVariableProvider();
         $variableProvider->remove($arguments['as']);
         $variableProvider->add($arguments['as'], $data);
 

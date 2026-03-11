@@ -68,9 +68,10 @@ class PostViewHelper extends AbstractTagBasedViewHelper
 
     protected function getRequest(): RequestInterface
     {
+        $renderingContext = $this->renderingContext;
         $request = null;
-        if ($this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        if ($renderingContext !== null && $renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         }
 
         if ($request === null || !$request instanceof RequestInterface) {

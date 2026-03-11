@@ -73,6 +73,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
         $dataHandler->process_datamap();
 
         $liveRecord = BackendUtility::getRecord('pages', 3);
+        self::assertIsArray($liveRecord);
         self::assertSame(7, (int)$liveRecord['crdate_month']);
         self::assertSame(2023, (int)$liveRecord['crdate_year']);
 
@@ -90,6 +91,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->setWorkspaceId(0);
         $liveRecordAfter = BackendUtility::getRecord('pages', 3);
+        self::assertIsArray($liveRecordAfter);
         self::assertSame('Live Post', $liveRecordAfter['title']);
         self::assertSame(7, (int)$liveRecordAfter['crdate_month']);
     }
@@ -146,6 +148,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
         $dataHandler->process_datamap();
 
         $liveRecord = BackendUtility::getRecord('pages', 3);
+        self::assertIsArray($liveRecord);
         self::assertSame(7, (int)$liveRecord['crdate_month']);
 
         $this->setWorkspaceId(1);
@@ -162,6 +165,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->setWorkspaceId(0);
         $liveRecordUnchanged = BackendUtility::getRecord('pages', 3);
+        self::assertIsArray($liveRecordUnchanged);
         self::assertSame(7, (int)$liveRecordUnchanged['crdate_month']);
         self::assertSame(2023, (int)$liveRecordUnchanged['crdate_year']);
     }
@@ -197,10 +201,12 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->setWorkspaceId(0);
         $liveTag = BackendUtility::getRecord('tx_blog_domain_model_tag', $tagUid);
+        self::assertIsArray($liveTag);
         self::assertSame('Live Tag', $liveTag['title']);
 
         $this->setWorkspaceId(1);
         $wsTag = BackendUtility::getRecordWSOL('tx_blog_domain_model_tag', $tagUid);
+        self::assertIsArray($wsTag);
         self::assertSame('Workspace Tag', $wsTag['title']);
     }
 
@@ -236,10 +242,12 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->setWorkspaceId(0);
         $liveAuthor = BackendUtility::getRecord('tx_blog_domain_model_author', $authorUid);
+        self::assertIsArray($liveAuthor);
         self::assertSame('Live Author', $liveAuthor['name']);
 
         $this->setWorkspaceId(1);
         $wsAuthor = BackendUtility::getRecordWSOL('tx_blog_domain_model_author', $authorUid);
+        self::assertIsArray($wsAuthor);
         self::assertSame('Workspace Author', $wsAuthor['name']);
     }
 
@@ -289,6 +297,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->setWorkspaceId(0);
         $comment = BackendUtility::getRecord('tx_blog_domain_model_comment', $commentUid);
+        self::assertIsArray($comment);
         self::assertSame(10, (int)$comment['status'], 'Comment should be live-edited even in workspace context');
     }
 

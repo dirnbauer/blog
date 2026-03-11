@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\ExpressionLanguage\BlogVariableProvider;
-use TYPO3\CMS\Core\Routing\PageInformation;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BlogVariableProviderTest extends UnitTestCase
@@ -77,8 +76,14 @@ final class BlogVariableProviderTest extends UnitTestCase
 
     private function setUpRequest(int $doktype): void
     {
-        $pageInformation = $this->createMock(PageInformation::class);
-        $pageInformation->method('getPageRecord')->willReturn(['doktype' => $doktype]);
+        $pageInformation = new class ($doktype) {
+            public function __construct(private int $doktype) {}
+
+            public function getPageRecord(): array
+            {
+                return ['doktype' => $this->doktype];
+            }
+        };
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getAttribute')->with('frontend.page.information')->willReturn($pageInformation);
         $GLOBALS['TYPO3_REQUEST'] = $request;
