@@ -18,7 +18,7 @@
     <f:section name="CommentUrl">
         <f:if condition="{comment.url} && {settings.comments.features.urls}">
             <f:then>
-                <f:link.external uri="{comment.url}" target="_blank" rel="external nofollow"><span itemprop="name">{content}</span></f:link.external>
+                <f:link.external uri="{comment.url}" target="_blank" rel="noopener noreferrer nofollow ugc"><span itemprop="name">{content}</span></f:link.external>
             </f:then>
             <f:else><span itemprop="name">{content}</span></f:else>
         </f:if>
