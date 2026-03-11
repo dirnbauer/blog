@@ -11,11 +11,13 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Mail;
 
 use TYPO3\CMS\Core\Mail\MailMessage as CoreMailMessage;
+use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class MailMessage
 {
     protected CoreMailMessage $mailMessage;
+    protected MailerInterface $mailer;
     protected string $subject;
     protected string $body;
     protected array $from;
@@ -24,6 +26,7 @@ class MailMessage
     public function __construct()
     {
         $this->mailMessage = GeneralUtility::makeInstance(CoreMailMessage::class);
+        $this->mailer = GeneralUtility::makeInstance(MailerInterface::class);
     }
 
     public function setSubject(string $subject): self
@@ -77,6 +80,7 @@ class MailMessage
         $this->mailMessage->setTo($this->getTo());
         $this->mailMessage->html($this->getBody());
 
-        return (bool) $this->mailMessage->send();
+        $this->mailer->send($this->mailMessage);
+        return true;
     }
 }

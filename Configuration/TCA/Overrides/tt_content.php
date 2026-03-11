@@ -154,11 +154,8 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'blog_demandedposts',
     'after:palette:headers'
 );
-ExtensionManagementUtility::addPiFlexFormValue(
-    '*',
-    'FILE:EXT:blog/Configuration/FlexForms/Demand.xml',
-    'blog_demandedposts'
-);
+$GLOBALS['TCA']['tt_content']['types']['blog_demandedposts']['columnsOverrides']['pi_flexform']['config']['ds']['default']
+    = 'FILE:EXT:blog/Configuration/FlexForms/Demand.xml';
 
 ExtensionUtility::registerPlugin(
     extensionName: 'Blog',
