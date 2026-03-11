@@ -60,6 +60,7 @@ class PostViewHelper extends AbstractTagBasedViewHelper
                 ]);
                 break;
         }
+        $uri = self::normalizeBackendUri($uri);
 
         if (isset($this->arguments['returnUri']) && $this->arguments['returnUri'] === true) {
             return htmlspecialchars($uri, ENT_QUOTES | ENT_HTML5);
@@ -70,6 +71,14 @@ class PostViewHelper extends AbstractTagBasedViewHelper
         $this->tag->setContent($linkText);
 
         return $this->tag->render();
+    }
+
+    private static function normalizeBackendUri(string $uri): string
+    {
+        if ($uri !== '' && $uri[0] !== '/' && str_starts_with($uri, 'typo3/')) {
+            return '/' . $uri;
+        }
+        return $uri;
     }
 
     protected function getRequest(): ?ServerRequestInterface

@@ -14,6 +14,7 @@ use T3G\AgencyPack\Blog\Service\CacheService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 class DataHandlerHook
@@ -32,10 +33,16 @@ class DataHandlerHook
         self::TABLE_TAGS => 'tx_blog_tag_',
     ];
 
+    private ConnectionPool $connectionPool;
+    private CacheService $cacheService;
+
     public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly CacheService $cacheService,
-    ) {}
+        ?ConnectionPool $connectionPool = null,
+        ?CacheService $cacheService = null,
+    ) {
+        $this->connectionPool = $connectionPool ?? GeneralUtility::makeInstance(ConnectionPool::class);
+        $this->cacheService = $cacheService ?? GeneralUtility::makeInstance(CacheService::class);
+    }
 
     /**
      * @param string|int $id

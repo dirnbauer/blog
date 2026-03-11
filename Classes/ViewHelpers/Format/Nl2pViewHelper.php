@@ -25,9 +25,12 @@ class Nl2pViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $content = htmlspecialchars((string)$this->renderChildren(), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $data = explode('<br>', nl2br($content, false));
-        $data = array_filter($data, static function ($value) {
-            return trim($value) !== '';
+        $parts = preg_split('/<br\\s*\\/?>\\R?/', nl2br($content, false));
+        if (!is_array($parts)) {
+            $parts = [];
+        }
+        $data = array_filter(array_map('trim', $parts), static function (string $value): bool {
+            return $value !== '';
         });
         return '<p>' . implode('</p><p>', $data) . '</p>';
     }
