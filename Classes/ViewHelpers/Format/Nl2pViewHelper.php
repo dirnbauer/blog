@@ -26,8 +26,9 @@ class Nl2pViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $data = explode('<br>', nl2br($this->renderChildren(), false));
-        $data = array_filter($data, function ($value) {
+        $content = htmlspecialchars((string)$this->renderChildren(), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $data = explode('<br>', nl2br($content, false));
+        $data = array_filter($data, static function ($value) {
             return trim($value) !== '';
         });
         return '<p>' . implode('</p><p>', $data) . '</p>';

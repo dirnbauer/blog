@@ -26,19 +26,16 @@ class GoogleCaptchaValidator extends AbstractValidator
         $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
         $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
-        $queryArguments = $request->getQueryParams();
+        $queryData = $request->getQueryParams()['tx_blog_commentform'] ?? [];
         $bodyData = $request->getParsedBody();
-        $requestData = $queryArguments['tx_blog_commentform'] ?? [];
+        $postData = is_array($bodyData) ? ($bodyData['tx_blog_commentform'] ?? []) : [];
+        $requestData = array_merge($queryData, $postData);
 
         if (
-            // this validator is called multiple times, if the first success,
-            // the global variable is set, else validate the re-captcha
             ($GLOBALS['google_recaptcha'] ?? null) === null
-            // check if we create a new comment, else we don't need a validation
-            && (!(bool)($requestData['action'] ?? null) && $requestData['action'] === $action)
-            && (!(bool)($requestData['controller'] ?? null) && $requestData['controller'] === $controller)
-            // check if google re-captcha is active, else we don't need a validation
-            && (int) $settings['comments']['google_recaptcha']['enable'] === 1
+            && ($requestData['action'] ?? null) === $action
+            && ($requestData['controller'] ?? null) === $controller
+            && (int)($settings['comments']['google_recaptcha']['enable'] ?? 0) === 1
         ) {
             $additionalOptions = [
                 'headers' => ['Content-type' => 'application/x-www-form-urlencoded'],
