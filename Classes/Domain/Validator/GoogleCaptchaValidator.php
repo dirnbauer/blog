@@ -37,23 +37,33 @@ class GoogleCaptchaValidator extends AbstractValidator
             && ($requestData['controller'] ?? null) === $controller
             && (int)($settings['comments']['google_recaptcha']['enable'] ?? 0) === 1
         ) {
+            $captchaResponse = is_array($bodyData) ? (string)($bodyData['g-recaptcha-response'] ?? '') : '';
             $additionalOptions = [
                 'headers' => ['Content-type' => 'application/x-www-form-urlencoded'],
                 'query' => [
                     'secret' => $settings['comments']['google_recaptcha']['secret_key'],
-                    'response' => $bodyData['g-recaptcha-response'] ?? '',
+                    'response' => $captchaResponse,
                     'remoteip' => GeneralUtility::getIndpEnv('REMOTE_ADDR')
                 ]
             ];
-            $response = GeneralUtility::makeInstance(RequestFactory::class)
-                ->request('https://www.google.com/recaptcha/api/siteverify', 'POST', $additionalOptions);
-            if ($response->getStatusCode() === 200) {
-                $result = json_decode($response->getBody()->getContents());
-                if (!$result->success) {
-                    $this->addError('The re-captcha failed', 1501341100);
-                } else {
-                    $GLOBALS['google_recaptcha'] = true;
-                }
+            try {
+                $response = GeneralUtility::makeInstance(RequestFactory::class)
+                    ->request('https://www.google.com/recaptcha/api/siteverify', 'POST', $additionalOptions);
+            } catch (\Throwable $exception) {
+                $this->addError('The re-captcha failed', 1501341100);
+                return;
+            }
+
+            if ($response->getStatusCode() !== 200) {
+                $this->addError('The re-captcha failed', 1501341100);
+                return;
+            }
+
+            $result = json_decode($response->getBody()->getContents(), true);
+            if (!is_array($result) || ($result['success'] ?? false) !== true) {
+                $this->addError('The re-captcha failed', 1501341100);
+            } else {
+                $GLOBALS['google_recaptcha'] = true;
             }
         }
     }

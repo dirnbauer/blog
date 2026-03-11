@@ -176,6 +176,23 @@ class Comment extends AbstractEntity
      */
     public function setUrl(string $url): self
     {
+        $url = trim($url);
+        if ($url === '') {
+            $this->url = '';
+            return $this;
+        }
+
+        $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+        if ($scheme === '') {
+            $url = 'https://' . ltrim($url, '/');
+            $scheme = 'https';
+        }
+
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            $this->url = '';
+            return $this;
+        }
+
         $this->url = $url;
         return $this;
     }
