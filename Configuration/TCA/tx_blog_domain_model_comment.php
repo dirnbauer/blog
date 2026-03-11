@@ -23,6 +23,7 @@ return [
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY crdate DESC',
         'delete' => 'deleted',
+        'versioningWS_alwaysAllowLiveEdit' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],

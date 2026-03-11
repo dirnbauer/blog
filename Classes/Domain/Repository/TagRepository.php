@@ -10,6 +10,7 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Domain\Repository;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -54,11 +55,14 @@ class TagRepository extends Repository
             ->orderBy('cnt', 'DESC')
             ->setMaxResults($limit);
 
-        // limitation to storage pid for multi domain purpose
         if ($this->settings['persistence']['storagePid']) {
-            // force storage pids as integer
-            $storagePids = GeneralUtility::intExplode(',', $this->settings['persistence']['storagePid']);
-            $queryBuilder->where('t.pid IN(' . implode(',', $storagePids) . ')');
+            $storagePids = GeneralUtility::intExplode(',', $this->settings['persistence']['storagePid'], true);
+            $queryBuilder->where(
+                $queryBuilder->expr()->in(
+                    't.pid',
+                    $queryBuilder->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY)
+                )
+            );
         }
 
         $result = $queryBuilder
@@ -71,7 +75,6 @@ class TagRepository extends Repository
             $rows[] = $row;
         }
 
-        // Shuffle tags, ordering is only to get the top used tags
         shuffle($rows);
         return $rows;
     }
