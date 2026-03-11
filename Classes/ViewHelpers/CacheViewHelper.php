@@ -26,7 +26,11 @@ class CacheViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $post = $this->arguments['post'];
-        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        $renderingContext = $this->renderingContext;
+        if ($renderingContext === null || !$renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            return '';
+        }
+        $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         GeneralUtility::makeInstance(CacheService::class)->addTagsForPost($request, $post);
 
         return '';
