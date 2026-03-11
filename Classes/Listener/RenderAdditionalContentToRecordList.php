@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -16,17 +16,12 @@ use TYPO3\CMS\Backend\Controller\Event\RenderAdditionalContentToRecordListEvent;
 
 class RenderAdditionalContentToRecordList
 {
-    protected BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer;
-
-    public function __construct(BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer)
-    {
-        $this->blogPostHeaderContentRenderer = $blogPostHeaderContentRenderer;
+    public function __construct(
+        protected readonly BlogPostHeaderContentRenderer $blogPostHeaderContentRenderer,
+    ) {
     }
 
-    /**
-     * @return void
-     */
-    public function __invoke(RenderAdditionalContentToRecordListEvent $event)
+    public function __invoke(RenderAdditionalContentToRecordListEvent $event): void
     {
         $request = $event->getRequest();
         $content = $this->blogPostHeaderContentRenderer->render($request);

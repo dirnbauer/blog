@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -19,18 +19,11 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class CommentController extends ActionController
 {
-    protected PostRepository $postRepository;
-    protected CommentService $commentService;
-    protected CacheService $cacheService;
-
     public function __construct(
-        PostRepository $postRepository,
-        CommentService $commentService,
-        CacheService $cacheService
+        protected readonly PostRepository $postRepository,
+        protected readonly CommentService $commentService,
+        protected readonly CacheService $cacheService,
     ) {
-        $this->postRepository = $postRepository;
-        $this->commentService = $commentService;
-        $this->cacheService = $cacheService;
     }
 
     /**

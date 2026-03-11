@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -13,9 +13,6 @@ namespace T3G\AgencyPack\Blog\ExpressionLanguage;
 use TYPO3\CMS\Core\ExpressionLanguage\AbstractProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * ConditionProvider
- */
 class ConditionProvider extends AbstractProvider
 {
     public function __construct()

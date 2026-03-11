@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -24,28 +24,14 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class BackendController extends ActionController
 {
-    protected PostRepository $postRepository;
-    protected CommentRepository $commentRepository;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-    protected SetupService $setupService;
-    protected CacheService $cacheService;
-
     public function __construct(
-        PostRepository $postRepository,
-        CommentRepository $commentRepository,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer,
-        SetupService $setupService,
-        CacheService $cacheService
-    ) {
-        $this->postRepository = $postRepository;
-        $this->commentRepository = $commentRepository;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->setupService = $setupService;
-        $this->cacheService = $cacheService;
-    }
+        protected readonly PostRepository $postRepository,
+        protected readonly CommentRepository $commentRepository,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly SetupService $setupService,
+        protected readonly CacheService $cacheService,
+    ) {}
 
     public function initializeAction(): void
     {

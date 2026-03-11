@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -35,27 +35,14 @@ use TYPO3Fluid\Fluid\View\ViewInterface;
 
 class PostController extends ActionController
 {
-    protected PostRepository $postRepository;
-    protected AuthorRepository $authorRepository;
-    protected CategoryRepository $categoryRepository;
-    protected TagRepository $tagRepository;
-    protected CacheService $blogCacheService;
-    protected PostRepositoryDemandFactory $postRepositoryDemandFactory;
-
     public function __construct(
-        PostRepository $postRepository,
-        AuthorRepository $authorRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository,
-        CacheService $blogCacheService,
-        PostRepositoryDemandFactory $postRepositoryDemandFactory
+        protected readonly PostRepository $postRepository,
+        protected readonly AuthorRepository $authorRepository,
+        protected readonly CategoryRepository $categoryRepository,
+        protected readonly TagRepository $tagRepository,
+        protected readonly CacheService $blogCacheService,
+        protected readonly PostRepositoryDemandFactory $postRepositoryDemandFactory,
     ) {
-        $this->postRepository = $postRepository;
-        $this->authorRepository = $authorRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
-        $this->blogCacheService = $blogCacheService;
-        $this->postRepositoryDemandFactory = $postRepositoryDemandFactory;
     }
 
     /**

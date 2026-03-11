@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -13,9 +13,6 @@ namespace T3G\AgencyPack\Blog\Domain\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * Class AuthorRepository.
- */
 class AuthorRepository extends Repository
 {
     public function initializeObject(): void

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -19,27 +19,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
-/**
- * Class CommentService.
- */
 class CommentService
 {
     public const STATE_ERROR = 'error';
     public const STATE_MODERATION = 'moderation';
     public const STATE_SUCCESS = 'success';
 
-    protected PostRepository $postRepository;
-    protected CommentRepository $commentRepository;
-    protected PersistenceManagerInterface $persistenceManager;
-
     public function __construct(
-        PostRepository $postRepository,
-        CommentRepository $commentRepository,
-        PersistenceManagerInterface $persistenceManager
+        protected readonly PostRepository $postRepository,
+        protected readonly CommentRepository $commentRepository,
+        protected readonly PersistenceManagerInterface $persistenceManager,
     ) {
-        $this->postRepository = $postRepository;
-        $this->commentRepository = $commentRepository;
-        $this->persistenceManager = $persistenceManager;
     }
 
     protected array $settings = [
