@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -14,7 +14,6 @@ use T3G\AgencyPack\Blog\Service\CacheService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 class DataHandlerHook
@@ -24,6 +23,19 @@ class DataHandlerHook
     private const TABLE_AUTHORS = 'tx_blog_domain_model_author';
     private const TABLE_COMMENTS = 'tx_blog_domain_model_comment';
     private const TABLE_TAGS = 'tx_blog_domain_model_tag';
+
+    private const CACHE_TAG_MAP = [
+        self::TABLE_PAGES => 'tx_blog_post_',
+        self::TABLE_CATEGORIES => 'tx_blog_category_',
+        self::TABLE_AUTHORS => 'tx_blog_author_',
+        self::TABLE_COMMENTS => 'tx_blog_comment_',
+        self::TABLE_TAGS => 'tx_blog_tag_',
+    ];
+
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly CacheService $cacheService,
+    ) {}
 
     /**
      * @param string|int $id
@@ -39,8 +51,7 @@ class DataHandlerHook
                 return;
             }
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $publishDate = $queryBuilder
                 ->select('publish_date')
@@ -49,12 +60,12 @@ class DataHandlerHook
                 ->executeQuery()
                 ->fetchOne();
             if ($publishDate !== false) {
-                $timestamp = (int) ($publishDate !== 0 ? $publishDate : time());
+                $timestamp = (int)($publishDate !== 0 ? $publishDate : time());
                 $queryBuilder
                     ->update($table)
                     ->set('publish_date', $timestamp)
-                    ->set('crdate_month', date('n', (int)$timestamp))
-                    ->set('crdate_year', date('Y', (int)$timestamp))
+                    ->set('crdate_month', date('n', $timestamp))
+                    ->set('crdate_year', date('Y', $timestamp))
                     ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$id, Connection::PARAM_INT)))
                     ->executeStatement();
             }
@@ -64,35 +75,15 @@ class DataHandlerHook
             return;
         }
 
-        switch ($table) {
-            case self::TABLE_PAGES:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_post_' . $id);
-                break;
-            case self::TABLE_CATEGORIES:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_category_' . $id);
-                break;
-            case self::TABLE_AUTHORS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_author_' . $id);
-                break;
-            case self::TABLE_COMMENTS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_comment_' . $id);
-                break;
-            case self::TABLE_TAGS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_tag_' . $id);
-                break;
-            default:
+        $cacheTagPrefix = self::CACHE_TAG_MAP[$table] ?? null;
+        if ($cacheTagPrefix !== null) {
+            $this->cacheService->flushCacheByTag($cacheTagPrefix . $id);
         }
     }
 
     private function isWorkspacePlaceholder(string $table, int $uid): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
         $row = $queryBuilder
             ->select('t3ver_state')
@@ -105,7 +96,6 @@ class DataHandlerHook
             return false;
         }
 
-        // Skip new placeholders (1), delete placeholders (2), and move placeholders (3)
         return in_array((int)$row['t3ver_state'], [1, 2, 3], true);
     }
 }
