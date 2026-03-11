@@ -6,14 +6,90 @@
 Extending
 =========
 
+.. contents::
+   :local:
+   :depth: 2
 
 AvatarProvider
---------------
-The default AvatarProvider is the GravatarProvider, this means the avatar of an author is received from gravatar.com. The extension provides also an ImageProvider for local stored images.
+==============
 
-But you can also implement your own AvatarProvider:
+The default AvatarProvider is the GravatarProvider, which fetches author
+avatars from gravatar.com. The extension also provides an ImageProvider
+for locally uploaded images.
 
-1. Create a class which implements the AvatarProviderInterface.
-2. Add your provider to the TCA field “avatar_provider” to make it selectable in the author record
+To implement your own AvatarProvider:
 
-**Note:** Since v10 the proxying of gravatar loading is used which means that TYPO3 downloads the gravatar, stores it on the filesystem and delivers the image locally from typo3temp. This is privacy related and useful if users didn't give their consent for fetching gravatars client side.
+1. Create a class that implements ``AvatarProviderInterface``.
+2. Add your provider to the TCA field ``avatar_provider`` to make it
+   selectable in the author record.
+
+.. code-block:: php
+
+   use T3G\AgencyPack\Blog\AvatarProvider\AvatarProviderInterface;
+   use T3G\AgencyPack\Blog\Domain\Model\Author;
+
+   class MyAvatarProvider implements AvatarProviderInterface
+   {
+       public function getAvatarUrl(Author $author, int $size): string
+       {
+           // Return the URL to the avatar image
+       }
+   }
+
+.. note::
+
+   Since v10, Gravatar proxying is enabled by default. TYPO3 downloads
+   the Gravatar, stores it on the filesystem, and delivers the image
+   locally from ``typo3temp``. This prevents third-party tracking and is
+   useful when users have not consented to external requests. Only safe
+   image formats (PNG, JPG, GIF, WebP) are accepted — SVG is rejected.
+
+
+Comment Notifications
+=====================
+
+The extension dispatches notifications when new comments are added. Two
+processors are included:
+
+- ``AdminNotificationProcessor`` — sends an email to the site admin
+- ``AuthorNotificationProcessor`` — sends an email to the post author(s)
+
+Custom processors can be registered in ``ext_localconf.php``:
+
+.. code-block:: php
+
+   $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['Blog']['notificationRegistry']
+       [\T3G\AgencyPack\Blog\Notification\CommentAddedNotification::class][]
+       = \Your\Extension\Notification\CustomProcessor::class;
+
+Your processor must implement ``ProcessorInterface``.
+
+
+DataHandler Hooks
+=================
+
+The extension uses two DataHandler hooks:
+
+- ``DataHandlerHook`` — maintains derived date fields
+  (``crdate_month``, ``crdate_year``) from ``publish_date`` on blog
+  posts and flushes page cache on record changes. Workspace placeholder
+  records are skipped, and cache is only flushed in the live workspace.
+- ``CreateSiteConfigurationHook`` — automatically creates a site
+  configuration when a new blog root page (doktype 138) is created.
+
+
+Template Overrides
+==================
+
+All Fluid templates, partials, and layouts can be overridden in your
+sitepackage. Set the template paths via TypoScript:
+
+.. code-block:: typoscript
+
+   plugin.tx_blog {
+       view {
+           templateRootPaths.10 = EXT:your_sitepackage/Resources/Private/Templates/Blog/
+           partialRootPaths.10 = EXT:your_sitepackage/Resources/Private/Partials/Blog/
+           layoutRootPaths.10 = EXT:your_sitepackage/Resources/Private/Layouts/Blog/
+       }
+   }
