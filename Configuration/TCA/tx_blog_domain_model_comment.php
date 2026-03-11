@@ -30,7 +30,7 @@ return [
         'typeicon_classes' => [
             'default' => 'record-blog-comment'
         ],
-        'searchFields' => 'uid,comment,name,email',
+        'searchFields' => 'comment,name,email',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
@@ -66,7 +66,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'url' => [
@@ -82,6 +82,7 @@ return [
             'config' => [
                 'type' => 'email',
                 'size' => 30,
+                'searchable' => true,
             ],
         ],
         'comment' => [
@@ -89,7 +90,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'post_language_id' => [
@@ -141,7 +142,6 @@ return [
     'palettes' => [
         'paletteCore' => [
             'showitem' => 'hidden,',
-            'canNotCollapse' => true,
         ],
     ],
 ];

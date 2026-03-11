@@ -29,7 +29,7 @@ return [
         'typeicon_classes' => [
             'default' => 'record-blog-author'
         ],
-        'searchFields' => 'uid,name,title',
+        'searchFields' => 'name,title',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
@@ -77,6 +77,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'required' => true,
+                'searchable' => true,
             ],
             'l10n_display' => 'defaultAsReadonly',
             'l10n_mode' => 'exclude',
@@ -141,7 +142,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'website' => [
@@ -167,7 +168,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -176,7 +176,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -185,7 +184,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -194,7 +192,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -203,7 +200,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -212,7 +208,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -220,7 +215,6 @@ return [
             'label' => $ll . 'tx_blog_domain_model_author.bio',
             'config' => [
                 'type' => 'text',
-                'eval' => '',
             ],
         ],
         'posts' => [

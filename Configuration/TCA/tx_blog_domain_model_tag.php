@@ -34,7 +34,7 @@ return [
         'typeicon_classes' => [
             'default' => 'record-blog-tag'
         ],
-        'searchFields' => 'uid,title',
+        'searchFields' => 'title',
     ],
     'columns' => [
         'pid' => [
@@ -69,6 +69,7 @@ return [
                 'size' => 30,
                 'required' => true,
                 'eval' => 'trim',
+                'searchable' => true,
             ],
         ],
         'slug' => [
@@ -164,7 +165,6 @@ return [
     'palettes' => [
         'paletteCore' => [
             'showitem' => 'hidden,sys_language_uid,l18n_parent,l18n_diffsource',
-            'canNotCollapse' => true,
         ],
     ],
 ];

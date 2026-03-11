@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -12,26 +12,29 @@ namespace T3G\AgencyPack\Blog\ExpressionLanguage;
 
 use T3G\AgencyPack\Blog\Constants;
 
-/**
- * BlogVariableProvider
- */
 class BlogVariableProvider
 {
     public function isPost(): bool
     {
-        $page = $GLOBALS['TSFE']->page ?? [];
-        if (isset($page['doktype'])) {
-            return (int)$page['doktype'] === Constants::DOKTYPE_BLOG_POST;
-        }
-        return false;
+        return $this->getCurrentDoktype() === Constants::DOKTYPE_BLOG_POST;
     }
 
     public function isPage(): bool
     {
-        $page = $GLOBALS['TSFE']->page ?? [];
-        if (isset($page['doktype'])) {
-            return (int)$page['doktype'] === Constants::DOKTYPE_BLOG_PAGE;
+        return $this->getCurrentDoktype() === Constants::DOKTYPE_BLOG_PAGE;
+    }
+
+    private function getCurrentDoktype(): int
+    {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if ($request === null) {
+            return 0;
         }
-        return false;
+        $pageInformation = $request->getAttribute('frontend.page.information');
+        if ($pageInformation === null) {
+            return 0;
+        }
+        $pageRecord = $pageInformation->getPageRecord();
+        return (int)($pageRecord['doktype'] ?? 0);
     }
 }
