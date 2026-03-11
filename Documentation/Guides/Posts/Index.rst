@@ -40,7 +40,7 @@ Create a new post
       .. figure:: create-post-4.png
 
       1. Click the "Blog" tab
-      2. Adjust the publish date if nessesary
+      2. Adjust the publish date if necessary
       3. Upload a new image for your blog post or select an existing one
 
       .. note::
@@ -89,8 +89,5 @@ Create a new post
 
       .. figure:: create-post-8-1.png
 
-         Click on the "View" Button in the document header
-
-      .. figure:: create-post-8-1.png
-
-      Congratulations you published your blog post
+         Click on the "View" Button in the document header.
+         Congratulations — you published your blog post!

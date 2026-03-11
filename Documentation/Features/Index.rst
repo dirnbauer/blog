@@ -68,3 +68,28 @@ Integration and Standalone Mode
 -------------------------------
 
 The blog features three different modes - expert, standalone and integration.
+
+
+Workspace Support
+-----------------
+
+The blog extension fully supports TYPO3 Workspaces. Stage blog posts,
+tags, and authors in a workspace before publishing to the live site.
+Comments remain live-editable regardless of workspace state.
+
+See :ref:`Workspaces <Workspaces>` for details.
+
+
+Version Compatibility
+---------------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 25 15
+
+   * - Blog Extension
+     - TYPO3
+     - PHP
+   * - 14.0.x
+     - 13.4 LTS, 14.x
+     - 8.1+

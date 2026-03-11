@@ -13,11 +13,11 @@ site, please go with the :ref:`Setup Wizard <SetupWizard>` instructions.
 Prerequisites:
 
 1. Ensure the TYPO3 Blog Extension is :ref:`installed and activated <Installation>`
-2. Ensure your logged in as **Administrator**
+2. Ensure you are logged in as **Administrator**
 
 .. rst-class:: bignums
 
-   1. Edit your existing site your existing site configuration
+   1. Edit your existing site configuration
 
       .. figure:: manual-1.png
 
@@ -88,8 +88,8 @@ Prerequisites:
                settings:
                   blogUid:       ID_of_Page_Blog
                   categoryUid:   ID_of_Page_Categories
-                  tagUid:        ID_of_Page_Authors
-                  authorUid:     ID_of_Page_Tags
+                  tagUid:        ID_of_Page_Tags
+                  authorUid:     ID_of_Page_Authors
                   archiveUid:    ID_of_Page_Archive
                   storagePid:    ID_of_Page_Data
 
@@ -144,6 +144,6 @@ Prerequisites:
 
    8. Congratulations
 
-      Your blog is now ready, please read on in the capters about "how to add a blog post" and learn more about configuration options.
+      Your blog is now ready, please read on in the chapters about "how to add a blog post" and learn more about configuration options.
 
       .. figure:: manual-13.png

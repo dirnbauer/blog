@@ -1,0 +1,104 @@
+# TYPO3 Blog Extension
+
+[![TYPO3 13](https://img.shields.io/badge/TYPO3-13.4%20LTS-orange.svg)](https://get.typo3.org/version/13)
+[![TYPO3 14](https://img.shields.io/badge/TYPO3-14.x-orange.svg)](https://get.typo3.org/version/14)
+[![PHP](https://img.shields.io/badge/PHP-%3E%3D8.1-blue.svg)](https://www.php.net)
+[![License](https://img.shields.io/badge/License-GPL%202.0-green.svg)](LICENSE)
+
+A blog extension for TYPO3 built entirely on core concepts — pages as posts, content elements for
+article bodies, and categories/tags for organization. If you know TYPO3, you already know how to
+use this blog.
+
+## Requirements
+
+| Blog Extension | TYPO3          | PHP    |
+|----------------|----------------|--------|
+| 14.0.x         | 13.4 LTS, 14.x | >= 8.1 |
+
+## Features
+
+- **Pages as blog posts** — Blog entries are pages with a dedicated page type (doktype 137).
+  Create and manage them in the page module like any other page.
+- **All content elements** — Use every content element and backend layout you already have.
+  No proprietary content model.
+- **Categories and tags** — Organize posts with TYPO3 system categories and custom tags.
+  Filter and list by category, tag, author, or date.
+- **Authors** — Multi-author support with avatars (Gravatar or uploaded image), social links,
+  bio, and dedicated author pages.
+- **Comments** — Built-in comment system with moderation workflow (pending/approved/declined),
+  Google reCAPTCHA support, and email notifications.
+- **Workspace support** — Full TYPO3 Workspaces integration. Stage blog posts, tags, and
+  authors before publishing. Comments remain live-editable.
+- **20+ plugins** — List posts, sidebar, archive, related posts, header/footer, comment form,
+  and widget plugins — all usable as standalone content elements.
+- **3 backend modules** — Dedicated modules for post overview, comment management, and
+  blog setup wizard.
+- **Customizable templates** — Fluid-based templates. Override any template in your sitepackage.
+- **RSS feeds** — Built-in feed support with featured images.
+- **Routing** — Ships with frontend route enhancers for clean URLs.
+- **SEO** — Structured data, meta tags, and social sharing support.
+
+## Installation
+
+```bash
+composer require t3g/blog
+```
+
+Then add the Blog site set to your site configuration.
+
+For detailed setup instructions, see the [documentation](https://docs.typo3.org/typo3cms/extensions/blog/).
+
+## Quick Start
+
+1. Install via Composer
+2. Go to **Blog > Setup** in the TYPO3 backend
+3. Use the Setup Wizard to create a fully configured blog instance
+4. Start writing posts
+
+For manual integration into an existing site, see the
+[Manual Setup guide](https://docs.typo3.org/typo3cms/extensions/blog/Setup/Manual/Index.html).
+
+## Workspace Support
+
+The extension supports TYPO3 Workspaces for editorial staging workflows:
+
+| Table | Behavior |
+|-------|----------|
+| Blog posts (pages) | Fully versioned |
+| Tags | Fully versioned |
+| Authors | Fully versioned |
+| Comments | Always live-editable |
+| Categories | Fully versioned (core) |
+
+See the [Workspace documentation](https://docs.typo3.org/typo3cms/extensions/blog/Workspaces/Index.html)
+for details.
+
+## Development
+
+```bash
+# Install dependencies
+composer install
+
+# Run tests
+composer test
+
+# Run specific test suites
+composer test:php:unit
+composer test:php:functional
+
+# Static analysis
+composer phpstan
+
+# Code style
+composer cgl
+```
+
+## Contributing
+
+- Report bugs and request features on [GitHub](https://github.com/TYPO3GmbH/blog/issues)
+- Join `#t3g-ext-blog` on [TYPO3 Slack](https://typo3.slack.com/archives/t3g-ext-blog)
+- Pull requests welcome — fork, branch, and submit
+
+## License
+
+GPL-2.0-or-later. See [LICENSE](LICENSE) for details.
