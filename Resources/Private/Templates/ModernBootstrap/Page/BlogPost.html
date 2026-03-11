@@ -1,0 +1,36 @@
+<f:layout name="Default" />
+<f:section name="Main">
+    <div class="container">
+        <div class="row gx-5 justify-content-center">
+            <main class="col-lg-8" role="main">
+                <article class="blog-post bg-white p-4 p-md-5 rounded shadow-sm mb-5">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
+                    <div class="blog-content mt-4">
+                        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
+                    </div>
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
+                </article>
+                <div class="blog-extras mb-5">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
+                </div>
+                <div class="blog-comments bg-light p-4 rounded mb-5">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
+                </div>
+                <div class="blog-related">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
+                </div>
+            </main>
+            <aside class="col-lg-4" role="complementary">
+                <div class="sticky-top" style="top: 2rem;">
+                    <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+                </div>
+            </aside>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="renderPlugin">
+    {blogvh:data.contentListOptions(listType: listType)}
+    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+</f:section>
