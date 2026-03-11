@@ -1,40 +1,33 @@
-# Testing Report — Coverage Analysis
+# Testing Report — Recheck
 
-**Extension:** t3g/blog v14.0.0
+**Extension:** t3g/blog v14.0.0  
 **Date:** 2026-03-11
 
-## Inventory
+## Recheck Evidence
 
-- **Unit tests:** 5 files, ~14 test methods
-- **Functional tests:** 26 files, ~41+ test methods
-- **PHPUnit config:** Build/UnitTests.xml, Build/FunctionalTests.xml (both PHPUnit 9.3 schema)
-- **Testing framework:** typo3/testing-framework ^9.0.0
+- `ddev composer test:php:unit` executed (34 tests): **2 failures**
+- `ddev composer test:php:functional` executed (115 tests):
+  **12 errors, 36 failures**
 
-## Well-Covered Areas
+## Current Test Failures
 
-- All 9 upgrade wizards (functional)
-- CommentService (unit)
-- GravatarUriBuilder, GravatarResourceResolver (unit)
-- GravatarProvider (functional)
-- SetupService (functional)
-- All Link ViewHelpers — frontend and backend (functional)
-- DataHandlerHook — basic create/update (functional)
+### Unit suite
 
-## Critical Gaps
+1. `Nl2pViewHelperTest` newline formatting assertions fail because output keeps
+   newline characters after `<br>` splitting.
 
-| Component | Gap | Priority |
-|-----------|-----|----------|
-| DataHandlerHook — workspace | `isWorkspacePlaceholder()` and `workspace > 0` early return not tested | HIGH |
-| Nl2pViewHelper | XSS fix (htmlspecialchars) not covered | HIGH |
-| BackendController | No tests at all | MEDIUM |
-| GoogleCaptchaValidator | No tests (logic bug was fixed) | MEDIUM |
-| BlogVariableProvider | No tests ($GLOBALS['TSFE'] replacement) | MEDIUM |
-| Workspace scenarios | No fixtures with t3ver_* fields | HIGH |
+### Functional suite
 
-## Action Items
+1. `DataHandlerHook` constructor requires dependencies, but DataHandler hook
+   instantiation path creates it without constructor arguments.
+2. Workspace functional tests fail because `workspaces` core extension package
+   is not available in the local dev dependency set.
+3. BE link view helper tests expect URLs prefixed with `/typo3/...` while the
+   current UriBuilder output is `typo3/...` (no leading slash) in this setup.
 
-1. Add functional tests for DataHandlerHook workspace behavior
-2. Add unit test for Nl2pViewHelper XSS escaping
-3. Add unit test for BlogVariableProvider
-4. Add functional tests for workspace record visibility
-5. Update PHPUnit XML schema from 9.3 to match testing-framework ^9.0
+## Testing Change Plan
+
+1. Normalize paragraph splitting in `Nl2pViewHelper` to satisfy unit assertions
+2. Make `DataHandlerHook` constructor compatible with hook instantiation
+3. Add missing `typo3/cms-workspaces` dev dependency for workspace tests
+4. Normalize backend route output (or expectations) for BE link view helper tests
