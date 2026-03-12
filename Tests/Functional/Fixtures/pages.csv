@@ -1,0 +1,6 @@
+pages,,,,,,,,,,,,
+,uid,pid,title,deleted,slug,perms_everybody,sys_language_uid,l10n_parent,doktype,hidden,sorting,is_siteroot
+,1,0,Root,0,"/",15,0,0,1,0,256,1
+,2,1,Blog,0,"/blog",15,0,0,138,0,256,0
+,3,2,First Blog Post,0,"/blog/first-blog-post",15,0,0,137,0,256,0
+,4,2,Second Blog Post,0,"/blog/second-blog-post",15,0,0,137,0,512,0

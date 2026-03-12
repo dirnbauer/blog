@@ -1,0 +1,72 @@
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:blog/Configuration/TypoScript/Static/setup.typoscript'
+@import 'EXT:blog/Configuration/TypoScript/Shared/setup.typoscript'
+@import 'EXT:blog/Configuration/Sets/Shared/setup.typoscript'
+@import 'EXT:blog/Configuration/Sets/Static/setup.typoscript'
+
+plugin.tx_blog.settings.storagePid = 2
+plugin.tx_blog.persistence.storagePid = 2
+plugin.tx_blog.settings.blogSetups.1.uid = 2
+plugin.tx_blog.settings.widgets.comments.limit = 5
+plugin.tx_blog.settings.widgets.recentposts.limit = 5
+plugin.tx_blog.settings.widgets.tags.limit = 20
+plugin.tx_blog.settings.widgets.tags.minSize = 100
+plugin.tx_blog.settings.widgets.tags.maxSize = 100
+plugin.tx_blog.settings.widgets.archive.showCounter = 1
+plugin.tx_blog.settings.widgets.archive.groupByYear = 1
+plugin.tx_blog.settings.widgets.archive.groupByMonth = 1
+plugin.tx_blog.settings.lists.posts.maximumDisplayedItems = 10
+plugin.tx_blog.settings.lists.pagination.itemsPerPage = 10
+plugin.tx_blog.settings.latestPosts.limit = 3
+plugin.tx_blog.settings.relatedPosts.limit = 4
+plugin.tx_blog.settings.comments.active = 1
+plugin.tx_blog.settings.comments.moderation = 0
+
+page = PAGE
+page {
+    10 = FLUIDTEMPLATE
+    10 {
+        templateName = TEXT
+        templateName.stdWrap.cObject = CASE
+        templateName.stdWrap.cObject {
+            key.data = page:doktype
+            137 = TEXT
+            137.value = BlogPost
+            138 = TEXT
+            138.value = BlogList
+            default = TEXT
+            default.value = BlogList
+        }
+        templateRootPaths {
+            10 = EXT:blog/Resources/Private/Templates/Page/
+        }
+        layoutRootPaths {
+            10 = EXT:blog/Tests/Functional/Fixtures/Templates/Layouts/
+        }
+        partialRootPaths {
+            10 = EXT:blog/Resources/Private/Partials/
+        }
+    }
+}
+
+lib.dynamicContent = COA
+lib.dynamicContent {
+    5 = LOAD_REGISTER
+    5 {
+        colPos.cObject = TEXT
+        colPos.cObject.field = colPos
+        colPos.cObject.ifEmpty.cObject = TEXT
+        colPos.cObject.ifEmpty.cObject.value.current = 1
+        colPos.cObject.ifEmpty.cObject.value.ifEmpty = 0
+    }
+    20 = CONTENT
+    20 {
+        table = tt_content
+        select {
+            orderBy = sorting
+            where = {#colPos}={register:colPos}
+            where.insertData = 1
+        }
+    }
+    90 = RESTORE_REGISTER
+}

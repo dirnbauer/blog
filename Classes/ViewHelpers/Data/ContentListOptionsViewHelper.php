@@ -15,6 +15,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/**
+ * @deprecated since v14 fork. The shipped blog page templates no longer use
+ *             this ViewHelper. Rendering now goes through tt_content.{listType}.20
+ *             directly (EXTBASEPLUGIN), which is workspace-safe and avoids the
+ *             IncompleteRecordException caused by synthetic records missing
+ *             system fields required by the record-transformation data processor.
+ *             This class will be removed in a future version.
+ */
 class ContentListOptionsViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
