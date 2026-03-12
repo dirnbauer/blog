@@ -18,6 +18,7 @@ use T3G\AgencyPack\Blog\Domain\Model\Category;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Model\Tag;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -38,7 +39,14 @@ class PostRepository extends Repository
     public function initializeObject(): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
+        try {
+            $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
+        } catch (PageNotFoundException) {
+            // Rootline resolution fails for workspace-only pages that have no
+            // live counterpart.  Fall back to empty settings so the repository
+            // stays functional for backend queries that don't need TypoScript.
+            $this->settings = ['persistence' => ['storagePid' => '']];
+        }
 
         $querySettings = GeneralUtility::makeInstance(
             Typo3QuerySettings::class,
@@ -48,15 +56,30 @@ class PostRepository extends Repository
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
 
+        $context = GeneralUtility::makeInstance(Context::class);
         $query = $this->createQuery();
         $this->defaultConstraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
-        if (GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId() === 0) {
+        if ($context->getAspect('language')->getId() === 0) {
             $this->defaultConstraints[] = $query->logicalOr(
                 $query->equals('l18n_cfg', 0),
                 $query->equals('l18n_cfg', 2)
             );
         } else {
             $this->defaultConstraints[] = $query->lessThan('l18n_cfg', 2);
+        }
+
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        ) {
+            $workspaceId = (int)$context->getPropertyFromAspect('workspace', 'id', 0);
+            if ($workspaceId === 0) {
+                $this->defaultConstraints[] = $query->equals('t3ver_wsid', 0);
+            } else {
+                $this->defaultConstraints[] = $query->logicalOr(
+                    $query->equals('t3ver_wsid', 0),
+                    $query->equals('t3ver_wsid', $workspaceId)
+                );
+            }
         }
 
         $this->defaultOrderings = [
