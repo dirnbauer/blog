@@ -42,9 +42,6 @@ class PostRepository extends Repository
         try {
             $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
         } catch (PageNotFoundException) {
-            // Rootline resolution fails for workspace-only pages that have no
-            // live counterpart.  Fall back to empty settings so the repository
-            // stays functional for backend queries that don't need TypoScript.
             $this->settings = ['persistence' => ['storagePid' => '']];
         }
 
@@ -56,30 +53,41 @@ class PostRepository extends Repository
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
 
-        $context = GeneralUtility::makeInstance(Context::class);
-        $query = $this->createQuery();
-        $this->defaultConstraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
-        if ($context->getAspect('language')->getId() === 0) {
-            $this->defaultConstraints[] = $query->logicalOr(
-                $query->equals('l18n_cfg', 0),
-                $query->equals('l18n_cfg', 2)
-            );
-        } else {
-            $this->defaultConstraints[] = $query->lessThan('l18n_cfg', 2);
-        }
-
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
-            $workspaceId = (int)$context->getPropertyFromAspect('workspace', 'id', 0);
-            if ($workspaceId === 0) {
-                $this->defaultConstraints[] = $query->equals('t3ver_wsid', 0);
-            } else {
+        // createQuery() internally resolves TypoScript through
+        // BackendConfigurationManager which requires a valid rootline.
+        // Workspace-only pages (t3ver_wsid>0, t3ver_oid=0) have no live
+        // counterpart, so rootline resolution throws PageNotFoundException
+        // when the editor is in LIVE context.  In that case we skip the
+        // default constraints — the repository stays instantiable so the
+        // DI container does not crash on the Page Layout view.
+        try {
+            $context = GeneralUtility::makeInstance(Context::class);
+            $query = $this->createQuery();
+            $this->defaultConstraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
+            if ($context->getAspect('language')->getId() === 0) {
                 $this->defaultConstraints[] = $query->logicalOr(
-                    $query->equals('t3ver_wsid', 0),
-                    $query->equals('t3ver_wsid', $workspaceId)
+                    $query->equals('l18n_cfg', 0),
+                    $query->equals('l18n_cfg', 2)
                 );
+            } else {
+                $this->defaultConstraints[] = $query->lessThan('l18n_cfg', 2);
             }
+
+            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            ) {
+                $workspaceId = (int)$context->getPropertyFromAspect('workspace', 'id', 0);
+                if ($workspaceId === 0) {
+                    $this->defaultConstraints[] = $query->equals('t3ver_wsid', 0);
+                } else {
+                    $this->defaultConstraints[] = $query->logicalOr(
+                        $query->equals('t3ver_wsid', 0),
+                        $query->equals('t3ver_wsid', $workspaceId)
+                    );
+                }
+            }
+        } catch (PageNotFoundException) {
+            // Constraint setup failed — see comment above.
         }
 
         $this->defaultOrderings = [

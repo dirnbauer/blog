@@ -56,6 +56,18 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
     #[DataProvider('repositoryFileProvider')]
     public function repositoryDoesNotQueryWorkspaceFieldsDirectly(string $path): void
     {
+        // PostRepository intentionally filters by t3ver_wsid in backend
+        // context because Extbase does not apply WorkspaceRestriction when
+        // setIgnoreEnableFields(true) is used on the pages table.
+        if (basename($path) === 'PostRepository.php') {
+            self::assertStringContainsString(
+                't3ver_wsid',
+                (string)file_get_contents($path),
+                'PostRepository must filter by t3ver_wsid in backend context.'
+            );
+            return;
+        }
+
         $content = file_get_contents($path);
         self::assertNotFalse($content);
 
