@@ -127,15 +127,42 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
     }
 
     #[Test]
-    public function repositoryDoesNotDirectlyQueryWorkspaceFields(): void
+    public function repositoryFiltersWorkspaceRecordsInBackendContext(): void
     {
-        self::assertDoesNotMatchRegularExpression(
-            '/t3ver_wsid|t3ver_oid|t3ver_state/',
+        self::assertStringContainsString(
+            't3ver_wsid',
             self::$repositorySource,
-            'PostRepository must NOT query workspace fields directly. '
-            . 'Workspace overlay is handled by Core via WorkspaceRestriction, '
-            . 'not by manual t3ver_* constraints. This ensures it works '
-            . 'both WITH and WITHOUT workspaces installed.'
+            'PostRepository must filter by t3ver_wsid in backend context. '
+            . 'Extbase does not apply WorkspaceRestriction when '
+            . 'setIgnoreEnableFields(true) is used, so blog posts '
+            . '(pages with doktype 137) need explicit workspace filtering '
+            . 'to prevent workspace-only records from appearing in LIVE.'
+        );
+    }
+
+    #[Test]
+    public function repositoryAppliesWorkspaceFilterOnlyInBackend(): void
+    {
+        self::assertStringContainsString(
+            'isBackend()',
+            self::$repositorySource,
+            'Workspace filtering via t3ver_wsid must only be applied in '
+            . 'backend context.  Frontend workspace overlay is handled by '
+            . 'the TSFE rendering pipeline.'
+        );
+    }
+
+    #[Test]
+    public function repositoryCatchesPageNotFoundException(): void
+    {
+        self::assertStringContainsString(
+            'PageNotFoundException',
+            self::$repositorySource,
+            'PostRepository::initializeObject() must catch PageNotFoundException. '
+            . 'When the current backend page is a workspace-only page '
+            . '(t3ver_oid=0, t3ver_wsid>0) and the editor is in LIVE, '
+            . 'the rootline cannot be resolved.  The repository must survive '
+            . 'this so the DI container does not crash.'
         );
     }
 
