@@ -31,6 +31,5 @@
 </f:section>
 
 <f:section name="renderPlugin">
-    {blogvh:data.contentListOptions(listType: listType)}
-    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
 </f:section>

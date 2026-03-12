@@ -9,6 +9,47 @@ A blog extension for TYPO3 built entirely on core concepts — pages as posts, c
 article bodies, and categories/tags for organization. If you know TYPO3, you already know how to
 use this blog.
 
+## ⚠️ Breaking Changes for TYPO3 v14
+
+### Blog page templates: new plugin rendering approach
+
+The `renderPlugin` section in `BlogList.html`, `BlogPost.html`, and their
+`ModernTailwind` / `ModernBootstrap` variants has changed.
+
+**Old (broken on v14):**
+
+```html
+<f:section name="renderPlugin">
+    {blogvh:data.contentListOptions(listType: listType)}
+    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+</f:section>
+```
+
+**New (v14-compatible, workspace-safe):**
+
+```html
+<f:section name="renderPlugin">
+    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
+</f:section>
+```
+
+**Why:** TYPO3 v14 added the `record-transformation` data processor to
+`lib.contentElement`. It requires all system fields (`sys_language_uid`,
+`l18n_parent`, `t3ver_wsid`, `header`, …) on every `tt_content` row. The old
+approach created synthetic records via `ContentListOptionsViewHelper` that lacked
+these fields, causing `IncompleteRecordException`. The new approach renders the
+`EXTBASEPLUGIN` content object directly, bypassing the content-element pipeline
+entirely.
+
+**Action required:** If your sitepackage overrides `BlogList.html` or
+`BlogPost.html` (or their `ModernTailwind` / `ModernBootstrap` variants), update
+the `renderPlugin` section to use the new pattern shown above.
+
+**Deprecation:** The `ContentListOptionsViewHelper`
+(`{blogvh:data.contentListOptions}`) and the `contentObjectData` template
+variable are no longer used by the shipped templates. The ViewHelper class still
+exists for backward compatibility but will be removed in a future version.
+
 ## Requirements
 
 | Blog Extension | TYPO3          | PHP    |
