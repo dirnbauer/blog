@@ -89,3 +89,19 @@ table.table-comments .actions {
     padding-top: 5px;
     padding-right: 5px;
 }
+
+/**
+ * Theme-aware record icons in DataTables (Posts list, Setup wizard, etc.)
+ * Icons use currentColor / --typo3-text-color in SVG; inherit link color in dark mode.
+ */
+table.dataTable td .icon {
+    color: var(--typo3-text-color, inherit);
+}
+
+table.dataTable td a .icon {
+    color: inherit;
+}
+
+table.dataTable td .btn .icon {
+    color: inherit;
+}

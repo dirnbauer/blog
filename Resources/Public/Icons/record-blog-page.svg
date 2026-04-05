@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <path fill="currentColor" d="M2 1h12v14H2V1zm1 1v12h10V2H3z"/>
+  <path fill="var(--typo3-text-color, currentColor)" d="M2 1h12v14H2V1zm1 1v12h10V2H3z"/>
   <rect fill="var(--icon-color-accent, #ff8700)" x="5" y="4" width="6" height="2" rx=".3"/>
   <g opacity=".4">
-    <rect fill="currentColor" x="5" y="7.5" width="6" height="1" rx=".3"/>
-    <rect fill="currentColor" x="5" y="9.5" width="6" height="1" rx=".3"/>
-    <rect fill="currentColor" x="5" y="11.5" width="4" height="1" rx=".3"/>
+    <rect fill="var(--typo3-text-color, currentColor)" x="5" y="7.5" width="6" height="1" rx=".3"/>
+    <rect fill="var(--typo3-text-color, currentColor)" x="5" y="9.5" width="6" height="1" rx=".3"/>
+    <rect fill="var(--typo3-text-color, currentColor)" x="5" y="11.5" width="4" height="1" rx=".3"/>
   </g>
 </svg>

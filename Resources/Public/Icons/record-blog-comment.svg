@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <path fill="currentColor" d="M14 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3v3l4-3h5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm0 9H8.7L6 13.2V11H2V3h12v8z"/>
+  <path fill="var(--typo3-text-color, currentColor)" d="M14 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3v3l4-3h5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm0 9H8.7L6 13.2V11H2V3h12v8z"/>
   <rect fill="var(--icon-color-accent, #ff8700)" x="4" y="5" width="8" height="1.5" rx=".3"/>
-  <rect fill="currentColor" opacity=".4" x="4" y="7.5" width="6" height="1" rx=".3"/>
+  <rect fill="var(--typo3-text-color, currentColor)" opacity=".4" x="4" y="7.5" width="6" height="1" rx=".3"/>
 </svg>
