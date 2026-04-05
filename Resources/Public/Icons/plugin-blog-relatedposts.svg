@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
   <g opacity=".4">
-    <path fill="currentColor" d="M5 3h6v10H5V3zm1 1v8h4V4H6z"/>
+    <path fill="var(--typo3-text-color, currentColor)" d="M5 3h6v10H5V3zm1 1v8h4V4H6z"/>
   </g>
-  <path fill="currentColor" d="M2 1h6v12H2V1zm1 1v10h4V2H3z"/>
+  <path fill="var(--typo3-text-color, currentColor)" d="M2 1h6v12H2V1zm1 1v10h4V2H3z"/>
   <path fill="var(--icon-color-accent, #ff8700)" d="M9 5h5v10H9V5zm1 1v8h3V6h-3z"/>
-  <path fill="currentColor" opacity=".4" d="M7.5 7l2 1-2 1V7z"/>
+  <path fill="var(--typo3-text-color, currentColor)" opacity=".4" d="M7.5 7l2 1-2 1V7z"/>
 </svg>

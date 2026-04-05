@@ -26,6 +26,11 @@
     position: absolute;
     top: 20px;
     left: 15px;
+
+    // Theme-aware contrast for SvgIconProvider (currentColor / --typo3-text-color in SVG)
+    .icon {
+        color: var(--typo3-text-color, inherit);
+    }
 }
 .blog-pageheader-section {
     margin-top: 20px;
@@ -68,4 +73,9 @@
 .blog-pageheader-footer {
     padding: 20px;
     padding-top: 0;
+
+    // Match button label color; beats default .icon fill on dark backgrounds
+    .btn .icon {
+        color: inherit;
+    }
 }

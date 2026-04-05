@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <path fill="currentColor" d="M2 2h12a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 1v10h12V3H2z"/>
+  <path fill="var(--typo3-text-color, currentColor)" d="M2 2h12a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 1v10h12V3H2z"/>
   <rect fill="var(--icon-color-accent, #ff8700)" x="2" y="3" width="12" height="3" rx=".3"/>
-  <rect fill="currentColor" opacity=".4" x="4" y="8" width="8" height="1" rx=".3"/>
-  <rect fill="currentColor" opacity=".4" x="4" y="10" width="6" height="1" rx=".3"/>
+  <rect fill="var(--typo3-text-color, currentColor)" opacity=".4" x="4" y="8" width="8" height="1" rx=".3"/>
+  <rect fill="var(--typo3-text-color, currentColor)" opacity=".4" x="4" y="10" width="6" height="1" rx=".3"/>
 </svg>
