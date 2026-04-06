@@ -32,6 +32,22 @@ final class PageViewTemplateTest extends TestCase
         ];
     }
 
+    /**
+     * PAGEVIEW resolves layout "default" to Templates/Pages/Default/default.fluid.html (per path overlay).
+     *
+     * @return array<string, array{0: string}>
+     */
+    public static function pageLayoutTemplateProvider(): array
+    {
+        $base = self::getTemplateBase();
+
+        return [
+            'Pages/Default (standalone)' => [$base . '/Pages/Default/default.fluid.html'],
+            'ModernTailwind/Pages/Default' => [$base . '/ModernTailwind/Pages/Default/default.fluid.html'],
+            'ModernBootstrap/Pages/Default' => [$base . '/ModernBootstrap/Pages/Default/default.fluid.html'],
+        ];
+    }
+
     #[Test]
     #[DataProvider('pageViewTemplateProvider')]
     public function pageViewTemplateExists(string $path): void
@@ -55,6 +71,27 @@ final class PageViewTemplateTest extends TestCase
             '<f:render.contentArea contentArea="{blogContentAreas.content}"',
             $content,
             'PAGEVIEW templates must render the named "content" area.'
+        );
+    }
+
+    #[Test]
+    #[DataProvider('pageLayoutTemplateProvider')]
+    public function pageLayoutTemplateExists(string $path): void
+    {
+        self::assertFileExists($path);
+    }
+
+    #[Test]
+    #[DataProvider('pageLayoutTemplateProvider')]
+    public function pageLayoutTemplateRendersMainSection(string $path): void
+    {
+        $content = file_get_contents($path);
+        self::assertNotFalse($content);
+
+        self::assertStringContainsString(
+            '<f:render section="Main"',
+            $content,
+            'PAGEVIEW page layout must render the Main section from page templates.'
         );
     }
 
