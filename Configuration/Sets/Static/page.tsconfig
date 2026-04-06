@@ -1,3 +1,5 @@
+@import 'EXT:blog/Configuration/PageTsConfig/BlogLayouts.tsconfig'
+
 TCEFORM.pages.tags.PAGE_TSCONFIG_ID = {$plugin.tx_blog.settings.storagePid}
 TCEFORM.pages.authors.PAGE_TSCONFIG_ID = {$plugin.tx_blog.settings.storagePid}
 TCEFORM.pages.categories.PAGE_TSCONFIG_ID = {$plugin.tx_blog.settings.storagePid}

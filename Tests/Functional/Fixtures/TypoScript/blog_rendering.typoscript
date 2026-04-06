@@ -24,49 +24,23 @@ plugin.tx_blog.settings.comments.moderation = 0
 
 page = PAGE
 page {
-    10 = FLUIDTEMPLATE
+    10 = PAGEVIEW
     10 {
-        templateName = TEXT
-        templateName.stdWrap.cObject = CASE
-        templateName.stdWrap.cObject {
-            key.data = page:doktype
-            137 = TEXT
-            137.value = BlogPost
-            138 = TEXT
-            138.value = BlogList
-            default = TEXT
-            default.value = BlogList
+        contentAs = blogContentAreas
+        paths {
+            10 = EXT:blog/Tests/Functional/Fixtures/Templates/
+            20 = EXT:blog/Resources/Private/Templates/
         }
-        templateRootPaths {
-            10 = EXT:blog/Resources/Private/Templates/Page/
-        }
-        layoutRootPaths {
-            10 = EXT:blog/Tests/Functional/Fixtures/Templates/Layouts/
-        }
-        partialRootPaths {
-            10 = EXT:blog/Resources/Private/Partials/
-        }
-    }
-}
 
-lib.dynamicContent = COA
-lib.dynamicContent {
-    5 = LOAD_REGISTER
-    5 {
-        colPos.cObject = TEXT
-        colPos.cObject.field = colPos
-        colPos.cObject.ifEmpty.cObject = TEXT
-        colPos.cObject.ifEmpty.cObject.value.current = 1
-        colPos.cObject.ifEmpty.cObject.value.ifEmpty = 0
-    }
-    20 = CONTENT
-    20 {
-        table = tt_content
-        select {
-            orderBy = sorting
-            where = {#colPos}={register:colPos}
-            where.insertData = 1
+        variables {
+            rootPage = TEXT
+            rootPage.value = 1
+
+            siteTitle = TEXT
+            siteTitle.value = Blog Test
+
+            copyright = TEXT
+            copyright.value = Test Footer
         }
     }
-    90 = RESTORE_REGISTER
 }

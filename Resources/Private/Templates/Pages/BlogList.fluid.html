@@ -1,0 +1,22 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Pages/Default" />
+
+<f:section name="Main">
+    <div class="container">
+        <div class="blogcontainer">
+            <main class="blogcontainer-main" role="main">
+                <f:render.contentArea contentArea="{blogContentAreas.content}" />
+            </main>
+            <aside class="blogcontainer-sidebar">
+                <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="renderPlugin">
+    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
+</f:section>
+
+</html>

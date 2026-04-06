@@ -21,34 +21,36 @@ Blog Page Plugins
 
 Blog page plugins are usually used in conjunction with a sidebar,
 it is recommended to provide a separate template for these pages.
+TYPO3 v14 and later should use `PAGEVIEW` with
+``<f:render.contentArea ... />`` and direct ``tt_content.{listType}.20``
+plugin rendering.
 
 Example:
 
 .. code-block:: html
 
-   <f:layout name="Default" />
-   <f:section name="Main">
+   <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+   <f:layout name="Pages/Default" />
+
+   <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-               <main class="blogcontainer-main" role="main">
-                  <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{
-                           colPos: '0'
-                     }" />
-               </main>
-               <aside class="blogcontainer-sidebar">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
-               </aside>
+            <main class="blogcontainer-main" role="main">
+               <f:render.contentArea contentArea="{blogContentAreas.content}" />
+            </main>
+            <aside class="blogcontainer-sidebar">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
          </div>
       </div>
-
    </f:section>
+
    <f:section name="renderPlugin">
-
-      {blogvh:data.contentListOptions(listType: listType)}
-      <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
-
+      <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
    </f:section>
+
+   </html>
 
 
 List of posts
@@ -102,33 +104,34 @@ Example:
 
 .. code-block:: html
 
-   <f:layout name="Default" />
-   <f:section name="Main">
+   <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+   <f:layout name="Pages/Default" />
+
+   <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-               <main class="blogcontainer-main" role="main">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
-                  <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
-               </main>
-               <aside class="blogcontainer-sidebar">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
-               </aside>
+            <main class="blogcontainer-main" role="main">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
+               <f:render.contentArea contentArea="{blogContentAreas.content}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
+            </main>
+            <aside class="blogcontainer-sidebar">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
          </div>
       </div>
-
    </f:section>
+
    <f:section name="renderPlugin">
-
-      {blogvh:data.contentListOptions(listType: listType)}
-      <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
-
+      <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
    </f:section>
+
+   </html>
 
 
 Header

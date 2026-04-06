@@ -1,4 +1,7 @@
-<f:layout name="Default" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Pages/Default" />
+
 <f:section name="Main">
     <div class="container">
         <div class="row gx-5 justify-content-center">
@@ -6,14 +9,7 @@
                 <article class="blog-post bg-white p-4 p-md-5 rounded shadow-sm mb-5">
                     <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
                     <div class="blog-content mt-4">
-                        <f:if condition="{blogContentAreas}">
-                            <f:then>
-                                <f:render.contentArea contentArea="{blogContentAreas.content}" />
-                            </f:then>
-                            <f:else>
-                                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
-                            </f:else>
-                        </f:if>
+                        <f:render.contentArea contentArea="{blogContentAreas.content}" />
                     </div>
                     <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
                 </article>
@@ -40,3 +36,5 @@
 <f:section name="renderPlugin">
     <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
 </f:section>
+
+</html>

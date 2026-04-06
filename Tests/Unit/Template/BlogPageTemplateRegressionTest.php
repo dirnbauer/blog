@@ -22,8 +22,8 @@ use PHPUnit\Framework\TestCase;
  * In TYPO3 v14, `lib.contentElement` includes the `record-transformation`
  * data processor which requires ALL system fields (sys_language_uid,
  * l18n_parent, t3ver_*, crdate, tstamp, hidden, header, …).
- * The blog extension creates synthetic records via ContentListOptionsViewHelper
- * that lack these fields, causing IncompleteRecordException.
+ * Earlier rendering passed synthetic records that lack these fields,
+ * causing IncompleteRecordException.
  *
  * The fix renders Extbase plugins directly via `tt_content.{listType}.20`,
  * bypassing the full content element pipeline.
@@ -57,10 +57,16 @@ final class BlogPageTemplateRegressionTest extends TestCase
         $paths = [
             'Page/BlogList' => $base . '/Page/BlogList.html',
             'Page/BlogPost' => $base . '/Page/BlogPost.html',
+            'Pages/BlogList' => $base . '/Pages/BlogList.fluid.html',
+            'Pages/BlogPost' => $base . '/Pages/BlogPost.fluid.html',
             'ModernTailwind/Page/BlogList' => $base . '/ModernTailwind/Page/BlogList.html',
             'ModernTailwind/Page/BlogPost' => $base . '/ModernTailwind/Page/BlogPost.html',
+            'ModernTailwind/Pages/BlogList' => $base . '/ModernTailwind/Pages/BlogList.fluid.html',
+            'ModernTailwind/Pages/BlogPost' => $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
             'ModernBootstrap/Page/BlogList' => $base . '/ModernBootstrap/Page/BlogList.html',
             'ModernBootstrap/Page/BlogPost' => $base . '/ModernBootstrap/Page/BlogPost.html',
+            'ModernBootstrap/Pages/BlogList' => $base . '/ModernBootstrap/Pages/BlogList.fluid.html',
+            'ModernBootstrap/Pages/BlogPost' => $base . '/ModernBootstrap/Pages/BlogPost.fluid.html',
         ];
 
         foreach ($paths as $label => $path) {
@@ -79,14 +85,12 @@ final class BlogPageTemplateRegressionTest extends TestCase
         $content = file_get_contents($templatePath);
         self::assertNotFalse($content, 'Template file must be readable: ' . $templatePath);
 
-        // The old broken pattern passed synthetic data through the full
-        // tt_content CASE rendering pipeline which includes record-transformation:
-        //   {blogvh:data.contentListOptions(listType: listType)}
-        //   <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+        // The legacy broken pattern passed synthetic data through the full
+        // tt_content CASE rendering pipeline which includes record-transformation.
         self::assertStringNotContainsString(
             'contentListOptions',
             $content,
-            'Template must not use ContentListOptionsViewHelper — synthetic records '
+            'Template must not use the removed synthetic rendering helper — synthetic records '
             . 'break record-transformation in TYPO3 v14. '
             . 'Use <f:cObject typoscriptObjectPath="tt_content.{listType}.20" /> instead.'
         );
@@ -99,12 +103,12 @@ final class BlogPageTemplateRegressionTest extends TestCase
         $content = file_get_contents($templatePath);
         self::assertNotFalse($content, 'Template file must be readable: ' . $templatePath);
 
-        // Detect the pattern: data="{contentObjectData}" table="tt_content"
-        // This forces synthetic data through the record-transformation pipeline.
+        // Detect the legacy pattern that forces synthetic data through the
+        // record-transformation pipeline.
         self::assertDoesNotMatchRegularExpression(
             '/data="\{contentObjectData\}".*table="tt_content"/s',
             $content,
-            'Template must not pass contentObjectData as tt_content table — '
+            'Template must not pass synthetic data as tt_content table — '
             . 'record-transformation requires complete database rows.'
         );
     }

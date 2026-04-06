@@ -13,17 +13,9 @@ use this blog.
 
 ### Blog page templates: new plugin rendering approach
 
-The `renderPlugin` section in `BlogList.html`, `BlogPost.html`, and their
-`ModernTailwind` / `ModernBootstrap` variants has changed.
-
-**Old (broken on v14):**
-
-```html
-<f:section name="renderPlugin">
-    {blogvh:data.contentListOptions(listType: listType)}
-    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
-</f:section>
-```
+The `renderPlugin` section in the shipped blog page templates has changed.
+This affects both the legacy integration templates under `Templates/Page/*.html`
+and the TYPO3 v14 `PAGEVIEW` templates under `Templates/Pages/*.fluid.html`.
 
 **New (v14-compatible, workspace-safe):**
 
@@ -36,19 +28,22 @@ The `renderPlugin` section in `BlogList.html`, `BlogPost.html`, and their
 **Why:** TYPO3 v14 added the `record-transformation` data processor to
 `lib.contentElement`. It requires all system fields (`sys_language_uid`,
 `l18n_parent`, `t3ver_wsid`, `header`, …) on every `tt_content` row. The old
-approach created synthetic records via `ContentListOptionsViewHelper` that lacked
-these fields, causing `IncompleteRecordException`. The new approach renders the
-`EXTBASEPLUGIN` content object directly, bypassing the content-element pipeline
-entirely.
+approach rendered synthetic `tt_content` rows that lacked these fields, causing
+`IncompleteRecordException`. The new approach renders the `EXTBASEPLUGIN`
+content object directly, bypassing the content-element pipeline entirely.
 
-**Action required:** If your sitepackage overrides `BlogList.html` or
-`BlogPost.html` (or their `ModernTailwind` / `ModernBootstrap` variants), update
-the `renderPlugin` section to use the new pattern shown above.
+**Action required:** If your sitepackage overrides `BlogList` / `BlogPost`
+templates in either `Page/*.html` or `Pages/*.fluid.html` (including the
+`ModernTailwind` / `ModernBootstrap` variants), update the `renderPlugin`
+section to use the new pattern shown above.
 
-**Deprecation:** The `ContentListOptionsViewHelper`
-(`{blogvh:data.contentListOptions}`) and the `contentObjectData` template
-variable are no longer used by the shipped templates. The ViewHelper class still
-exists for backward compatibility but will be removed in a future version.
+For TYPO3 v14 standalone rendering, the recommended templates are the
+`PAGEVIEW` files in `Resources/Private/Templates/Pages/*.fluid.html` together
+with `Resources/Private/Templates/Layouts/Pages/Default.fluid.html`.
+
+**Removal:** The legacy synthetic `tt_content` rendering pattern is no longer
+part of the supported rendering path. Template overrides still using that
+approach must be updated to `tt_content.{listType}.20`.
 
 ## Requirements
 

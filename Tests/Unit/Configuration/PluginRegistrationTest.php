@@ -7,7 +7,6 @@ namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use T3G\AgencyPack\Blog\Constants;
 
 /**
  * Verify that every blog CType used in page templates is properly registered
@@ -131,56 +130,7 @@ final class PluginRegistrationTest extends TestCase
         self::assertStringContainsString(
             "['SYS']['fluid']['namespaces']['blogvh']",
             $content,
-            'The "blogvh" Fluid namespace must be registered for ViewHelper backward compatibility.'
-        );
-    }
-
-    #[Test]
-    public function allTemplateRenderedPluginsHaveConstantsMapping(): void
-    {
-        $templatePlugins = [
-            'blog_header',
-            'blog_footer',
-            'blog_authors',
-            'blog_comments',
-            'blog_commentform',
-            'blog_relatedposts',
-            'blog_sidebar',
-        ];
-
-        foreach ($templatePlugins as $ctype) {
-            self::assertArrayHasKey(
-                $ctype,
-                Constants::LISTTYPE_TO_FAKE_UID_MAPPING,
-                sprintf(
-                    'Constants::LISTTYPE_TO_FAKE_UID_MAPPING must contain "%s" for '
-                    . 'backward compatibility with custom template overrides.',
-                    $ctype
-                )
-            );
-        }
-    }
-
-    #[Test]
-    public function allFakeUidsAreNegative(): void
-    {
-        foreach (Constants::LISTTYPE_TO_FAKE_UID_MAPPING as $ctype => $uid) {
-            self::assertLessThan(
-                0,
-                $uid,
-                sprintf('Fake UID for "%s" must be negative to avoid collisions with real records.', $ctype)
-            );
-        }
-    }
-
-    #[Test]
-    public function allFakeUidsAreUnique(): void
-    {
-        $uids = array_values(Constants::LISTTYPE_TO_FAKE_UID_MAPPING);
-        self::assertSame(
-            count($uids),
-            count(array_unique($uids)),
-            'All fake UIDs in LISTTYPE_TO_FAKE_UID_MAPPING must be unique.'
+            'The "blogvh" Fluid namespace must be registered for the extension ViewHelpers.'
         );
     }
 }

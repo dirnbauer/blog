@@ -50,6 +50,10 @@ final class SetupServiceTest extends FunctionalTestCase
         self::assertEquals($rootPage['title'], 'Blog');
         self::assertEquals($rootPage['doktype'], Constants::DOKTYPE_BLOG_PAGE);
         self::assertEquals($rootPage['is_siteroot'], 1);
+        self::assertEquals($rootPage['backend_layout'], 'pagets__BlogList');
+        /** @var array $storagePage */
+        $storagePage = BackendUtility::getRecord('pages', 2);
+        self::assertEquals($storagePage['backend_layout_next_level'], 'pagets__BlogPost');
     }
 
     #[Test]
@@ -63,6 +67,10 @@ final class SetupServiceTest extends FunctionalTestCase
         self::assertEquals($rootPage['title'], 'DEMO');
         self::assertEquals($rootPage['doktype'], Constants::DOKTYPE_BLOG_PAGE);
         self::assertEquals($rootPage['is_siteroot'], 1);
+        self::assertEquals($rootPage['backend_layout'], 'pagets__BlogList');
+        /** @var array $storagePage */
+        $storagePage = BackendUtility::getRecord('pages', 2);
+        self::assertEquals($storagePage['backend_layout_next_level'], 'pagets__BlogPost');
     }
 
     #[Test]
