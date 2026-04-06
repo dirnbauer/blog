@@ -27,7 +27,7 @@
     top: 20px;
     left: 15px;
 
-    // Theme-aware contrast for SvgIconProvider (currentColor / --typo3-text-color in SVG)
+    // TYPO3 v14: SvgIconProvider uses currentColor
     .icon {
         color: var(--typo3-text-color, inherit);
     }
