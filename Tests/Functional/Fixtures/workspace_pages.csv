@@ -1,4 +1,4 @@
-pages,,,,,,,,,,,,,,,,
-,uid,pid,title,deleted,slug,perms_everybody,sys_language_uid,l10n_parent,doktype,hidden,sorting,is_siteroot,t3ver_wsid,t3ver_oid,t3ver_state,t3ver_stage
-,5,2,First Blog Post - WS Modified,0,"/blog/first-blog-post",15,0,0,137,0,256,0,1,3,0,0
-,6,2,New WS Blog Post,0,"/blog/new-ws-post",15,0,0,137,0,768,0,1,0,1,0
+pages,,,,,,,,,,,,,,,,,,
+,uid,pid,title,deleted,slug,perms_everybody,sys_language_uid,l10n_parent,doktype,hidden,sorting,is_siteroot,backend_layout,backend_layout_next_level,t3ver_wsid,t3ver_oid,t3ver_state,t3ver_stage
+,5,2,First Blog Post - WS Modified,0,"/blog/first-blog-post",15,0,0,137,0,256,0,pagets__BlogPost,,1,3,0,0
+,6,2,New WS Blog Post,0,"/blog/new-ws-post",15,0,0,137,0,768,0,pagets__BlogPost,,1,0,1,0

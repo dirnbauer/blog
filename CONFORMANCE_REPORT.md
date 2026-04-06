@@ -21,7 +21,6 @@
 PHPStan reports `method.nonObject` for these files:
 
 - `Classes/ViewHelpers/CacheViewHelper.php`
-- `Classes/ViewHelpers/Data/ContentListOptionsViewHelper.php`
 - `Classes/ViewHelpers/Link/ArchiveViewHelper.php`
 - `Classes/ViewHelpers/Link/AuthorViewHelper.php`
 - `Classes/ViewHelpers/Link/CategoryViewHelper.php`

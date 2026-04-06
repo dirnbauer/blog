@@ -22,6 +22,22 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
     }
 
     /**
+     * @return list<string>
+     */
+    private static function getBlogPageTemplates(): array
+    {
+        $base = self::getTemplateBase();
+        return array_merge(
+            glob($base . '/Page/Blog*.html') ?: [],
+            glob($base . '/Pages/Blog*.html') ?: [],
+            glob($base . '/ModernTailwind/Page/Blog*.html') ?: [],
+            glob($base . '/ModernTailwind/Pages/Blog*.html') ?: [],
+            glob($base . '/ModernBootstrap/Page/Blog*.html') ?: [],
+            glob($base . '/ModernBootstrap/Pages/Blog*.html') ?: []
+        );
+    }
+
+    /**
      * @return array<string, array{0: string}>
      */
     public static function allFluidTemplateProvider(): array
@@ -60,7 +76,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
 
     #[Test]
     #[DataProvider('allFluidTemplateProvider')]
-    public function templateDoesNotUseDeprecatedContentListOptionsViewHelper(string $path): void
+    public function templateDoesNotUseLegacySyntheticContentHelper(string $path): void
     {
         $content = file_get_contents($path);
         self::assertNotFalse($content);
@@ -68,7 +84,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         self::assertStringNotContainsString(
             'contentListOptions',
             $content,
-            'Must not use ContentListOptionsViewHelper — synthetic records '
+            'Must not use the removed synthetic content helper — synthetic records '
             . 'miss workspace system fields (t3ver_wsid, t3ver_oid, t3ver_state).'
         );
     }
@@ -83,8 +99,8 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         self::assertStringNotContainsString(
             'contentObjectData',
             $content,
-            'Must not reference {contentObjectData} — this variable was populated '
-            . 'by the deprecated ContentListOptionsViewHelper with fake UIDs.'
+            'Must not reference {contentObjectData} — this variable belonged to the '
+            . 'removed synthetic content rendering path.'
         );
     }
 
@@ -112,38 +128,26 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $content = file_get_contents($path);
         self::assertNotFalse($content);
 
-        // The LISTTYPE_TO_FAKE_UID_MAPPING constants use negative UIDs (-1600000xxx).
-        // These should never appear directly in templates.
+        // Legacy synthetic-content rendering used negative fake UIDs. These
+        // should never appear directly in templates.
         self::assertDoesNotMatchRegularExpression(
             '/-16000000\d{2}/',
             $content,
-            'Templates must not contain hardcoded fake UID values from Constants::LISTTYPE_TO_FAKE_UID_MAPPING.'
+            'Templates must not contain hardcoded legacy fake UID values.'
         );
     }
 
     #[Test]
     public function atLeastSixPageTemplatesExist(): void
     {
-        $base = self::getTemplateBase();
-        $pageTemplates = glob($base . '/Page/Blog*.html') ?: [];
-        $modernTailwind = glob($base . '/ModernTailwind/Page/Blog*.html') ?: [];
-        $modernBootstrap = glob($base . '/ModernBootstrap/Page/Blog*.html') ?: [];
-
-        $total = count($pageTemplates) + count($modernTailwind) + count($modernBootstrap);
+        $total = count(self::getBlogPageTemplates());
         self::assertGreaterThanOrEqual(6, $total, 'Expected at least 6 page templates (2 per variant).');
     }
 
     #[Test]
     public function allPageTemplatesHaveRenderPluginSection(): void
     {
-        $base = self::getTemplateBase();
-        $pageTemplates = array_merge(
-            glob($base . '/Page/Blog*.html') ?: [],
-            glob($base . '/ModernTailwind/Page/Blog*.html') ?: [],
-            glob($base . '/ModernBootstrap/Page/Blog*.html') ?: []
-        );
-
-        foreach ($pageTemplates as $path) {
+        foreach (self::getBlogPageTemplates() as $path) {
             $content = file_get_contents($path);
             self::assertNotFalse($content);
             self::assertStringContainsString(
@@ -157,14 +161,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
     #[Test]
     public function allRenderPluginSectionsUseDirectDot20Path(): void
     {
-        $base = self::getTemplateBase();
-        $pageTemplates = array_merge(
-            glob($base . '/Page/Blog*.html') ?: [],
-            glob($base . '/ModernTailwind/Page/Blog*.html') ?: [],
-            glob($base . '/ModernBootstrap/Page/Blog*.html') ?: []
-        );
-
-        foreach ($pageTemplates as $path) {
+        foreach (self::getBlogPageTemplates() as $path) {
             $content = file_get_contents($path);
             self::assertNotFalse($content);
 
@@ -204,8 +201,11 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
 
         $blogPostPaths = [
             $base . '/Page/BlogPost.html',
+            $base . '/Pages/BlogPost.fluid.html',
             $base . '/ModernTailwind/Page/BlogPost.html',
+            $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
             $base . '/ModernBootstrap/Page/BlogPost.html',
+            $base . '/ModernBootstrap/Pages/BlogPost.fluid.html',
         ];
 
         foreach ($blogPostPaths as $path) {
@@ -231,8 +231,11 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $base = self::getTemplateBase();
         $blogListPaths = [
             $base . '/Page/BlogList.html',
+            $base . '/Pages/BlogList.fluid.html',
             $base . '/ModernTailwind/Page/BlogList.html',
+            $base . '/ModernTailwind/Pages/BlogList.fluid.html',
             $base . '/ModernBootstrap/Page/BlogList.html',
+            $base . '/ModernBootstrap/Pages/BlogList.fluid.html',
         ];
 
         foreach ($blogListPaths as $path) {

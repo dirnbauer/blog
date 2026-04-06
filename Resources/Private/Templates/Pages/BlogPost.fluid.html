@@ -1,18 +1,13 @@
-<f:layout name="Default" />
-<f:section name="Main">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+<f:layout name="Pages/Default" />
+
+<f:section name="Main">
     <div class="container">
         <div class="blogcontainer">
             <main class="blogcontainer-main" role="main">
                 <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
-                <f:if condition="{blogContentAreas}">
-                    <f:then>
-                        <f:render.contentArea contentArea="{blogContentAreas.content}" />
-                    </f:then>
-                    <f:else>
-                        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
-                    </f:else>
-                </f:if>
+                <f:render.contentArea contentArea="{blogContentAreas.content}" />
                 <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
                 <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
                 <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
@@ -24,10 +19,10 @@
             </aside>
         </div>
     </div>
-
 </f:section>
+
 <f:section name="renderPlugin">
-
     <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
-
 </f:section>
+
+</html>

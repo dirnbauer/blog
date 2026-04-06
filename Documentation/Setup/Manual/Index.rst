@@ -38,6 +38,12 @@ Prerequisites:
          - `BlogList <https://github.com/TYPO3GmbH/blog/blob/master/Resources/Private/Templates/Page/BlogList.html>`__
          - `BlogPost <https://github.com/TYPO3GmbH/blog/blob/master/Resources/Private/Templates/Page/BlogPost.html>`__
 
+      .. note::
+
+         TYPO3 v14 standalone rendering uses the `PAGEVIEW` templates in
+         `Resources/Private/Templates/Pages/*.fluid.html`. The links above refer to
+         the legacy integration templates used by the "Blog: Integration" set.
+
    3. Create Blog Pages
 
       .. figure:: manual-3.png

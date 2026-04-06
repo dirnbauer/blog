@@ -1,0 +1,8 @@
+@import 'EXT:blog/Configuration/BackendLayouts/*.tsconfig'
+
+TCAdefaults.pages {
+    backend_layout.types {
+        137 = pagets__BlogPost
+        138 = pagets__BlogList
+    }
+}

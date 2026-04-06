@@ -1,3 +1,7 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:page.meta property="viewport">width=device-width, initial-scale=1.0</f:page.meta>
+
 <header class="mb-5 shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
         <div class="container">
@@ -20,7 +24,9 @@
     </nav>
 </header>
 
-<f:render section="Main" />
+<main>
+    <f:render section="Main" />
+</main>
 
 <footer class="bg-dark text-light mt-5 py-5">
     <f:if condition="{languagenavigation}">
@@ -53,3 +59,5 @@
         </div>
     </f:if>
 </footer>
+
+</html>
