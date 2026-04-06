@@ -129,6 +129,27 @@ composer phpstan
 composer cgl
 ```
 
+### Functional tests in DDEV
+
+In a DDEV checkout, `composer test:php:functional` now auto-configures the
+TYPO3 testing framework database connection if the `typo3Database*` variables
+are not already set. It uses the standard DDEV database host and root
+credentials so the test runner can create temporary `*_ft...` databases.
+
+Outside DDEV, or if you want to override the defaults, export the TYPO3 testing
+framework variables explicitly before running the functional suite:
+
+```bash
+export typo3DatabaseHost=db
+export typo3DatabaseName=db
+export typo3DatabaseUsername=root
+export typo3DatabasePassword=root
+export typo3DatabasePort=3306
+export typo3DatabaseDriver=mysqli
+
+composer test:php:functional
+```
+
 ## Contributing
 
 - Report bugs and request features on [GitHub](https://github.com/TYPO3GmbH/blog/issues)
