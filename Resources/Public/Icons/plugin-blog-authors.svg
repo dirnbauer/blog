@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <g opacity=".4">
-    <circle fill="var(--typo3-text-color, currentColor)" cx="10.5" cy="4.5" r="2"/>
-    <path fill="var(--typo3-text-color, currentColor)" d="M7.5 12.5c0-1.9 1.3-3.5 3-3.5s3 1.6 3 3.5v1.5h-6v-1.5z"/>
+  <g opacity=".5">
+    <circle fill="currentColor" cx="10.5" cy="4.5" r="2"/>
+    <path fill="currentColor" d="M7.5 12.5c0-1.9 1.3-3.5 3-3.5s3 1.6 3 3.5v1.5h-6v-1.5z"/>
   </g>
-  <circle fill="var(--typo3-text-color, currentColor)" cx="5.5" cy="5" r="2.5"/>
-  <path fill="var(--typo3-text-color, currentColor)" d="M1.5 14c0-2.2 1.8-4 4-4s4 1.8 4 4v1h-8v-1z"/>
+  <circle fill="currentColor" cx="5.5" cy="5" r="2.5"/>
+  <path fill="currentColor" d="M1.5 14c0-2.2 1.8-4 4-4s4 1.8 4 4v1h-8v-1z"/>
   <circle fill="var(--icon-color-accent, #ff8700)" cx="10.5" cy="4.5" r="1"/>
 </svg>

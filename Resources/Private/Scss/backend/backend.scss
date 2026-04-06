@@ -22,6 +22,16 @@
 }
 
 /**
+ * TYPO3 v14 icons use currentColor — inherit on buttons and button groups (Setup wizard, etc.).
+ */
+.btn .icon,
+.btn-default .icon,
+a.btn .icon,
+.btn-group .icon {
+    color: inherit;
+}
+
+/**
  * List Filter
  */
 .list-filter {
@@ -92,7 +102,6 @@ table.table-comments .actions {
 
 /**
  * Theme-aware record icons in DataTables (Posts list, Setup wizard, etc.)
- * Icons use currentColor / --typo3-text-color in SVG; inherit link color in dark mode.
  */
 table.dataTable td .icon {
     color: var(--typo3-text-color, inherit);
