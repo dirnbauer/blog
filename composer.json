@@ -57,7 +57,7 @@
             "phpunit -c Build/UnitTests.xml"
         ],
         "test:php:functional": [
-            "phpunit -c Build/FunctionalTests.xml"
+            "@php Build/Scripts/run-functional-tests.php"
         ],
         "phpstan": [
             "phpstan analyze --configuration Build/phpstan.neon"
