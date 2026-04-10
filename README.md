@@ -49,7 +49,7 @@ approach must be updated to `tt_content.{listType}.20`.
 
 | Blog Extension | TYPO3          | PHP    |
 |----------------|----------------|--------|
-| 14.0.x         | 13.4 LTS, 14.x | >= 8.1 |
+| 14.1.x         | 13.4 LTS, 14.x | >= 8.2 |
 
 ## Features
 

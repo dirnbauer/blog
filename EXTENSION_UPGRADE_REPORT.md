@@ -1,6 +1,6 @@
 # Extension Upgrade Report — Recheck
 
-**Extension:** t3g/blog v14.0.0  
+**Extension:** t3g/blog v14.1.0  
 **Date:** 2026-03-11  
 **Scope:** TYPO3 v13/v14 upgrade readiness with focus on active deprecations
 

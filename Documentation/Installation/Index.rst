@@ -16,9 +16,9 @@ Requirements
    * - Blog Extension
      - TYPO3
      - PHP
-   * - 14.0.x
+   * - 14.1.x
      - 13.4 LTS, 14.x
-     - >= 8.1
+     - >= 8.2
 
 Installation via Composer
 =========================
