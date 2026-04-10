@@ -22,7 +22,7 @@ concepts — pages as posts, content elements for article content, and
 categories and tags for organization. If you know TYPO3, you already know
 how to use this blog.
 
-**Compatibility:** TYPO3 13.4 LTS and 14.x with PHP 8.2+
+**Compatibility:** TYPO3 14.x with PHP 8.2+
 
 .. toctree::
    :titlesonly:

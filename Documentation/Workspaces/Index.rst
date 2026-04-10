@@ -108,9 +108,8 @@ Version Compatibility
    * - Blog Extension
      - TYPO3
      - PHP
-   * - 14.1.x
-     - 13.4 LTS, 14.x
+   * - 14.x
+     - 14.x
      - 8.2+
 
-The extension is developed with TYPO3 v14 as the primary target.
-TYPO3 v13.4 LTS is fully supported with compatible code paths.
+The extension targets TYPO3 v14 only.

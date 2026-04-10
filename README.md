@@ -1,8 +1,7 @@
 # TYPO3 Blog Extension
 
-[![TYPO3 13](https://img.shields.io/badge/TYPO3-13.4%20LTS-orange.svg)](https://get.typo3.org/version/13)
 [![TYPO3 14](https://img.shields.io/badge/TYPO3-14.x-orange.svg)](https://get.typo3.org/version/14)
-[![PHP](https://img.shields.io/badge/PHP-%3E%3D8.1-blue.svg)](https://www.php.net)
+[![PHP](https://img.shields.io/badge/PHP-%3E%3D8.2-blue.svg)](https://www.php.net)
 [![License](https://img.shields.io/badge/License-GPL%202.0-green.svg)](LICENSE)
 
 A blog extension for TYPO3 built entirely on core concepts — pages as posts, content elements for
@@ -49,7 +48,7 @@ approach must be updated to `tt_content.{listType}.20`.
 
 | Blog Extension | TYPO3          | PHP    |
 |----------------|----------------|--------|
-| 14.1.x         | 13.4 LTS, 14.x | >= 8.2 |
+| 14.x           | 14.x           | >= 8.2 |
 
 ## Features
 

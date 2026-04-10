@@ -2,13 +2,9 @@
    :alt: Latest Stable Version
    :target: https://extensions.typo3.org/extension/blog/
 
-.. image:: https://img.shields.io/badge/TYPO3-13-orange.svg
-   :alt: TYPO3 13
-   :target: https://get.typo3.org/version/13
-
-.. image:: https://img.shields.io/badge/TYPO3-12-orange.svg
-   :alt: TYPO3 12
-   :target: https://get.typo3.org/version/12
+.. image:: https://img.shields.io/badge/TYPO3-14-orange.svg
+   :alt: TYPO3 14
+   :target: https://get.typo3.org/version/14
 
 .. image:: https://poser.pugx.org/t3g/blog/d/total
    :alt: Total Downloads
@@ -53,104 +49,12 @@ Compatibility
    :header-rows: 1
 
    * -
-     - v14
-     - v13
-     - v12
-     - v11
-     - v10
-     - v9
-     - v8
-     - v7
+     - TYPO3
+     - PHP
 
-   * - 14.1.x
-     - ✔️
-     - ✔️
-     -
-     -
-     -
-     -
-     -
-     -
-
-   * - 13.0.x
-     -
-     - ✔️
-     - ✔️
-     -
-     -
-     -
-     -
-     -
-
-   * - 12.0.x
-     -
-     -
-     - ✔️
-     - ✔️
-     -
-     -
-     -
-     -
-
-   * - 11.0.x
-     -
-     -
-     -
-     - ✔️
-     - ✔️
-     -
-     -
-     -
-
-   * - 10.0.x
-     -
-     -
-     -
-     -
-     - ✔️
-     - ✔️
-     -
-     -
-
-   * - 9.1.x
-     -
-     -
-     -
-     -
-     -
-     - ✔️
-     -
-     -
-
-   * - 9.0.x
-     -
-     -
-     -
-     -
-     -
-     - ✔️
-     -
-     -
-
-   * - 8.7.x
-     -
-     -
-     -
-     -
-     -
-     -
-     - ✔️
-     -
-
-   * - 7.6.x
-     -
-     -
-     -
-     -
-     -
-     -
-     -
-     - ✔️
+   * - 14.x
+     - 14.x
+     - >= 8.2
 
 License
 =======
