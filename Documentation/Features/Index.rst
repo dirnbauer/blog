@@ -90,6 +90,6 @@ Version Compatibility
    * - Blog Extension
      - TYPO3
      - PHP
-   * - 14.1.x
-     - 13.4 LTS, 14.x
+   * - 14.x
+     - 14.x
      - 8.2+

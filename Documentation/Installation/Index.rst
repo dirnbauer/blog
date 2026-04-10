@@ -16,8 +16,8 @@ Requirements
    * - Blog Extension
      - TYPO3
      - PHP
-   * - 14.1.x
-     - 13.4 LTS, 14.x
+   * - 14.x
+     - 14.x
      - >= 8.2
 
 Installation via Composer
@@ -27,7 +27,7 @@ Installation via Composer
 
    composer require t3g/blog
 
-This is the recommended installation method for TYPO3 v13 and v14.
+This is the recommended installation method for TYPO3 v14.
 
 
 Activation
