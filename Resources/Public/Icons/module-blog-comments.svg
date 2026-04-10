@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <g transform="scale(4)">
-    <path fill="currentColor" opacity=".5" d="M11 1H3a1 1 0 0 0-1 1v6l2-2h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
-    <path fill="currentColor" d="M13 5H6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h4l3 3v-3a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm0 7h-1v2l-2-2H6V6h7v6z"/>
-    <rect fill="var(--icon-color-accent, #ff8700)" x="7.5" y="7" width="4.5" height="1.2" rx=".3"/>
-    <rect fill="currentColor" opacity=".5" x="7.5" y="9" width="3" height="1" rx=".3"/>
-  </g>
+  <path fill="currentColor" opacity=".8" d="M14 14h20a8 8 0 0 1 8 8v10a8 8 0 0 1-8 8H24l-8 7v-7h-2a8 8 0 0 1-8-8V22a8 8 0 0 1 8-8z"/>
+  <path fill="currentColor" d="M31 24h18a9 9 0 0 1 9 9v11a9 9 0 0 1-9 9H39l-9 7v-7h-1a9 9 0 0 1-9-9V33a9 9 0 0 1 9-9zm0 4a5 5 0 0 0-5 5v11a5 5 0 0 0 5 5h3v3.2L38 49h11a5 5 0 0 0 5-5V33a5 5 0 0 0-5-5H31z"/>
+  <path fill="var(--icon-color-accent, #ff8700)" d="M31 33h16v4H31z"/>
+  <path fill="currentColor" opacity=".55" d="M31 41h11v3H31z"/>
 </svg>

@@ -14,9 +14,9 @@
    :alt: Monthly Downloads
    :target: https://packagist.org/packages/t3g/blog
 
-.. image:: https://github.com/typo3gmbh/blog/workflows/CI/badge.svg
+.. image:: https://github.com/TYPO3GmbH/blog/actions/workflows/ci.yml/badge.svg?branch=master
    :alt: Continuous Integration Status
-   :target: https://github.com/typo3gmbh/blog/actions?query=workflow%3ACI
+   :target: https://github.com/TYPO3GmbH/blog/actions/workflows/ci.yml
 
 =============================
 TYPO3 CMS Extension  ``blog``
@@ -42,6 +42,10 @@ Installation
 
    composer require t3g/blog
 
+For setup, development, and contribution details see the
+`documentation <https://docs.typo3.org/p/t3g/blog/master/en-us/>`_ and the
+`development guide <https://docs.typo3.org/p/t3g/blog/master/en-us/Development/Index.html>`_.
+
 Compatibility
 =============
 
@@ -59,6 +63,50 @@ Compatibility
 License
 =======
 GPL-2.0-or-later
+
+Development
+===========
+
+The repository no longer ships a tracked DDEV setup. Use any local TYPO3 v14
+environment with PHP 8.2+, MySQL or MariaDB, Composer, and Node.js.
+
+Install PHP and frontend dependencies:
+
+.. code-block:: bash
+
+   composer update
+   npm ci
+
+Build frontend assets:
+
+.. code-block:: bash
+
+   npm run build
+
+Run the PHP test suites:
+
+.. code-block:: bash
+
+   composer test:php:lint
+   composer test:php:unit
+   composer test:php:functional
+   composer phpstan
+   composer cgl
+   composer cgl:fix
+
+The functional runner defaults to a local MySQL or MariaDB instance on
+``127.0.0.1:3306`` with database ``t3func`` and credentials ``root`` / ``root``.
+Override the ``typo3Database*`` environment variables if your setup differs.
+
+Browser smoke tests use Playwright and target any running TYPO3 site:
+
+.. code-block:: bash
+
+   export BLOG_BASE_URL=https://example.test
+   export BLOG_LIST_PATH=/blog1/
+   export BLOG_POST_PATH=/blog1/first-blog-post
+   npm run playwright:install
+   npm run test:e2e
 
 Contribution
 ============
