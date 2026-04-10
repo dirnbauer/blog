@@ -1,3 +1,46 @@
+# 14.1.0
+
+## FEATURE
+
+- 9f99c50 [FEATURE] Add workspace support to blog extension
+
+## TASK
+
+- e3f2e5c [TASK] Upgrade extension for v13/v14 compatibility
+- b0346e5 [TASK] Apply conformance fixes across extension
+- b37b912 [TASK] Add workspace tests, XSS tests, and provider tests
+- 3917fcc [TASK] Add workspace documentation and guides.xml
+- 9e7c583 [TASK] Create README and update documentation
+- 8f4aecc [TASK] Migrate deprecated TYPO3 upgrade APIs
+- 48b7029 [TASK] Harden conformance for static analysis
+- 3beca4d [TASK] Stabilize TYPO3 unit and functional test suites
+- 1ca1eee [TASK] Align runtime and metadata baselines for TYPO3 v14
+- 3672372 [TASK] Migrate all icons to TYPO3 v14 line-art style
+- a749d7e [TASK] Use PAGEVIEW content areas and remove legacy rendering path
+- f04ee39 [TASK] Auto-configure functional tests in DDEV
+- ea2c973 [TASK] Document DDEV functional test defaults
+
+## BUGFIX
+
+- 5ff98b7 [BUGFIX] Fix XSS, reCAPTCHA bypass, and unsafe file handling
+- ecd6883 [BUGFIX] Fix double-encoding in Nl2pViewHelper
+- 0aa16e5 [BUGFIX] Harden comment URL and captcha validation
+- b9f21e7 [BUGFIX] Harden external comment links
+- 919d945 [BUGFIX] Add explicit versioningWS to comment table
+- 2b1a5a2 [BUGFIX] Make plugin rendering workspace-safe in TYPO3 v14
+- af6860a [BUGFIX] Prevent crash and ghost records for workspace-only blog posts
+- 6665278 [BUGFIX] Cast storagePid to string in PostRepository
+- 3ec6044 [BUGFIX] Fix blog backend icons for dark and light theme
+- 3891bf7 [BUGFIX] Fix functional test bootstrap path for source checkout
+- 75f7ad6 [BUGFIX] Align blog SVG icons with TYPO3 v14 currentColor and accent tokens
+- 77876ec [BUGFIX] Fix invalid XML comment in module icon
+- 6e6f12c [BUGFIX] Use XML-valid comment for module-blog-comments accent
+- 246920a [BUGFIX] Add PAGEVIEW page layout templates for default layout
+
+## Contributors
+
+- Kurt Dirnbauer
+
 # 14.0.0
 
 ## TASK
@@ -1107,4 +1150,3 @@
 - Jan Helke
 - Mark Houben
 - Susanne Moog
-

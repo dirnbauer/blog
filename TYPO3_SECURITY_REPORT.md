@@ -1,6 +1,6 @@
 # TYPO3 Security Hardening Report — Recheck
 
-**Extension:** t3g/blog v14.0.0  
+**Extension:** t3g/blog v14.1.0  
 **Date:** 2026-03-11  
 **Scope:** TYPO3-oriented hardening checks for extension-level behavior
 

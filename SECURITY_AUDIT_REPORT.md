@@ -1,6 +1,6 @@
 # Security Audit Report — Recheck
 
-**Extension:** t3g/blog v14.0.0  
+**Extension:** t3g/blog v14.1.0  
 **Date:** 2026-03-11  
 **Framework:** OWASP Top 10 (2021), CVSS v3.1
 

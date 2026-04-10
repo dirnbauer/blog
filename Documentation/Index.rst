@@ -9,7 +9,7 @@ TYPO3 Blog Extension
 
 :Extension key:   blog
 :Package name:    t3g/blog
-:Version:         14.0.0
+:Version:         14.1.0
 :Language:        en
 :Author:          TYPO3 GmbH Team
 :License:         GPL-2.0-or-later
@@ -22,7 +22,7 @@ concepts — pages as posts, content elements for article content, and
 categories and tags for organization. If you know TYPO3, you already know
 how to use this blog.
 
-**Compatibility:** TYPO3 13.4 LTS and 14.x with PHP 8.1+
+**Compatibility:** TYPO3 13.4 LTS and 14.x with PHP 8.2+
 
 .. toctree::
    :titlesonly:
