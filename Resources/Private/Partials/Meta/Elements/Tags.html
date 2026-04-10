@@ -7,7 +7,7 @@
         <f:variable name="prefix"><f:translate key="meta.tags.tags"/></f:variable>
     </f:if>
     <f:render partial="Meta/Rendering/Item" arguments="{name: name, icon: icon, prefix: prefix}" contentAs="content">
-        <ul class="postmetagroup__list">
+        <ul class="postmetagroup__list" role="list">
             <f:for each="{post.tags}" as="postTag">
                 <li>
                     <span class="postmetagroup__listitem" data-blog-tag="{postTag.uid}">

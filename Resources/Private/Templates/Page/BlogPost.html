@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="blogcontainer">
-            <main class="blogcontainer-main" role="main">
+            <div class="blogcontainer-main">
                 <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
                 <f:if condition="{blogContentAreas}">
                     <f:then>
@@ -18,7 +18,7 @@
                 <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
                 <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
                 <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
-            </main>
+            </div>
             <aside class="blogcontainer-sidebar">
                 <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>
