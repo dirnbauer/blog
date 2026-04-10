@@ -1,13 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Depth layer (v14: strong fill mass in sidebar) -->
-  <path fill="currentColor" opacity=".8" d="M40 18H22a2 2 0 0 0-2 2v16l4-4h16a2 2 0 0 0 2-2V20a2 2 0 0 0-2-2z"/>
-  <!-- Main bubble outline -->
-  <path fill="currentColor" d="M46 24H28a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h12l6 6V44h0a2 2 0 0 0 2-2V26a2 2 0 0 0-2-2zm0 18h-2v4l-4-4H28V26h18v16z"/>
-  <!-- Accent: theme accent color (see fill on next element) -->
-  <rect fill="var(--icon-color-accent, #ff8700)" x="28" y="28" width="20" height="5" rx="1.25"/>
-  <!-- Secondary lines -->
-  <g opacity=".5">
-    <rect fill="currentColor" x="31" y="36" width="12" height="2" rx=".5"/>
-    <rect fill="currentColor" x="31" y="40" width="8" height="1.5" rx=".5"/>
+  <g transform="scale(4)">
+    <path fill="currentColor" opacity=".5" d="M11 1H3a1 1 0 0 0-1 1v6l2-2h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+    <path fill="currentColor" d="M13 5H6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h4l3 3v-3a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm0 7h-1v2l-2-2H6V6h7v6z"/>
+    <rect fill="var(--icon-color-accent, #ff8700)" x="7.5" y="7" width="4.5" height="1.2" rx=".3"/>
+    <rect fill="currentColor" opacity=".5" x="7.5" y="9" width="3" height="1" rx=".3"/>
   </g>
 </svg>
