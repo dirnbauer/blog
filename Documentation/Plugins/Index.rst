@@ -36,9 +36,9 @@ Example:
    <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-            <main class="blogcontainer-main" role="main">
+            <div class="blogcontainer-main">
                <f:render.contentArea contentArea="{blogContentAreas.content}" />
-            </main>
+            </div>
             <aside class="blogcontainer-sidebar">
                <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>
@@ -111,7 +111,7 @@ Example:
    <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-            <main class="blogcontainer-main" role="main">
+            <div class="blogcontainer-main">
                <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
                <f:render.contentArea contentArea="{blogContentAreas.content}" />
                <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
@@ -119,7 +119,7 @@ Example:
                <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
                <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
                <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
-            </main>
+            </div>
             <aside class="blogcontainer-sidebar">
                <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>
@@ -132,6 +132,11 @@ Example:
    </f:section>
 
    </html>
+
+.. note::
+
+   The shared page layout provides the single ``<main>`` landmark. Page
+   templates should only render the content containers and sidebar.
 
 
 Header

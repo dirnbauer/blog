@@ -1,11 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <g transform="scale(4)">
-    <path fill="currentColor" d="M3 1h7l4 4v10H3V1zm1 1v12h9V6h-3V2H4zm7 .7V5h2.3L11 2.7z"/>
-    <rect fill="var(--icon-color-accent, #ff8700)" x="6" y="4" width="5" height="1.5" rx=".3"/>
-    <g opacity=".5">
-      <rect fill="currentColor" x="6" y="7.5" width="5" height="1" rx=".3"/>
-      <rect fill="currentColor" x="6" y="9.5" width="5" height="1" rx=".3"/>
-      <rect fill="currentColor" x="6" y="11.5" width="3.5" height="1" rx=".3"/>
-    </g>
-  </g>
+  <path fill="currentColor" opacity=".8" d="M20 10h23l11 11v31H20z"/>
+  <path fill="currentColor" d="M14 14h27l9 9v29H14V14zm4 4v30h28V25H37V18H18zm23 2.8V22h3.2L41 20.8z"/>
+  <path fill="var(--icon-color-accent, #ff8700)" d="M24 26h18v4H24z"/>
+  <path fill="currentColor" opacity=".55" d="M24 34h18v4H24zm0 8h18v4H24zm0 8h12v4H24z"/>
 </svg>

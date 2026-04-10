@@ -81,7 +81,9 @@ composer require t3g/blog
 
 Then add the Blog site set to your site configuration.
 
-For detailed setup instructions, see the [documentation](https://docs.typo3.org/typo3cms/extensions/blog/).
+For detailed setup instructions, see the [documentation](https://docs.typo3.org/p/t3g/blog/master/en-us/).
+For local contribution and testing, see the
+[development guide](https://docs.typo3.org/p/t3g/blog/master/en-us/Development/Index.html).
 
 ## Quick Start
 
@@ -91,7 +93,7 @@ For detailed setup instructions, see the [documentation](https://docs.typo3.org/
 4. Start writing posts
 
 For manual integration into an existing site, see the
-[Manual Setup guide](https://docs.typo3.org/typo3cms/extensions/blog/Setup/Manual/Index.html).
+[Manual Setup guide](https://docs.typo3.org/p/t3g/blog/master/en-us/Setup/Manual/Index.html).
 
 ## Workspace Support
 
@@ -105,19 +107,24 @@ The extension supports TYPO3 Workspaces for editorial staging workflows:
 | Comments | Always live-editable |
 | Categories | Fully versioned (core) |
 
-See the [Workspace documentation](https://docs.typo3.org/typo3cms/extensions/blog/Workspaces/Index.html)
+See the [Workspace documentation](https://docs.typo3.org/p/t3g/blog/master/en-us/Workspaces/Index.html)
 for details.
 
 ## Development
 
+The repository no longer ships a tracked DDEV setup. Use any local TYPO3 v14
+environment with PHP 8.2+, MySQL or MariaDB, Composer, and Node.js.
+
 ```bash
 # Install dependencies
-composer install
+composer update
+npm ci
 
-# Run tests
-composer test
+# Build frontend assets
+npm run build
 
-# Run specific test suites
+# Run PHP test suites
+composer test:php:lint
 composer test:php:unit
 composer test:php:functional
 
@@ -126,27 +133,39 @@ composer phpstan
 
 # Code style
 composer cgl
+composer cgl:fix
 ```
 
-### Functional tests in DDEV
+### Functional tests
 
-In a DDEV checkout, `composer test:php:functional` now auto-configures the
-TYPO3 testing framework database connection if the `typo3Database*` variables
-are not already set. It uses the standard DDEV database host and root
-credentials so the test runner can create temporary `*_ft...` databases.
+The functional test runner defaults to a local MySQL or MariaDB instance on
+`127.0.0.1:3306` with database `t3func` and credentials `root` / `root`.
 
-Outside DDEV, or if you want to override the defaults, export the TYPO3 testing
-framework variables explicitly before running the functional suite:
+Override those variables when your setup differs:
 
 ```bash
-export typo3DatabaseHost=db
-export typo3DatabaseName=db
+export typo3DatabaseHost=127.0.0.1
+export typo3DatabasePort=3306
+export typo3DatabaseName=t3func
 export typo3DatabaseUsername=root
 export typo3DatabasePassword=root
-export typo3DatabasePort=3306
 export typo3DatabaseDriver=mysqli
 
 composer test:php:functional
+```
+
+### Browser smoke tests
+
+Playwright smoke tests target any running TYPO3 instance and are not tied to a
+specific local stack:
+
+```bash
+export BLOG_BASE_URL=https://example.test
+export BLOG_LIST_PATH=/blog1/
+export BLOG_POST_PATH=/blog1/first-blog-post
+
+npm run playwright:install
+npm run test:e2e
 ```
 
 ## Contributing

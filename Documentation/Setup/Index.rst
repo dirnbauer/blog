@@ -15,9 +15,9 @@ Setup
 Setup Wizard
 ------------
 
-The Setup Wizard creates a fully configured **standalone** instance of the TYPO3 
+The Setup Wizard creates a fully configured **standalone** instance of the TYPO3
 Blog Extension. If you already have an existing site, you might dislike the result
-of having an additional and unplanned root page. In that case, please read the 
+of having an additional and unplanned root page. In that case, please read the
 manual setup instructions.
 
 :ref:`Setup Wizard <SetupWizard>`
@@ -25,8 +25,14 @@ manual setup instructions.
 Manual Setup
 ------------
 
-The manual setup helps you to build an **integrated** instance of the TYPO3 Blog 
+The manual setup helps you to build an **integrated** instance of the TYPO3 Blog
 Extension. If you want a standalone Blog and do not have an existing
 site, please go with the Setup Wizard instructions.
 
 :ref:`Manual Setup <SetupManual>`
+
+.. note::
+
+   The extension setup is independent of your local development stack. The
+   repository no longer includes a tracked DDEV configuration; use any local
+   TYPO3 environment that satisfies the installation requirements.

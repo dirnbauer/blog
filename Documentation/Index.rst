@@ -33,6 +33,7 @@ how to use this blog.
    Setup/Index
    Guides/Index
    Plugins/Index
+   Development/Index
    Workspaces/Index
    Extending/Index
    FAQ/Index

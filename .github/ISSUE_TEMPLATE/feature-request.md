@@ -1,20 +1,24 @@
 ---
-name: "\U0001F680 Feature request"
-about: Suggest an idea for a new feature.
-labels:
-
+name: Feature request
+about: Suggest an improvement or new capability for the TYPO3 Blog extension.
+labels: enhancement
+title: "[FEATURE] "
 ---
 
 # Feature Request
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+[Describe the problem or limitation you want to solve]
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Proposed Solution
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+[Describe the change you would like to see]
+
+## Alternatives
+
+[Describe any alternative solutions or approaches you considered]
+
+## Additional Context
+
+[Add any screenshots, links, or implementation notes here]

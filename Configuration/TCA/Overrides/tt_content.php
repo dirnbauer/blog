@@ -118,7 +118,7 @@ ExtensionUtility::registerPlugin(
     pluginName: 'CommentForm',
     pluginTitle: 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:plugin.blog_commentform.title',
     pluginDescription: 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:plugin.blog_commentform.description',
-    pluginIcon: 'plugin-blog-sidebar',
+    pluginIcon: 'plugin-blog-commentform',
     group: 'blog',
 );
 

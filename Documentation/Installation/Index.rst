@@ -29,6 +29,22 @@ Installation via Composer
 
 This is the recommended installation method for TYPO3 v14.
 
+Local Development Setup
+=======================
+
+The extension repository does not ship a tracked DDEV setup. Use any local
+PHP and MySQL or MariaDB environment that can run Composer and Node.js.
+
+Typical project bootstrap:
+
+.. code-block:: bash
+
+   composer update
+   npm ci
+   npm run build
+
+See :ref:`Development <Development>` for the full local testing workflow.
+
 
 Activation
 ==========

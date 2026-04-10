@@ -7,92 +7,107 @@ on:
       - 'bugfix/**'
       - 'feature/**'
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build-php:
-    name: Build PHP
+  php-tests:
+    name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        typo3: ['^13', '14.0.x-dev']
         php: ['8.2', '8.3', '8.4']
-        mysql: ['8.0']
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: t3func
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mariadb-admin ping --host=127.0.0.1 --user=root --password=root"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
-      - id: checkout
-        name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - id: setup_mysql
-        name: Set up MySQL ${{ matrix.mysql }}
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: ${{ matrix.mysql }}
-          mysql root password: 'root'
-
-      - id: setup_php
-        name: Set up PHP version ${{ matrix.php }}
+      - name: Set up PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2, php-cs-fixer
+          tools: composer:v2
+          coverage: none
 
-      - id: composer-cache-vars
-        name: Composer Cache Vars
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-          echo "timestamp=$(date +"%s")" >> $GITHUB_OUTPUT
+      - name: Determine Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - id: composer-cache-dependencies
-        name: Cache Composer dependencies
+      - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache-vars.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.typo3 }}-${{ steps.composer-cache-vars.outputs.timestamp }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ hashFiles('composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.typo3 }}-
             ${{ runner.os }}-composer-${{ matrix.php }}-
             ${{ runner.os }}-composer-
 
-      - id: install
-        name: Install
-        run: |
-          composer require typo3/cms-core:${{ matrix.typo3 }} --no-progress
-          git checkout composer.json
+      - name: Install PHP dependencies
+        run: composer update --no-interaction --prefer-dist --no-progress
 
-      - id: lint
-        name: Lint
-        if: ${{ always() && steps.install.conclusion == 'success' }}
-        run: |
-          composer test:php:lint
+      - name: Validate composer metadata
+        run: composer validate --strict
 
-      - id: cgl
-        name: CGL
-        if: ${{ always() && steps.install.conclusion == 'success' && matrix.php != '8.4' }}
-        run: |
-          php-cs-fixer fix --dry-run --verbose
+      - name: PHP lint
+        run: composer test:php:lint
 
-      - id: phpstan
-        name: PHPStan
-        continue-on-error: true
-        if: ${{ always() && steps.install.conclusion == 'success' }}
-        run: |
-          composer phpstan -- --error-format=github
+      - name: Coding standards
+        run: composer cgl
 
-      - id: tests_unit
-        name: Unit Tests
-        if: ${{ always() && steps.install.conclusion == 'success' }}
-        run: |
-          composer test:php:unit
+      - name: PHPStan
+        run: composer phpstan -- --error-format=github
 
-      - id: tests_functional
-        name: Functional Tests
-        if: ${{ always() && steps.install.conclusion == 'success' }}
-        run: |
-          composer test:php:functional
+      - name: Unit tests
+        run: composer test:php:unit
+
+      - name: Functional tests
+        run: composer test:php:functional
         env:
           COMPOSER_PROCESS_TIMEOUT: 1200
+          typo3DatabaseDriver: mysqli
           typo3DatabaseHost: 127.0.0.1
+          typo3DatabasePort: 3306
           typo3DatabaseName: t3func
-          typo3DatabasePassword: root
           typo3DatabaseUsername: root
+          typo3DatabasePassword: root
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Verify committed assets
+        run: git diff --exit-code -- Resources/Public

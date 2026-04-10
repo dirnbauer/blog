@@ -1,3 +1,13 @@
+# Unreleased
+
+## TASK
+
+- [TASK] Remove tracked DDEV and local VS Code project files from the repository
+- [TASK] Delete tracked `*_REPORT.md` audit artefacts and keep future reports ignored
+- [TASK] Modernize repository metadata, issue templates, and GitHub workflows for TYPO3 v14
+- [TASK] Replace the DDEV-only HTTP smoke test path with Playwright browser smoke tests
+- [TASK] Refresh README and extension documentation for a DDEV-optional local workflow
+
 # 14.1.0
 
 ## FEATURE

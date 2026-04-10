@@ -1,18 +1,21 @@
 {
     "name": "t3g-blog",
     "scripts": {
-        "build": "webpack",
-        "watch": "webpack --watch"
+        "build": "webpack --config webpack.config.mjs",
+        "playwright:install": "playwright install chromium",
+        "test:e2e": "playwright test",
+        "test:e2e:headed": "playwright test --headed",
+        "watch": "webpack --config webpack.config.mjs --watch"
     },
     "browserslist": [
         "> 1%",
         "last 2 versions"
     ],
     "devDependencies": {
+        "@playwright/test": "^1.59.1",
         "autoprefixer": "^10.4.14",
         "css-loader": "^6.7.4",
         "mini-css-extract-plugin": "^2.7.6",
-        "node-sass": "^9.0.0",
         "postcss-loader": "^7.3.0",
         "sass": "^1.62.1",
         "sass-loader": "^13.3.0",
