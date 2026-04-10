@@ -2,7 +2,7 @@
 <f:section name="Main">
     <div class="container">
         <div class="row gx-5">
-            <main class="col-lg-8" role="main">
+            <div class="col-lg-8">
                 <f:if condition="{blogContentAreas}">
                     <f:then>
                         <f:render.contentArea contentArea="{blogContentAreas.content}" />
@@ -11,8 +11,8 @@
                         <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
                     </f:else>
                 </f:if>
-            </main>
-            <aside class="col-lg-4" role="complementary">
+            </div>
+            <aside class="col-lg-4">
                 <div class="sticky-top" style="top: 2rem;">
                     <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
                 </div>

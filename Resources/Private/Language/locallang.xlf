@@ -107,6 +107,15 @@
             <trans-unit id="message.addComment.moderation.text" xml:space="preserve">
                 <source>Your comment was added successfully and is now waiting for approval.</source>
             </trans-unit>
+            <trans-unit id="link.skip_to_content" xml:space="preserve">
+                <source>Skip to content</source>
+            </trans-unit>
+            <trans-unit id="navigation.main" xml:space="preserve">
+                <source>Main navigation</source>
+            </trans-unit>
+            <trans-unit id="navigation.languages" xml:space="preserve">
+                <source>Language navigation</source>
+            </trans-unit>
 
             <!-- Meta -->
             <trans-unit id="meta.authors.author" xml:space="preserve">
@@ -243,6 +252,9 @@
             </trans-unit>
             <trans-unit id="backend.warning" xml:space="preserve">
                 <source>Warning</source>
+            </trans-unit>
+            <trans-unit id="backend.social_image.preview" xml:space="preserve">
+                <source>Social image preview</source>
             </trans-unit>
             <trans-unit id="backend.table.blog" xml:space="preserve">
                 <source>Blog</source>

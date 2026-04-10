@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="blogcontainer">
-            <main class="blogcontainer-main" role="main">
+            <div class="blogcontainer-main">
                 <f:if condition="{blogContentAreas}">
                     <f:then>
                         <f:render.contentArea contentArea="{blogContentAreas.content}" />
@@ -12,7 +12,7 @@
                         <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
                     </f:else>
                 </f:if>
-            </main>
+            </div>
             <aside class="blogcontainer-sidebar">
                 <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>

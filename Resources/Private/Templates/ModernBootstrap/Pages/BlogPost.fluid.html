@@ -5,7 +5,7 @@
 <f:section name="Main">
     <div class="container">
         <div class="row gx-5 justify-content-center">
-            <main class="col-lg-8" role="main">
+            <div class="col-lg-8">
                 <article class="blog-post bg-white p-4 p-md-5 rounded shadow-sm mb-5">
                     <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
                     <div class="blog-content mt-4">
@@ -23,8 +23,8 @@
                 <div class="blog-related">
                     <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
                 </div>
-            </main>
-            <aside class="col-lg-4" role="complementary">
+            </div>
+            <aside class="col-lg-4">
                 <div class="sticky-top" style="top: 2rem;">
                     <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
                 </div>
