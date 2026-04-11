@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Service\CacheService;
@@ -41,7 +42,9 @@ class CommentController extends ActionController
         if ($post instanceof Post) {
             $comments = $this->commentService->getCommentsByPost($post);
             foreach ($comments as $comment) {
-                $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+                if ($comment instanceof Comment) {
+                    $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+                }
             }
             $this->view->assign('comments', $comments);
             $this->view->assign('post', $post);

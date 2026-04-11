@@ -11,6 +11,10 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use T3G\AgencyPack\Blog\Domain\Model\Category;
+use T3G\AgencyPack\Blog\Domain\Model\Comment;
+use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Domain\Model\Tag;
 use T3G\AgencyPack\Blog\Domain\Repository\CategoryRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
@@ -42,7 +46,9 @@ class WidgetController extends ActionController
         $this->view->assign('categories', $categories);
         $this->view->assign('currentCategory', $currentCategory);
         foreach ($categories as $category) {
-            $this->cacheService->addTagToPage($this->request, 'tx_blog_category_' . $category->getUid());
+            if ($category instanceof Category) {
+                $this->cacheService->addTagToPage($this->request, 'tx_blog_category_' . $category->getUid());
+            }
         }
         return $this->htmlResponse();
     }
@@ -97,7 +103,9 @@ class WidgetController extends ActionController
             : $this->postRepository->findAll();
 
         foreach ($posts as $post) {
-            $this->cacheService->addTagsForPost($this->request, $post);
+            if ($post instanceof Post) {
+                $this->cacheService->addTagsForPost($this->request, $post);
+            }
         }
         $this->view->assign('posts', $posts);
         return $this->htmlResponse();
@@ -110,7 +118,9 @@ class WidgetController extends ActionController
         $comments = $this->commentRepository->findActiveComments($limit, $blogSetup);
         $this->view->assign('comments', $comments);
         foreach ($comments as $comment) {
-            $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+            if ($comment instanceof Comment) {
+                $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+            }
         }
         return $this->htmlResponse();
     }
