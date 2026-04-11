@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Mail;
 
 use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -32,7 +33,7 @@ class MailContent
 
     protected function getTemplateObject(ServerRequestInterface $request): ViewInterface
     {
-        $settings = $request->getAttribute('site')->getSettings();
+        $settings = RequestUtility::getSiteSettings($request);
 
         return $this->viewFactory->create(new ViewFactoryData(
             templateRootPaths: [

@@ -16,6 +16,7 @@ use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Mail\MailMessage;
 use T3G\AgencyPack\Blog\Notification\CommentAddedNotification;
 use T3G\AgencyPack\Blog\Notification\NotificationInterface;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AuthorNotificationProcessor implements ProcessorInterface
@@ -31,18 +32,18 @@ class AuthorNotificationProcessor implements ProcessorInterface
 
     protected function processCommentAddNotification(ServerRequestInterface $request, NotificationInterface $notification): void
     {
-        $settings = $request->getAttribute('site')->getSettings();
+        $settings = RequestUtility::getSiteSettings($request);
 
         /** @var Post $post */
         $post = $notification->getData()['post'];
-        if ($settings->get('plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable') ?? false) {
+        if ((bool)($settings->get('plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable') ?? false)) {
             /** @var Author $author */
             foreach ($post->getAuthors() as $author) {
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
                 $mail
                     ->setSubject($notification->getTitle())
                     ->setBody($notification->getMessage())
-                    ->setFrom([$settings->get('plugin.tx_blog.settings.notifications.email.senderMail')])
+                    ->setFrom([(string)($settings->get('plugin.tx_blog.settings.notifications.email.senderMail') ?? '')])
                     ->setTo([$author->getEmail()])
                     ->send();
             }
