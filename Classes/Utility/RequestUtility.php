@@ -88,4 +88,39 @@ final class RequestUtility
 
         return $contentObject instanceof ContentObjectRenderer ? $contentObject : null;
     }
+
+    public static function getRequestUri(ServerRequestInterface $request): string
+    {
+        return self::getNormalizedParams($request)->getRequestUri();
+    }
+
+    public static function getSiteSettingString(ServerRequestInterface $request, string $settingPath, string $default = ''): string
+    {
+        return TypeUtility::toString(self::getSiteSettings($request)->get($settingPath), $default);
+    }
+
+    public static function getSiteSettingInt(ServerRequestInterface $request, string $settingPath, int $default = 0): int
+    {
+        return TypeUtility::toInt(self::getSiteSettings($request)->get($settingPath), $default);
+    }
+
+    public static function getSiteSettingBool(ServerRequestInterface $request, string $settingPath, bool $default = false): bool
+    {
+        return TypeUtility::toBool(self::getSiteSettings($request)->get($settingPath), $default);
+    }
+
+    public static function getTypoScriptTypeNum(ServerRequestInterface $request, string $setupName): int
+    {
+        $frontendTypoScript = self::getFrontendTypoScript($request);
+        if (!$frontendTypoScript instanceof FrontendTypoScript) {
+            return 0;
+        }
+
+        return TypeUtility::toInt(
+            $frontendTypoScript->getSetupTree()
+                ->getChildByName($setupName)
+                ?->getChildByName('typeNum')
+                ?->getValue()
+        );
+    }
 }
