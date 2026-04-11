@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Domain\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -25,10 +27,16 @@ class GoogleCaptchaValidator extends AbstractValidator
         $controller = 'Comment';
         $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
-        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
+        $request = $this->resolveRequest();
         $queryData = $request->getQueryParams()['tx_blog_commentform'] ?? [];
+        if (!is_array($queryData)) {
+            $queryData = [];
+        }
         $bodyData = $request->getParsedBody();
         $postData = is_array($bodyData) ? ($bodyData['tx_blog_commentform'] ?? []) : [];
+        if (!is_array($postData)) {
+            $postData = [];
+        }
         $requestData = array_merge($queryData, $postData);
 
         if (
@@ -66,5 +74,14 @@ class GoogleCaptchaValidator extends AbstractValidator
                 $GLOBALS['google_recaptcha'] = true;
             }
         }
+    }
+
+    private function resolveRequest(): ServerRequestInterface
+    {
+        if ($this->request instanceof ServerRequestInterface) {
+            return $this->request;
+        }
+
+        return RequestUtility::getGlobalRequest();
     }
 }

@@ -13,7 +13,7 @@ namespace T3G\AgencyPack\Blog\Domain\Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Finisher\CommentFormFinisher;
 use T3G\AgencyPack\Blog\Domain\Validator\GoogleCaptchaValidator;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -87,12 +87,8 @@ class CommentFormFactory extends AbstractFormFactory
         $commentField = $page->createElement('comment', 'Textarea');
         $commentField->setLabel((string) LocalizationUtility::translate('form.comment.comment', 'blog'));
         $commentField->addValidator(GeneralUtility::makeInstance(NotEmptyValidator::class));
-        if ((GeneralUtility::makeInstance(Typo3Version::class))->getMajorVersion() < 12) {
-            $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class, ['minimum' => 5]);
-        } else {
-            $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class);
-            $stringLengthValidator->setOptions(['minimum' => 5]);
-        }
+        $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class);
+        $stringLengthValidator->setOptions(['minimum' => 5]);
         $commentField->addValidator($stringLengthValidator);
 
         $explanationText = $page->createElement('explanation', 'StaticText');
@@ -111,7 +107,8 @@ class CommentFormFactory extends AbstractFormFactory
 
         $redirectFinisher = GeneralUtility::makeInstance(RedirectFinisher::class);
         $redirectFinisher->setFinisherIdentifier(RedirectFinisher::class);
-        $redirectFinisher->setOption('pageUid', (string) $this->getRequest()->getAttribute('frontend.page.information')->getId());
+        $pageInformation = RequestUtility::getPageInformation($this->getRequest());
+        $redirectFinisher->setOption('pageUid', (string) ($pageInformation?->getId() ?? 0));
         $form->addFinisher($redirectFinisher);
 
         $this->triggerFormBuildingFinished($form);
@@ -120,6 +117,6 @@ class CommentFormFactory extends AbstractFormFactory
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\ExpressionLanguage;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 
 class BlogVariableProvider
 {
@@ -26,14 +27,17 @@ class BlogVariableProvider
 
     private function getCurrentDoktype(): int
     {
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        if ($request === null) {
+        try {
+            $request = RequestUtility::getGlobalRequest();
+        } catch (\RuntimeException) {
             return 0;
         }
-        $pageInformation = $request->getAttribute('frontend.page.information');
+
+        $pageInformation = RequestUtility::getPageInformation($request);
         if ($pageInformation === null) {
             return 0;
         }
+
         $pageRecord = $pageInformation->getPageRecord();
         return (int)($pageRecord['doktype'] ?? 0);
     }

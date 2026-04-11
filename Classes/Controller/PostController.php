@@ -25,8 +25,10 @@ use T3G\AgencyPack\Blog\Pagination\BlogPagination;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\MetaTagService;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -56,23 +58,38 @@ class PostController extends ActionController
             switch ($action) {
                 case '.listPostsByCategory':
                     if (isset($this->arguments['category'])) {
-                        $arguments[] = $this->arguments['category']->getValue()->getTitle();
+                        $category = $this->arguments['category']->getValue();
+                        if ($category instanceof Category) {
+                            $arguments[] = $category->getTitle();
+                        }
                     }
                     break;
                 case '.listPostsByDate':
-                    $arguments[] = (int)$this->arguments['year']->getValue();
+                    $year = $this->arguments['year']->getValue();
+                    if (is_numeric($year)) {
+                        $arguments[] = (int)$year;
+                    }
                     if (isset($this->arguments['month'])) {
-                        $arguments[] = (int)$this->arguments['month']->getValue();
+                        $month = $this->arguments['month']->getValue();
+                        if (is_numeric($month)) {
+                            $arguments[] = (int)$month;
+                        }
                     }
                     break;
                 case '.listPostsByTag':
                     if (isset($this->arguments['tag'])) {
-                        $arguments[] = $this->arguments['tag']->getValue()->getTitle();
+                        $tag = $this->arguments['tag']->getValue();
+                        if ($tag instanceof Tag) {
+                            $arguments[] = $tag->getTitle();
+                        }
                     }
                     break;
                 case '.listPostsByAuthor':
                     if (isset($this->arguments['author'])) {
-                        $arguments[] = $this->arguments['author']->getValue()->getName();
+                        $author = $this->arguments['author']->getValue();
+                        if ($author instanceof Author) {
+                            $arguments[] = $author->getName();
+                        }
                     }
                     break;
                 default:
@@ -88,7 +105,7 @@ class PostController extends ActionController
             $this->view->assign('feed', $feedData);
         }
 
-        $contentObject = $this->request->getAttribute('currentContentObject');
+        $contentObject = RequestUtility::getCurrentContentObject($this->getRequest());
         $this->view->assign('data', $contentObject !== null ? $contentObject->data : null);
     }
 
@@ -172,8 +189,8 @@ class PostController extends ActionController
     public function listPostsByCategoryAction(?Category $category = null, int $currentPage = 1): ResponseInterface
     {
         if ($category === null) {
-            $contentObject = $this->request->getAttribute('currentContentObject');
-            $referenceUid = $contentObject !== null ? (int) $contentObject->data['uid'] : null;
+            $contentObject = RequestUtility::getCurrentContentObject($this->getRequest());
+            $referenceUid = $this->getContentObjectUid($contentObject);
             if ($referenceUid !== null) {
                 $categories = $this->categoryRepository->getByReference('tt_content', $referenceUid);
                 if ($categories !== null && $categories->count() > 0) {
@@ -304,19 +321,30 @@ class PostController extends ActionController
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 
     private function getSiteLanguage(): SiteLanguage
     {
-        return $this->getRequest()->getAttribute('language');
+        return RequestUtility::getSiteLanguage($this->getRequest());
     }
 
     private function getRequestUrl(): string
     {
         /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $this->getRequest()->getAttribute('normalizedParams');
+        $normalizedParams = RequestUtility::getNormalizedParams($this->getRequest());
         return $normalizedParams->getRequestUrl();
+    }
+
+    private function getContentObjectUid(?ContentObjectRenderer $contentObject): ?int
+    {
+        if ($contentObject === null) {
+            return null;
+        }
+
+        $uid = $contentObject->data['uid'] ?? null;
+
+        return is_numeric($uid) ? (int)$uid : null;
     }
 
     protected function getPagination(QueryResultInterface $objects, int $currentPage = 1): ?BlogPagination
