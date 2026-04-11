@@ -12,12 +12,21 @@ if (!defined('TYPO3')) {
 }
 
 $ll = 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:';
+$sysCategoryTca = \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('sys_category');
+$typeIconClasses = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['ctrl', 'typeicon_classes']);
+$typeIconClasses[(string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] = 'record-blog-category';
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['ctrl', 'type'], 'record_type');
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['ctrl', 'typeicon_column'], 'record_type');
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['ctrl', 'typeicon_classes'], $typeIconClasses);
+
+$defaultTypeIcon = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedString(
+    $sysCategoryTca,
+    ['ctrl', 'typeicon_classes', 'default']
+);
+$columns = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['columns']);
 
 // Add category types
-$GLOBALS['TCA']['sys_category']['ctrl']['type'] = 'record_type';
-$GLOBALS['TCA']['sys_category']['ctrl']['typeicon_column'] = 'record_type';
-$GLOBALS['TCA']['sys_category']['ctrl']['typeicon_classes'][(string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] = 'record-blog-category';
-$GLOBALS['TCA']['sys_category']['columns']['record_type'] = [
+$columns['record_type'] = [
     'label' => $ll . 'sys_category.record_type',
     'config' => [
         'type' => 'select',
@@ -26,7 +35,7 @@ $GLOBALS['TCA']['sys_category']['columns']['record_type'] = [
             [
                 'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:sys_category.record_type.default',
                 'value' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT,
-                'icon' => $GLOBALS['TCA']['sys_category']['ctrl']['typeicon_classes']['default']
+                'icon' => $defaultTypeIcon
             ],
             [
                 'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:sys_category.record_type.blog',
@@ -37,30 +46,40 @@ $GLOBALS['TCA']['sys_category']['columns']['record_type'] = [
         'default' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT
     ]
 ];
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['columns'], $columns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_category',
     'record_type',
     '',
     'before:title'
 );
-$GLOBALS['TCA']['sys_category']['types'][(string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] =
-    $GLOBALS['TCA']['sys_category']['types'][(string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT];
+$types = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['types']);
+$types[(string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] =
+    \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
+        $sysCategoryTca,
+        ['types', (string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT]
+    );
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['types'], $types);
 
 // Limit parent categories to blog types
-$GLOBALS['TCA']['sys_category']['types'][\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG]['columnsOverrides'] = [
+$pagesCategoryWhere = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedString(
+    \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('pages'),
+    ['columns', 'categories', 'config', 'foreign_table_where']
+);
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['types', \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG, 'columnsOverrides'], [
     'parent' => [
         'config' => [
             'foreign_table_where' => '' .
                 ' AND sys_category.record_type = ' . (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG . ' ' .
                 ' AND sys_category.pid = ###CURRENT_PID### ' .
-                ($GLOBALS['TCA']['pages']['columns']['categories']['config']['foreign_table_where'] ?? '')
+                $pagesCategoryWhere
         ]
     ]
-];
+]);
 
 // Register fields
-$GLOBALS['TCA']['sys_category']['columns'] = array_replace_recursive(
-    $GLOBALS['TCA']['sys_category']['columns'],
+$columns = array_replace_recursive(
+    \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['columns']),
     [
         'slug' => [
             'label' => $ll . 'sys_category.slug',
@@ -119,6 +138,8 @@ $GLOBALS['TCA']['sys_category']['columns'] = array_replace_recursive(
         ],
     ]
 );
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['columns'], $columns);
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('sys_category', $sysCategoryTca);
 
 // Add slug field to all types
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

@@ -12,17 +12,22 @@ if (!defined('TYPO3')) {
 }
 
 $ll = 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:';
+$pagesTca = \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('pages');
 
 // Add folder configuration
-$GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
+\T3G\AgencyPack\Blog\Utility\TcaUtility::appendNestedValue($pagesTca, ['columns', 'module', 'config', 'items'], [
     'label' => $ll . 'blog-folder',
     'value' => 'blog',
     'icon' => 'record-folder-contains-blog',
-];
-$GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-blog'] = 'record-folder-contains-blog';
+]);
+$typeIconClasses = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($pagesTca, ['ctrl', 'typeicon_classes']);
+$typeIconClasses['contains-blog'] = 'record-folder-contains-blog';
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['ctrl', 'typeicon_classes'], $typeIconClasses);
 
 // Add doctype group label
-$GLOBALS['TCA']['pages']['columns']['doktype']['config']['itemGroups']['blog'] = 'Blog';
+$itemGroups = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($pagesTca, ['columns', 'doktype', 'config', 'itemGroups']);
+$itemGroups['blog'] = 'Blog';
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['columns', 'doktype', 'config', 'itemGroups'], $itemGroups);
 
 // Add new page types as possible select item:
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
@@ -52,7 +57,7 @@ $GLOBALS['TCA']['pages']['columns']['doktype']['config']['itemGroups']['blog'] =
 
 // Add icon for new page types:
 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-    $GLOBALS['TCA']['pages'],
+    $pagesTca,
     [
         'ctrl' => [
             'typeicon_classes' => [
@@ -62,12 +67,15 @@ $GLOBALS['TCA']['pages']['columns']['doktype']['config']['itemGroups']['blog'] =
             ],
         ],
         'types' => [
-            (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST => $GLOBALS['TCA']['pages']['types'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
+            (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST => \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
+                $pagesTca,
+                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT]
+            ),
         ],
     ]
 );
 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-    $GLOBALS['TCA']['pages'],
+    $pagesTca,
     [
         'ctrl' => [
             'typeicon_classes' => [
@@ -75,14 +83,17 @@ $GLOBALS['TCA']['pages']['columns']['doktype']['config']['itemGroups']['blog'] =
             ],
         ],
         'types' => [
-            (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_PAGE => $GLOBALS['TCA']['pages']['types'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
+            (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_PAGE => \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
+                $pagesTca,
+                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT]
+            ),
         ],
     ]
 );
 
 // Register fields
-$GLOBALS['TCA']['pages']['columns'] = array_replace_recursive(
-    $GLOBALS['TCA']['pages']['columns'],
+$columns = array_replace_recursive(
+    \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($pagesTca, ['columns']),
     [
         'crdate' => [
             'label' => 'crdate',
@@ -214,14 +225,16 @@ $GLOBALS['TCA']['pages']['columns'] = array_replace_recursive(
         ]
     ]
 );
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['columns'], $columns);
 
-$GLOBALS['TCA']['pages']['types'][\T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST]['columnsOverrides'] = [
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['types', \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST, 'columnsOverrides'], [
     'categories' => [
         'config' => [
             'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) AND sys_category.pid = ###PAGE_TSCONFIG_ID###',
         ]
     ]
-];
+]);
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('pages', $pagesTca);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', 'publish_date', 'publish_date, crdate_month, crdate_year');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(

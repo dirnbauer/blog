@@ -14,6 +14,8 @@ if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
+$ttContentTca = \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('tt_content');
+
 ExtensionUtility::registerPlugin(
     extensionName: 'Blog',
     pluginName: 'Posts',
@@ -154,8 +156,12 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'blog_demandedposts',
     'after:palette:headers'
 );
-$GLOBALS['TCA']['tt_content']['types']['blog_demandedposts']['columnsOverrides']['pi_flexform']['config']['ds']['default']
-    = 'FILE:EXT:blog/Configuration/FlexForms/Demand.xml';
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue(
+    $ttContentTca,
+    ['types', 'blog_demandedposts', 'columnsOverrides', 'pi_flexform', 'config', 'ds', 'default'],
+    'FILE:EXT:blog/Configuration/FlexForms/Demand.xml'
+);
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('tt_content', $ttContentTca);
 
 ExtensionUtility::registerPlugin(
     extensionName: 'Blog',
