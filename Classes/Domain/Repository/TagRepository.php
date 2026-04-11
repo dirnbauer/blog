@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Domain\Repository;
 
+use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -18,6 +20,9 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
+/**
+ * @extends Repository<Tag>
+ */
 class TagRepository extends Repository
 {
     protected array $settings = [];
@@ -55,8 +60,9 @@ class TagRepository extends Repository
             ->orderBy('cnt', 'DESC')
             ->setMaxResults($limit);
 
-        if ($this->settings['persistence']['storagePid']) {
-            $storagePids = GeneralUtility::intExplode(',', $this->settings['persistence']['storagePid'], true);
+        $storagePidSetting = TypeUtility::toString($this->settings['persistence']['storagePid'] ?? '');
+        if ($storagePidSetting !== '') {
+            $storagePids = GeneralUtility::intExplode(',', $storagePidSetting, true);
             $queryBuilder->where(
                 $queryBuilder->expr()->in(
                     't.pid',
@@ -71,7 +77,12 @@ class TagRepository extends Repository
 
         $rows = [];
         foreach ($result as $row) {
-            $row['tagObject'] = $this->findByUid($row['uid']);
+            $uid = TypeUtility::toInt($row['uid'] ?? null);
+            if ($uid <= 0) {
+                continue;
+            }
+
+            $row['tagObject'] = $this->findByUid($uid);
             $rows[] = $row;
         }
 

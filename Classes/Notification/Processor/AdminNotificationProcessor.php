@@ -30,15 +30,16 @@ class AdminNotificationProcessor implements ProcessorInterface
 
     protected function processCommentAddNotification(ServerRequestInterface $request, NotificationInterface $notification): void
     {
-        $settings = RequestUtility::getSiteSettings($request);
-
-        if ((bool)($settings->get('plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.enable') ?? false)) {
-            $emailAddresses = GeneralUtility::trimExplode(',', (string)($settings->get('plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email') ?? ''));
+        if (RequestUtility::getSiteSettingBool($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.enable')) {
+            $emailAddresses = GeneralUtility::trimExplode(
+                ',',
+                RequestUtility::getSiteSettingString($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email')
+            );
             $mail = GeneralUtility::makeInstance(MailMessage::class);
             $mail
                 ->setSubject($notification->getTitle())
                 ->setBody($notification->getMessage())
-                ->setFrom([(string)($settings->get('plugin.tx_blog.settings.notifications.email.senderMail') ?? '')])
+                ->setFrom([RequestUtility::getSiteSettingString($request, 'plugin.tx_blog.settings.notifications.email.senderMail')])
                 ->setTo($emailAddresses)
                 ->send();
         }

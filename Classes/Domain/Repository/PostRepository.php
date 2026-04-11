@@ -17,6 +17,8 @@ use T3G\AgencyPack\Blog\Domain\Model\Author;
 use T3G\AgencyPack\Blog\Domain\Model\Category;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Http\ApplicationType;
@@ -31,6 +33,9 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
+/**
+ * @extends Repository<Post>
+ */
 class PostRepository extends Repository
 {
     protected array $settings = [];
@@ -39,11 +44,7 @@ class PostRepository extends Repository
     public function initializeObject(): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        try {
-            $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
-        } catch (PageNotFoundException) {
-            $this->settings = ['persistence' => ['storagePid' => '']];
-        }
+        $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
 
         $querySettings = GeneralUtility::makeInstance(
             Typo3QuerySettings::class,
@@ -76,7 +77,7 @@ class PostRepository extends Repository
             if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
                 && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
             ) {
-                $workspaceId = (int)$context->getPropertyFromAspect('workspace', 'id', 0);
+                $workspaceId = TypeUtility::toInt($context->getPropertyFromAspect('workspace', 'id', 0));
                 if ($workspaceId === 0) {
                     $this->defaultConstraints[] = $query->equals('t3ver_wsid', 0);
                 } else {
@@ -169,9 +170,14 @@ class PostRepository extends Repository
         return $result;
     }
 
+    /**
+     * @return QueryResultInterface<int, Post>
+     */
     public function findAll(): QueryResultInterface
     {
-        return $this->getFindAllQuery()->execute();
+        $result = $this->getFindAllQuery()->execute();
+
+        return $result;
     }
 
     public function findAllByPid(?int $blogSetup = null): QueryResultInterface
@@ -198,8 +204,12 @@ class PostRepository extends Repository
         return $query->execute();
     }
 
+    /**
+     * @return QueryInterface<Post>
+     */
     protected function getFindAllQuery(): QueryInterface
     {
+        /** @var QueryInterface<Post> $query */
         $query = $this->createQuery();
         $constraints = $this->defaultConstraints;
         $storagePidConstraint = $this->getStoragePidConstraint();
@@ -279,14 +289,16 @@ class PostRepository extends Repository
 
     public function findCurrentPost(): ?Post
     {
-        $pageInformation = $this->getRequest()->getAttribute('frontend.page.information', null);
+        $pageInformation = RequestUtility::getPageInformation($this->getRequest());
         if ($pageInformation === null) {
             return null;
         }
 
         $pageId = $pageInformation->getId();
-        $currentLanguageId = GeneralUtility::makeInstance(Context::class)
-            ->getPropertyFromAspect('language', 'id', 0);
+        $currentLanguageId = TypeUtility::toInt(
+            GeneralUtility::makeInstance(Context::class)
+                ->getPropertyFromAspect('language', 'id', 0)
+        );
 
         $post = $this->getPostWithLanguage($pageId, $currentLanguageId);
         if ($post !== null) {
@@ -321,8 +333,10 @@ class PostRepository extends Repository
     {
         $currentSite = $this->getCurrentSite();
         if ($currentSite !== null) {
-            /** @var SiteLanguage $languageConfiguration */
-            $languageConfiguration = $currentSite->getAllLanguages()[$currentLanguageId];
+            $languageConfiguration = $currentSite->getAllLanguages()[$currentLanguageId] ?? null;
+            if (!$languageConfiguration instanceof SiteLanguage) {
+                return null;
+            }
             // check the whole language-fallback chain
             $fallbacks = $languageConfiguration->getFallbackLanguageIds();
             foreach ($fallbacks as $fallbackLanguageId) {
@@ -337,11 +351,7 @@ class PostRepository extends Repository
 
     protected function getCurrentSite(): ?Site
     {
-        if ($this->getRequest()->getAttribute('site') instanceof Site) {
-            return $this->getRequest()->getAttribute('site');
-        }
-
-        return null;
+        return RequestUtility::getSite($this->getRequest());
     }
 
     public function findMonthsAndYearsWithPosts(): array
@@ -447,7 +457,7 @@ class PostRepository extends Repository
 
     protected function getStoragePidsFromTypoScript(): array
     {
-        return GeneralUtility::intExplode(',', (string)$this->settings['persistence']['storagePid']);
+        return GeneralUtility::intExplode(',', TypeUtility::toString($this->settings['persistence']['storagePid'] ?? ''));
     }
 
     /**
@@ -470,10 +480,14 @@ class PostRepository extends Repository
             return $value !== '' && (int) $value !== 0;
         });
 
-        if (count($pids) === 0 && $this->getRequest()->getAttribute('frontend.page.information') !== null) {
-            $rootLine = $this->getRequest()->getAttribute('frontend.page.information')->getLocalRootLine();
-            foreach ($rootLine as $value) {
-                $pids[] = (int) $value['uid'];
+        if (count($pids) === 0) {
+            $pageInformation = RequestUtility::getPageInformation($this->getRequest());
+            if ($pageInformation === null) {
+                return $pids;
+            }
+
+            foreach ($pageInformation->getLocalRootLine() as $value) {
+                $pids[] = TypeUtility::toInt(is_array($value) ? ($value['uid'] ?? null) : null);
             }
         }
 
@@ -482,6 +496,6 @@ class PostRepository extends Repository
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 }

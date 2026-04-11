@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Service;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\Connection;
@@ -46,8 +47,8 @@ class SetupService
             ->fetchAllAssociative();
 
         foreach ($blogRootPages as $blogRootPage) {
-            $blogUid = (int) $blogRootPage['uid'];
-            $blogTitle = (string) $blogRootPage['title'];
+            $blogUid = TypeUtility::toInt($blogRootPage['uid'] ?? null);
+            $blogTitle = TypeUtility::toString($blogRootPage['title'] ?? null);
             if (!array_key_exists($blogUid, $setups)) {
                 $rootline = array_reverse(GeneralUtility::makeInstance(RootlineUtility::class, $blogUid)->get());
 
@@ -66,11 +67,11 @@ class SetupService
                 $setups[$blogUid] = [
                     'uid' => $blogUid,
                     'title' => $blogTitle,
-                    'path' => implode(' / ', array_map(function ($page) {
-                        return $page['title'];
+                    'path' => implode(' / ', array_map(static function (array $page): string {
+                        return TypeUtility::toString($page['title'] ?? null);
                     }, $rootline)),
                     'rootline' => $rootline,
-                    'articleCount' => (int) $articleCount,
+                    'articleCount' => TypeUtility::toInt($articleCount),
                 ];
             }
         }
@@ -93,8 +94,8 @@ class SetupService
         $recordUidArray = array_merge_recursive($recordUidArray, $dataHandler->substNEWwithIDs);
 
         // Update page id in PageTSConfig
-        $blogRootUid = (int)$recordUidArray['NEW_blogRoot'];
-        $blogFolderUid = (int)$recordUidArray['NEW_blogFolder'];
+        $blogRootUid = TypeUtility::toInt($recordUidArray['NEW_blogRoot'] ?? null);
+        $blogFolderUid = TypeUtility::toInt($recordUidArray['NEW_blogFolder'] ?? null);
 
         // Site Modifications
         $site = $this->siteFinder->getSiteByRootPageId($blogRootUid);
@@ -120,12 +121,12 @@ class SetupService
                 'plugin' => [
                     'tx_blog' => [
                         'settings' => [
-                            'blogUid' => (int) $recordUidArray['NEW_blogRoot'],
-                            'categoryUid' => (int) $recordUidArray['NEW_blogCategoryPage'],
-                            'tagUid' => (int) $recordUidArray['NEW_blogTagPage'],
-                            'authorUid' => (int) $recordUidArray['NEW_blogAuthorPage'],
-                            'archiveUid' => (int) $recordUidArray['NEW_blogArchivePage'],
-                            'storagePid' => (int) $recordUidArray['NEW_blogFolder'],
+                            'blogUid' => TypeUtility::toInt($recordUidArray['NEW_blogRoot'] ?? null),
+                            'categoryUid' => TypeUtility::toInt($recordUidArray['NEW_blogCategoryPage'] ?? null),
+                            'tagUid' => TypeUtility::toInt($recordUidArray['NEW_blogTagPage'] ?? null),
+                            'authorUid' => TypeUtility::toInt($recordUidArray['NEW_blogAuthorPage'] ?? null),
+                            'archiveUid' => TypeUtility::toInt($recordUidArray['NEW_blogArchivePage'] ?? null),
+                            'storagePid' => TypeUtility::toInt($recordUidArray['NEW_blogFolder'] ?? null),
                         ]
                     ]
                 ]
