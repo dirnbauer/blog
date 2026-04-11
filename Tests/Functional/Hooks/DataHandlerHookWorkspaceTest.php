@@ -14,6 +14,7 @@ namespace T3G\AgencyPack\Blog\Tests\Functional\Hooks;
 use PHPUnit\Framework\Attributes\Test;
 use T3G\AgencyPack\Blog\Constants;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -40,7 +41,9 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataHandler/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $languageServiceFactory = $this->get(LanguageServiceFactory::class);
+        self::assertInstanceOf(LanguageServiceFactory::class, $languageServiceFactory);
+        $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($backendUser);
 
         $this->importCSVDataSet(__DIR__ . '/Fixtures/BlogBasePages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceTestData.csv');
@@ -50,6 +53,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        self::assertInstanceOf(BackendUserAuthentication::class, $GLOBALS['BE_USER']);
         $GLOBALS['BE_USER']->setWorkspace($workspaceId);
     }
 

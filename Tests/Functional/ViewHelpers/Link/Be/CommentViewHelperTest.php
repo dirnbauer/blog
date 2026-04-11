@@ -47,7 +47,9 @@ final class CommentViewHelperTest extends FunctionalTestCase
         $comment->_setProperty('uid', 123);
         $comment->setComment('Lipsum');
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
+        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
+        $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 
         $view = (new TemplateView($context));
