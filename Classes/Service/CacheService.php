@@ -11,7 +11,12 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Domain\Model\Author;
+use T3G\AgencyPack\Blog\Domain\Model\Category;
+use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -30,17 +35,25 @@ class CacheService
 
         $this->addTagToPage($request, 'tx_blog_post_' . $post->getUid());
         foreach ($post->getAuthors() as $author) {
-            $this->addTagToPage($request, 'tx_blog_author_' . $author->getUid());
+            if ($author instanceof Author) {
+                $this->addTagToPage($request, 'tx_blog_author_' . $author->getUid());
+            }
         }
         foreach ($post->getCategories() as $category) {
-            $this->addTagToPage($request, 'tx_blog_category_' . $category->getUid());
+            if ($category instanceof Category) {
+                $this->addTagToPage($request, 'tx_blog_category_' . $category->getUid());
+            }
         }
         foreach ($post->getTags() as $tag) {
-            $this->addTagToPage($request, 'tx_blog_tag_' . $tag->getUid());
+            if ($tag instanceof Tag) {
+                $this->addTagToPage($request, 'tx_blog_tag_' . $tag->getUid());
+            }
         }
         if (isset($settings['comments']['active']) && $settings['comments']['active']) {
             foreach ($post->getActiveComments() as $comment) {
-                $this->addTagToPage($request, 'tx_blog_comment_' . $comment->getUid());
+                if ($comment instanceof Comment) {
+                    $this->addTagToPage($request, 'tx_blog_comment_' . $comment->getUid());
+                }
             }
         }
     }
@@ -52,7 +65,12 @@ class CacheService
 
     public function addTagsToPage(ServerRequestInterface $request, array $tags): void
     {
-        $request->getAttribute('frontend.cache.collector')->addCacheTags(
+        $cacheCollector = $request->getAttribute('frontend.cache.collector');
+        if (!$cacheCollector instanceof CacheDataCollectorInterface) {
+            return;
+        }
+
+        $cacheCollector->addCacheTags(
             ...array_map(fn (string $tag) => new CacheTag($tag), $tags)
         );
     }

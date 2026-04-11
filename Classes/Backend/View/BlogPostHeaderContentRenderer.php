@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -36,12 +37,20 @@ class BlogPostHeaderContentRenderer implements SingletonInterface
     public function render(ServerRequestInterface $request): string
     {
         $blogConfiguration = $this->extensionConfiguration->get('blog');
-        if ((bool)($blogConfiguration['disablePageLayoutHeader'] ?? true)) {
+        if (!is_array($blogConfiguration) || (bool)($blogConfiguration['disablePageLayoutHeader'] ?? true)) {
+            return '';
+        }
+
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        if (!$backendUser instanceof BackendUserAuthentication) {
             return '';
         }
 
         $pageUid = (int)($request->getQueryParams()['id'] ?? 0);
-        $pageInfo = BackendUtility::readPageAccess($pageUid, $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW));
+        $pageInfo = BackendUtility::readPageAccess($pageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
+        if (!is_array($pageInfo)) {
+            return '';
+        }
         if (($pageInfo['doktype'] ?? 0) !== Constants::DOKTYPE_BLOG_POST) {
             return '';
         }

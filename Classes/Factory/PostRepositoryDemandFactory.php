@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\Factory;
 
 use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\DataTransferObject\PostRepositoryDemand;
+use T3G\AgencyPack\Blog\Domain\Model\Category;
+use T3G\AgencyPack\Blog\Domain\Model\Tag;
 use T3G\AgencyPack\Blog\Domain\Repository\CategoryRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +32,9 @@ class PostRepositoryDemandFactory
         $demand->setPosts(GeneralUtility::intExplode(',', $settings['posts'] ?? '', true));
 
         foreach ($this->categoryRepository->findByUids(GeneralUtility::intExplode(',', $settings['categories'] ?? '')) as $category) {
-            $demand->addCategory($category);
+            if ($category instanceof Category) {
+                $demand->addCategory($category);
+            }
         }
 
         if (in_array($settings['categoriesConjunction'] ?? null, [Constants::REPOSITORY_CONJUNCTION_AND, Constants::REPOSITORY_CONJUNCTION_OR], true)) {
@@ -38,20 +42,24 @@ class PostRepositoryDemandFactory
         }
 
         foreach ($this->tagRepository->findByUids(GeneralUtility::intExplode(',', $settings['tags'] ?? '')) as $tag) {
-            $demand->addTag($tag);
+            if ($tag instanceof Tag) {
+                $demand->addTag($tag);
+            }
         }
 
         if (in_array($settings['tagsConjunction'] ?? null, [Constants::REPOSITORY_CONJUNCTION_AND, Constants::REPOSITORY_CONJUNCTION_OR], true)) {
             $demand->setTagsConjunction($settings['tagsConjunction']);
         }
 
-        if (isset($GLOBALS['TCA']['pages']['columns'][$settings['sortBy']])) {
+        $pagesColumns = $GLOBALS['TCA']['pages']['columns'] ?? null;
+        $sortBy = $settings['sortBy'] ?? null;
+        if (is_array($pagesColumns) && is_string($sortBy) && isset($pagesColumns[$sortBy])) {
             $direction = strtoupper($settings['sortDirection'] ?? 'ASC');
             if (!in_array($direction, ['ASC', 'DESC'], true)) {
                 $direction = 'ASC';
             }
 
-            $demand->setOrdering($settings['sortBy'], $direction);
+            $demand->setOrdering($sortBy, $direction);
         }
 
         $demand->setLimit((int)($settings['limit'] ?? 0));

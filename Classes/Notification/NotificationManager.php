@@ -20,12 +20,22 @@ class NotificationManager
 
     public function __construct()
     {
-        $notificationRegistry = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['Blog']['notificationRegistry'] ?? [];
+        $typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'] ?? [];
+        $extConf = is_array($typo3ConfVars) ? ($typo3ConfVars['EXTCONF'] ?? []) : [];
+        $notificationRegistry = is_array($extConf['Blog']['notificationRegistry'] ?? null)
+            ? $extConf['Blog']['notificationRegistry']
+            : [];
         foreach ($notificationRegistry as $notificationId => $visitorClassNames) {
             if (!\is_array($this->visitorsRegistry[$notificationId] ?? null)) {
                 $this->visitorsRegistry[$notificationId] = [];
             }
+            if (!is_iterable($visitorClassNames)) {
+                continue;
+            }
             foreach ($visitorClassNames as $visitorClassName) {
+                if (!is_string($visitorClassName)) {
+                    continue;
+                }
                 $this->visitorsRegistry[$notificationId][] = $visitorClassName;
             }
         }

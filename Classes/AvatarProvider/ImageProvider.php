@@ -27,7 +27,10 @@ class ImageProvider implements AvatarProviderInterface
 
             $cropString = '';
             if ($image->hasProperty('crop') && $image->getProperty('crop') !== '') {
-                $cropString = $image->getProperty('crop');
+                $cropProperty = $image->getProperty('crop');
+                if (is_string($cropProperty)) {
+                    $cropString = $cropProperty;
+                }
             }
             $cropVariantCollection = CropVariantCollection::create((string)$cropString);
             $cropArea = $cropVariantCollection->getCropArea('default');
