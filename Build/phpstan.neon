@@ -5,7 +5,7 @@ includes:
 	- %currentWorkingDirectory%/Build/phpstan-baseline.neon
 
 parameters:
-	level: 8
+	level: 9
 	reportUnmatchedIgnoredErrors: false
 
 	ignoreErrors:
