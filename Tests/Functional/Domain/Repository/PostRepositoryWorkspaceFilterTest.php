@@ -12,7 +12,9 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Tests\Functional\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
+use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -47,8 +49,9 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)
-            ->createFromUserPreferences($backendUser);
+        $languageServiceFactory = $this->get(LanguageServiceFactory::class);
+        self::assertInstanceOf(LanguageServiceFactory::class, $languageServiceFactory);
+        $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($backendUser);
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/workspace_pages.csv');
@@ -59,6 +62,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
+        self::assertInstanceOf(BackendUserAuthentication::class, $GLOBALS['BE_USER']);
         $GLOBALS['BE_USER']->setWorkspace($workspaceId);
     }
 
@@ -80,6 +84,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
     private function createPostRepository(): PostRepository
     {
         $repository = $this->get(PostRepository::class);
+        self::assertInstanceOf(PostRepository::class, $repository);
 
         $query = $repository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -97,10 +102,12 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
 
         $repository = $this->createPostRepository();
         $posts = $repository->findAllByPid();
+        $postArray = $posts->toArray();
+        self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(object $post): string => $post->getTitle(),
-            $posts->toArray()
+            static fn(Post $post): string => $post->getTitle(),
+            $postArray
         );
 
         self::assertContains('First Blog Post', $titles);
@@ -125,10 +132,12 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
 
         $repository = $this->createPostRepository();
         $posts = $repository->findAllByPid();
+        $postArray = $posts->toArray();
+        self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(object $post): string => $post->getTitle(),
-            $posts->toArray()
+            static fn(Post $post): string => $post->getTitle(),
+            $postArray
         );
 
         self::assertContains('Second Blog Post', $titles);
@@ -148,10 +157,12 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
 
         $repository = $this->createPostRepository();
         $posts = $repository->findAllByPid();
+        $postArray = $posts->toArray();
+        self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(object $post): string => $post->getTitle(),
-            $posts->toArray()
+            static fn(Post $post): string => $post->getTitle(),
+            $postArray
         );
 
         self::assertContains('First Blog Post', $titles, 'LIVE posts must still be visible.');

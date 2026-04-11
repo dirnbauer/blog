@@ -35,7 +35,9 @@ final class DataHandlerHookTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DataHandler/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $languageServiceFactory = $this->get(LanguageServiceFactory::class);
+        self::assertInstanceOf(LanguageServiceFactory::class, $languageServiceFactory);
+        $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($backendUser);
     }
 
     #[Test]

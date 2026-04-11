@@ -48,7 +48,9 @@ final class AuthorViewHelperTest extends FunctionalTestCase
         $author->setEmail('info+test@typo3.com');
         $author->setName('Info');
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
+        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
+        $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 
         $view = (new TemplateView($context));

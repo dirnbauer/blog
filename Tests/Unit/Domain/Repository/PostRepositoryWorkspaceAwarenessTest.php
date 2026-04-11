@@ -170,10 +170,10 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
     public function repositoryUsesRequestForCurrentPost(): void
     {
         self::assertStringContainsString(
-            'frontend.page.information',
+            'RequestUtility::getPageInformation',
             self::$repositorySource,
-            'findCurrentPost() must use frontend.page.information request attribute '
-            . 'which is workspace-overlay-aware in TYPO3 v14.'
+            'findCurrentPost() must use the workspace-aware frontend.page.information '
+            . 'request attribute in TYPO3 v14.'
         );
     }
 

@@ -37,7 +37,9 @@ class GravatarProviderTest extends FunctionalTestCase
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
+        $configurationManager->setRequest($request);
 
         $author = (new Author())->setEmail('name@host.tld');
         $gravatarProvider = new GravatarProvider();
@@ -49,14 +51,22 @@ class GravatarProviderTest extends FunctionalTestCase
 
     public function testGetAvatarUrlReturnsTypo3TempUrl(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['blog']['enableGravatarProxy'] = '1';
+        $typo3ConfVars = is_array($GLOBALS['TYPO3_CONF_VARS'] ?? null) ? $GLOBALS['TYPO3_CONF_VARS'] : [];
+        $extensions = is_array($typo3ConfVars['EXTENSIONS'] ?? null) ? $typo3ConfVars['EXTENSIONS'] : [];
+        $blogExtensionConfiguration = is_array($extensions['blog'] ?? null) ? $extensions['blog'] : [];
+        $blogExtensionConfiguration['enableGravatarProxy'] = '1';
+        $extensions['blog'] = $blogExtensionConfiguration;
+        $typo3ConfVars['EXTENSIONS'] = $extensions;
+        $GLOBALS['TYPO3_CONF_VARS'] = $typo3ConfVars;
         /** @phpstan-ignore-next-line */
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
+        $configurationManager->setRequest($request);
 
         $author = (new Author())->setEmail('name@host.tld');
         $gravatarProvider = new GravatarProvider();
