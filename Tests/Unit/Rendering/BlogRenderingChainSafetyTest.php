@@ -208,7 +208,8 @@ final class BlogRenderingChainSafetyTest extends TestCase
     public function noControllerDirectlyQueriesWorkspaceFields(): void
     {
         $controllerDir = self::getExtensionPath() . '/Classes/Controller';
-        foreach (glob($controllerDir . '/*.php') ?: [] as $path) {
+        $paths = glob($controllerDir . '/*.php');
+        foreach ($paths === false ? [] : $paths as $path) {
             $source = file_get_contents($path);
             if ($source === false) {
                 continue;
@@ -226,7 +227,8 @@ final class BlogRenderingChainSafetyTest extends TestCase
     public function noControllerDependsOnWorkspacesExtension(): void
     {
         $controllerDir = self::getExtensionPath() . '/Classes/Controller';
-        foreach (glob($controllerDir . '/*.php') ?: [] as $path) {
+        $paths = glob($controllerDir . '/*.php');
+        foreach ($paths === false ? [] : $paths as $path) {
             $source = file_get_contents($path);
             if ($source === false) {
                 continue;

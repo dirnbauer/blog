@@ -27,13 +27,20 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
     private static function getBlogPageTemplates(): array
     {
         $base = self::getTemplateBase();
+        $pageTemplates = glob($base . '/Page/Blog*.html');
+        $pagesTemplates = glob($base . '/Pages/Blog*.html');
+        $modernTailwindPageTemplates = glob($base . '/ModernTailwind/Page/Blog*.html');
+        $modernTailwindPagesTemplates = glob($base . '/ModernTailwind/Pages/Blog*.html');
+        $modernBootstrapPageTemplates = glob($base . '/ModernBootstrap/Page/Blog*.html');
+        $modernBootstrapPagesTemplates = glob($base . '/ModernBootstrap/Pages/Blog*.html');
+
         return array_merge(
-            glob($base . '/Page/Blog*.html') ?: [],
-            glob($base . '/Pages/Blog*.html') ?: [],
-            glob($base . '/ModernTailwind/Page/Blog*.html') ?: [],
-            glob($base . '/ModernTailwind/Pages/Blog*.html') ?: [],
-            glob($base . '/ModernBootstrap/Page/Blog*.html') ?: [],
-            glob($base . '/ModernBootstrap/Pages/Blog*.html') ?: []
+            $pageTemplates === false ? [] : $pageTemplates,
+            $pagesTemplates === false ? [] : $pagesTemplates,
+            $modernTailwindPageTemplates === false ? [] : $modernTailwindPageTemplates,
+            $modernTailwindPagesTemplates === false ? [] : $modernTailwindPagesTemplates,
+            $modernBootstrapPageTemplates === false ? [] : $modernBootstrapPageTemplates,
+            $modernBootstrapPagesTemplates === false ? [] : $modernBootstrapPagesTemplates
         );
     }
 
@@ -48,6 +55,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS)
         );
         foreach ($iterator as $file) {
+            \assert($file instanceof \SplFileInfo);
             if ($file->getExtension() === 'html') {
                 $relative = str_replace($base . '/', '', $file->getPathname());
                 $templates[$relative] = [$file->getPathname()];
@@ -165,7 +173,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             $content = file_get_contents($path);
             self::assertNotFalse($content);
 
-            if (preg_match('/<f:section name="renderPlugin">(.*?)<\/f:section>/s', $content, $m)) {
+            if (preg_match('/<f:section name="renderPlugin">(.*?)<\/f:section>/s', $content, $m) === 1) {
                 self::assertStringContainsString(
                     'tt_content.{listType}.20',
                     $m[1],

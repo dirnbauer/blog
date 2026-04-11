@@ -144,7 +144,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
         }
 
         $sectionPattern = '/<f:section name="renderPlugin">(.*?)<\/f:section>/s';
-        if (!preg_match($sectionPattern, $content, $matches)) {
+        if (preg_match($sectionPattern, $content, $matches) !== 1) {
             self::markTestSkipped('Could not extract renderPlugin section');
         }
         $sectionContent = $matches[1];
@@ -175,7 +175,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
         }
 
         $sectionPattern = '/<f:section name="renderPlugin">(.*?)<\/f:section>/s';
-        if (!preg_match($sectionPattern, $content, $matches)) {
+        if (preg_match($sectionPattern, $content, $matches) !== 1) {
             self::markTestSkipped('Could not extract renderPlugin section');
         }
         $sectionContent = $matches[1];

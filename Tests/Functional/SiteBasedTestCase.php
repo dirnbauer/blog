@@ -17,9 +17,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class SiteBasedTestCase extends FunctionalTestCase
 {
-    const BASE_URL = 'https://test.typo3.com/';
-    const ROOT_UID = 1;
-    const STORAGE_UID = 2;
+    protected const BASE_URL = 'https://test.typo3.com/';
+    protected const ROOT_UID = 1;
+    protected const STORAGE_UID = 2;
 
     protected array $coreExtensionsToLoad = [
         'form',
@@ -68,6 +68,7 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
 
         GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
         $siteWriter = $this->get(SiteWriter::class);
+        self::assertInstanceOf(SiteWriter::class, $siteWriter);
         $siteWriter->write($identifier, $configuration);
         $siteWriter->writeSettings(
             $identifier,
