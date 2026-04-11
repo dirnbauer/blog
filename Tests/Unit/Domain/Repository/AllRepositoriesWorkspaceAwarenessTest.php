@@ -32,7 +32,8 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
     {
         $base = self::getRepoBase();
         $repos = [];
-        foreach (glob($base . '/*Repository.php') ?: [] as $path) {
+        $paths = glob($base . '/*Repository.php');
+        foreach ($paths === false ? [] : $paths as $path) {
             $repos[basename($path, '.php')] = [$path];
         }
         return $repos;

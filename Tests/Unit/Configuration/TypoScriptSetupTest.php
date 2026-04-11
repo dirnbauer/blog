@@ -43,6 +43,7 @@ final class TypoScriptSetupTest extends TestCase
                 new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
             );
             foreach ($iterator as $file) {
+                \assert($file instanceof \SplFileInfo);
                 if ($file->getExtension() === 'typoscript') {
                     $relative = str_replace(self::getExtensionPath() . '/', '', $file->getPathname());
                     $files[$relative] = [$file->getPathname()];
