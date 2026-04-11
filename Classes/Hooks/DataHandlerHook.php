@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Hooks;
 
 use T3G\AgencyPack\Blog\Service\CacheService;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -51,7 +52,7 @@ class DataHandlerHook
     {
         if ($table === self::TABLE_PAGES) {
             if (!MathUtility::canBeInterpretedAsInteger($id)) {
-                $id = $dataHandler->substNEWwithIDs[$id];
+                $id = TypeUtility::toInt($dataHandler->substNEWwithIDs[$id] ?? null);
             }
 
             if ($this->isWorkspacePlaceholder($table, (int)$id)) {
@@ -67,7 +68,7 @@ class DataHandlerHook
                 ->executeQuery()
                 ->fetchOne();
             if ($publishDate !== false) {
-                $timestamp = (int)($publishDate !== 0 ? $publishDate : time());
+                $timestamp = TypeUtility::toInt($publishDate !== 0 ? $publishDate : time(), time());
                 $queryBuilder
                     ->update($table)
                     ->set('publish_date', $timestamp)
@@ -103,6 +104,6 @@ class DataHandlerHook
             return false;
         }
 
-        return in_array((int)$row['t3ver_state'], [1, 2, 3], true);
+        return in_array(TypeUtility::toInt($row['t3ver_state'] ?? null), [1, 2, 3], true);
     }
 }

@@ -16,6 +16,7 @@ use T3G\AgencyPack\Blog\Domain\Model\Category;
 use T3G\AgencyPack\Blog\Domain\Model\Tag;
 use T3G\AgencyPack\Blog\Domain\Repository\CategoryRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
+use T3G\AgencyPack\Blog\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PostRepositoryDemandFactory
@@ -51,9 +52,9 @@ class PostRepositoryDemandFactory
             $demand->setTagsConjunction($settings['tagsConjunction']);
         }
 
-        $pagesColumns = $GLOBALS['TCA']['pages']['columns'] ?? null;
+        $pagesColumns = TcaUtility::getNestedArray(TcaUtility::getTableTca('pages'), ['columns']);
         $sortBy = $settings['sortBy'] ?? null;
-        if (is_array($pagesColumns) && is_string($sortBy) && isset($pagesColumns[$sortBy])) {
+        if (is_string($sortBy) && isset($pagesColumns[$sortBy])) {
             $direction = strtoupper($settings['sortDirection'] ?? 'ASC');
             if (!in_array($direction, ['ASC', 'DESC'], true)) {
                 $direction = 'ASC';

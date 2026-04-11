@@ -32,18 +32,16 @@ class AuthorNotificationProcessor implements ProcessorInterface
 
     protected function processCommentAddNotification(ServerRequestInterface $request, NotificationInterface $notification): void
     {
-        $settings = RequestUtility::getSiteSettings($request);
-
         /** @var Post $post */
         $post = $notification->getData()['post'];
-        if ((bool)($settings->get('plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable') ?? false)) {
+        if (RequestUtility::getSiteSettingBool($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable')) {
             /** @var Author $author */
             foreach ($post->getAuthors() as $author) {
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
                 $mail
                     ->setSubject($notification->getTitle())
                     ->setBody($notification->getMessage())
-                    ->setFrom([(string)($settings->get('plugin.tx_blog.settings.notifications.email.senderMail') ?? '')])
+                    ->setFrom([RequestUtility::getSiteSettingString($request, 'plugin.tx_blog.settings.notifications.email.senderMail')])
                     ->setTo([$author->getEmail()])
                     ->send();
             }
