@@ -1,24 +1,24 @@
 /**
  * Components
  */
-@import "components/blog/container";
-@import "components/blog/list";
-@import "components/blog/avatar";
-@import "components/blog/archive";
-@import "components/blog/badge";
-@import "components/blog/icons";
-@import "components/blog/image";
-@import "components/blog/linklist";
-@import "components/blog/pagination";
-@import "components/blog/taglist";
-@import "components/blog/widget";
-@import "components/blog/widgetlist";
+@use "components/blog/container" as *;
+@use "components/blog/list" as *;
+@use "components/blog/avatar" as *;
+@use "components/blog/archive" as *;
+@use "components/blog/badge" as *;
+@use "components/blog/icons" as *;
+@use "components/blog/image" as *;
+@use "components/blog/linklist" as *;
+@use "components/blog/pagination" as *;
+@use "components/blog/taglist" as *;
+@use "components/blog/widget" as *;
+@use "components/blog/widgetlist" as *;
 
-@import "components/post/author";
-@import "components/post/comment";
-@import "components/post/list";
-@import "components/post/teaser";
-@import "components/post/metagroup";
+@use "components/post/author" as *;
+@use "components/post/comment" as *;
+@use "components/post/list" as *;
+@use "components/post/teaser" as *;
+@use "components/post/metagroup" as *;
 
 
 /**
