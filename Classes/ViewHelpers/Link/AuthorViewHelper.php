@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Author;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -55,10 +57,7 @@ class AuthorViewHelper extends AbstractTagBasedViewHelper
     protected function buildUriFromDefaultPage(Author $author, bool $rssFormat): string
     {
         $request = $this->getRequest();
-        $pageUid = $request
-            ->getAttribute('site')
-            ->getSettings()
-            ->get('plugin.tx_blog.settings.authorUid') ?? 0;
+        $pageUid = RequestUtility::getSiteSettingInt($request, 'plugin.tx_blog.settings.authorUid');
         $uriBuilder = $this->getUriBuilder($pageUid, [], $rssFormat);
         $arguments = [
             'author' => $author->getUid(),
@@ -75,12 +74,7 @@ class AuthorViewHelper extends AbstractTagBasedViewHelper
             ->setTargetPageUid($pageUid)
             ->setArguments($additionalParams);
         if ($rssFormat) {
-            $rssTypeNum = (int)(
-                $request->getAttribute('frontend.typoscript')->getSetupTree()
-                ->getChildByName('blog_rss_author')
-                ?->getChildByName('typeNum')
-                ?->getValue() ?? 0
-            );
+            $rssTypeNum = RequestUtility::getTypoScriptTypeNum($request, 'blog_rss_author');
             $uriBuilder
                 ->setTargetPageType($rssTypeNum);
         }
@@ -91,15 +85,18 @@ class AuthorViewHelper extends AbstractTagBasedViewHelper
     protected function buildAnchorTag(string $uri, Author $author): string
     {
         if ($uri !== '') {
-            $linkText = $this->renderChildren() ?? $author->getName();
+            $linkText = TypeUtility::toString($this->renderChildren(), TypeUtility::toString($author->getName()));
             $this->tag->addAttribute('href', $uri);
             $this->tag->setContent($linkText);
             return $this->tag->render();
         }
 
-        return $this->renderChildren();
+        return TypeUtility::toString($this->renderChildren(), TypeUtility::toString($author->getName()));
     }
 
+    /**
+     * @return RequestInterface&ServerRequestInterface
+     */
     protected function getRequest(): RequestInterface
     {
         $renderingContext = $this->renderingContext;

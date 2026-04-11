@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -34,20 +36,13 @@ class TagViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $request = $this->getRequest();
-        if (!$request instanceof ServerRequestInterface) {
-            throw new \RuntimeException(
-                'ViewHelper blogvh:link.be.tag needs a request implementing ServerRequestInterface.',
-                1684305294
-            );
-        }
-
         /** @var Tag $tag */
         $tag = $this->arguments['tag'];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $params = [
             'edit' => ['tx_blog_domain_model_tag' => [$tag->getUid() => 'edit']],
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => RequestUtility::getRequestUri($request),
         ];
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
         $uri = self::normalizeBackendUri($uri);
@@ -55,7 +50,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
             return htmlspecialchars($uri, ENT_QUOTES | ENT_HTML5);
         }
 
-        $linkText = $this->renderChildren() ?? $tag->getTitle();
+        $linkText = TypeUtility::toString($this->renderChildren(), $tag->getTitle());
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($linkText);
 
@@ -70,8 +65,8 @@ class TagViewHelper extends AbstractTagBasedViewHelper
         return $uri;
     }
 
-    protected function getRequest(): ?ServerRequestInterface
+    protected function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return RequestUtility::getGlobalRequest();
     }
 }
