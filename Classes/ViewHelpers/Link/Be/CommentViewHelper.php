@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -34,20 +36,13 @@ class CommentViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $request = $this->getRequest();
-        if (!$request instanceof ServerRequestInterface) {
-            throw new \RuntimeException(
-                'ViewHelper blogvh:link.be.comment needs a request implementing ServerRequestInterface.',
-                1684305292
-            );
-        }
-
         /** @var Comment $comment */
         $comment = $this->arguments['comment'];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $params = [
             'edit' => ['tx_blog_domain_model_comment' => [$comment->getUid() => 'edit']],
-            'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'returnUrl' => RequestUtility::getRequestUri($request),
         ];
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
         $uri = self::normalizeBackendUri($uri);
@@ -55,7 +50,7 @@ class CommentViewHelper extends AbstractTagBasedViewHelper
             return htmlspecialchars($uri, ENT_QUOTES | ENT_HTML5);
         }
 
-        $linkText = $this->renderChildren() ?? $comment->getComment();
+        $linkText = TypeUtility::toString($this->renderChildren(), TypeUtility::toString($comment->getComment()));
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($linkText);
 
@@ -70,8 +65,8 @@ class CommentViewHelper extends AbstractTagBasedViewHelper
         return $uri;
     }
 
-    protected function getRequest(): ?ServerRequestInterface
+    protected function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return RequestUtility::getGlobalRequest();
     }
 }

@@ -26,6 +26,9 @@ class CacheViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $post = $this->arguments['post'];
+        if (!$post instanceof Post) {
+            return '';
+        }
         $renderingContext = $this->renderingContext;
         if ($renderingContext === null || !$renderingContext->hasAttribute(ServerRequestInterface::class)) {
             return '';

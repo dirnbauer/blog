@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -40,10 +42,7 @@ class TagViewHelper extends AbstractTagBasedViewHelper
         $rssFormat = (bool)$this->arguments['rss'];
         /** @var Tag $tag */
         $tag = $this->arguments['tag'];
-        $pageUid = $request
-            ->getAttribute('site')
-            ->getSettings()
-            ->get('plugin.tx_blog.settings.tagUid') ?? 0;
+        $pageUid = RequestUtility::getSiteSettingInt($request, 'plugin.tx_blog.settings.tagUid');
         $arguments = [
             'tag' => $tag->getUid(),
         ];
@@ -52,27 +51,25 @@ class TagViewHelper extends AbstractTagBasedViewHelper
             ->setRequest($request)
             ->setTargetPageUid($pageUid);
         if ($rssFormat) {
-            $rssTypeNum = (int)(
-                $request->getAttribute('frontend.typoscript')->getSetupTree()
-                ->getChildByName('blog_rss_tag')
-                ?->getChildByName('typeNum')
-                ?->getValue() ?? 0
-            );
+            $rssTypeNum = RequestUtility::getTypoScriptTypeNum($request, 'blog_rss_tag');
             $uriBuilder->setTargetPageType($rssTypeNum);
         }
         $uri = $uriBuilder->uriFor('listPostsByTag', $arguments, 'Post', 'Blog', 'Tag');
         if ($uri !== '') {
-            $linkText = $this->renderChildren() ?? $tag->getTitle();
+            $linkText = TypeUtility::toString($this->renderChildren(), $tag->getTitle());
             $this->tag->addAttribute('href', $uri);
             $this->tag->setContent($linkText);
             $result = $this->tag->render();
         } else {
-            $result = $this->renderChildren();
+            $result = TypeUtility::toString($this->renderChildren(), $tag->getTitle());
         }
 
-        return (string)$result;
+        return TypeUtility::toString($result);
     }
 
+    /**
+     * @return RequestInterface&ServerRequestInterface
+     */
     protected function getRequest(): RequestInterface
     {
         $renderingContext = $this->renderingContext;

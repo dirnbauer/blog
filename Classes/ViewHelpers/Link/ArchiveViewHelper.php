@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -37,19 +39,10 @@ class ArchiveViewHelper extends AbstractTagBasedViewHelper
     {
         $request = $this->getRequest();
         $rssFormat = (bool)$this->arguments['rss'];
-        $year = (int)$this->arguments['year'];
-        $month = (int)$this->arguments['month'];
-        $pageUid = $request
-            ->getAttribute('site')
-            ->getSettings()
-            ->get('plugin.tx_blog.settings.archiveUid') ?? 0;
-
-        $rssTypeNum = (int)(
-            $request->getAttribute('frontend.typoscript')->getSetupTree()
-            ->getChildByName('blog_rss_archive')
-            ?->getChildByName('typeNum')
-            ?->getValue() ?? 0
-        );
+        $year = TypeUtility::toInt($this->arguments['year']);
+        $month = TypeUtility::toInt($this->arguments['month']);
+        $pageUid = RequestUtility::getSiteSettingInt($request, 'plugin.tx_blog.settings.archiveUid');
+        $rssTypeNum = RequestUtility::getTypoScriptTypeNum($request, 'blog_rss_archive');
 
         $arguments = [
             'year' => $year
@@ -66,18 +59,21 @@ class ArchiveViewHelper extends AbstractTagBasedViewHelper
                 ->setTargetPageType($rssTypeNum);
         }
         $uri = $uriBuilder->uriFor('listPostsByDate', $arguments, 'Post', 'Blog', 'Archive');
-        $linkText = $this->renderChildren() ?? implode('-', $arguments);
+        $linkText = TypeUtility::toString($this->renderChildren(), implode('-', $arguments));
         if ($uri !== '') {
             $this->tag->addAttribute('href', $uri);
-            $this->tag->setContent((string)$linkText);
+            $this->tag->setContent($linkText);
             $result = $this->tag->render();
         } else {
             $result = $linkText;
         }
 
-        return (string)$result;
+        return TypeUtility::toString($result);
     }
 
+    /**
+     * @return RequestInterface&ServerRequestInterface
+     */
     protected function getRequest(): RequestInterface
     {
         $renderingContext = $this->renderingContext;

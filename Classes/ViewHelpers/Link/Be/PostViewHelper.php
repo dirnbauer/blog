@@ -12,6 +12,8 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link\Be;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -36,13 +38,6 @@ class PostViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $request = $this->getRequest();
-        if (!$request instanceof ServerRequestInterface) {
-            throw new \RuntimeException(
-                'ViewHelper blogvh:link.be.post needs a request implementing ServerRequestInterface.',
-                1684305293
-            );
-        }
-
         /** @var Post $post */
         $post = $this->arguments['post'];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -51,7 +46,7 @@ class PostViewHelper extends AbstractTagBasedViewHelper
             case 'edit':
                 $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => ['pages' => [$post->getUid() => 'edit']],
-                    'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+                    'returnUrl' => RequestUtility::getRequestUri($request),
                 ]);
                 break;
             default:
@@ -66,7 +61,12 @@ class PostViewHelper extends AbstractTagBasedViewHelper
             return htmlspecialchars($uri, ENT_QUOTES | ENT_HTML5);
         }
 
-        $linkText = $this->renderChildren() ?? ($post->getTitle() !== '' ? $post->getTitle() : LocalizationUtility::translate('backend.message.nopost', 'blog'));
+        $linkText = TypeUtility::toString(
+            $this->renderChildren(),
+            $post->getTitle() !== ''
+                ? $post->getTitle()
+                : TypeUtility::toString(LocalizationUtility::translate('backend.message.nopost', 'blog'))
+        );
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($linkText);
 
@@ -81,8 +81,8 @@ class PostViewHelper extends AbstractTagBasedViewHelper
         return $uri;
     }
 
-    protected function getRequest(): ?ServerRequestInterface
+    protected function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'] ?? null;
+        return RequestUtility::getGlobalRequest();
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\ViewHelpers\Format;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class Nl2pViewHelper extends AbstractViewHelper
@@ -24,7 +25,7 @@ class Nl2pViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $content = htmlspecialchars((string)$this->renderChildren(), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $content = htmlspecialchars(TypeUtility::toString($this->renderChildren()), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $parts = preg_split('/<br\\s*\\/?>\\R?/', nl2br($content, false));
         if (!is_array($parts)) {
             $parts = [];

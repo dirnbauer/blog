@@ -12,6 +12,7 @@ namespace T3G\AgencyPack\Blog\ViewHelpers\Link;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -41,7 +42,7 @@ class PostViewHelper extends AbstractTagBasedViewHelper
 
         /** @var Post $post */
         $post = $this->arguments['post'];
-        $section = $this->arguments['section'] ?? '';
+        $section = TypeUtility::toString($this->arguments['section'] ?? '');
         $pageUid = (int) $post->getUid();
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $createAbsoluteUri = (bool)$this->arguments['createAbsoluteUri'];
@@ -55,17 +56,20 @@ class PostViewHelper extends AbstractTagBasedViewHelper
             if (isset($this->arguments['returnUri']) && $this->arguments['returnUri'] === true) {
                 return htmlspecialchars($uri, ENT_QUOTES | ENT_HTML5);
             }
-            $linkText = $this->renderChildren() ?? $post->getTitle();
+            $linkText = TypeUtility::toString($this->renderChildren(), $post->getTitle());
             $this->tag->addAttribute('href', $uri);
             $this->tag->setContent($linkText);
             $result = $this->tag->render();
         } else {
-            $result = $this->renderChildren();
+            $result = TypeUtility::toString($this->renderChildren(), $post->getTitle());
         }
 
-        return $result;
+        return TypeUtility::toString($result);
     }
 
+    /**
+     * @return RequestInterface&ServerRequestInterface
+     */
     protected function getRequest(): RequestInterface
     {
         $renderingContext = $this->renderingContext;
