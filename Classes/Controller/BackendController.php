@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
+use T3G\AgencyPack\Blog\Service\BackendAccessService;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\SetupService;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -31,6 +32,7 @@ class BackendController extends ActionController
         protected readonly PageRenderer $pageRenderer,
         protected readonly SetupService $setupService,
         protected readonly CacheService $cacheService,
+        protected readonly BackendAccessService $backendAccessService,
     ) {}
 
     public function initializeAction(): void
@@ -77,12 +79,15 @@ class BackendController extends ActionController
         $querySettings = $query->getQuerySettings();
         $querySettings->setIgnoreEnableFields(true);
         $this->postRepository->setDefaultQuerySettings($querySettings);
+        $blogSetups = $this->setupService->determineBlogSetups();
+        $blogSetupIds = $this->extractBlogSetupIds($blogSetups);
+        $activeBlogSetup = $this->resolveActiveBlogSetup($blogSetup, $blogSetupIds);
 
         $view = $this->moduleTemplateFactory->create($this->request);
         $view->assignMultiple([
-            'blogSetups' => $this->setupService->determineBlogSetups(),
-            'activeBlogSetup' => $blogSetup,
-            'posts' => $this->postRepository->findAllByPid($blogSetup),
+            'blogSetups' => $blogSetups,
+            'activeBlogSetup' => $activeBlogSetup,
+            'posts' => $this->getPostsForBlogSelection($activeBlogSetup, $blogSetupIds),
         ]);
 
         return $view->renderResponse('Backend/Posts');
@@ -90,19 +95,17 @@ class BackendController extends ActionController
 
     public function commentsAction(?string $filter = null, ?int $blogSetup = null): ResponseInterface
     {
+        $blogSetups = $this->setupService->determineBlogSetups();
+        $blogSetupIds = $this->extractBlogSetupIds($blogSetups);
+        $activeBlogSetup = $this->resolveActiveBlogSetup($blogSetup, $blogSetupIds);
+
         $view = $this->moduleTemplateFactory->create($this->request);
         $view->assignMultiple([
             'activeFilter' => $filter,
-            'activeBlogSetup' => $blogSetup,
-            'commentCounts' => [
-                'all' => $this->commentRepository->findAllByFilter(null, $blogSetup)->count(),
-                'pending' => $this->commentRepository->findAllByFilter('pending', $blogSetup)->count(),
-                'approved' => $this->commentRepository->findAllByFilter('approved', $blogSetup)->count(),
-                'declined' => $this->commentRepository->findAllByFilter('declined', $blogSetup)->count(),
-                'deleted' => $this->commentRepository->findAllByFilter('deleted', $blogSetup)->count(),
-            ],
-            'blogSetups' => $this->setupService->determineBlogSetups(),
-            'comments' => $this->commentRepository->findAllByFilter($filter, $blogSetup),
+            'activeBlogSetup' => $activeBlogSetup,
+            'commentCounts' => $this->getCommentCountsForBlogSelection($activeBlogSetup, $blogSetupIds),
+            'blogSetups' => $blogSetups,
+            'comments' => $this->getCommentsForBlogSelection($filter, $activeBlogSetup, $blogSetupIds),
         ]);
 
         return $view->renderResponse('Backend/Comments');
@@ -110,32 +113,40 @@ class BackendController extends ActionController
 
     public function updateCommentStatusAction(string $status, ?string $filter = null, ?int $blogSetup = null, array $comments = [], ?int $comment = null): ResponseInterface
     {
+        $permissionDenied = false;
+        $updatedComment = false;
         if ($comment !== null) {
             $comments['__identity'][] = $comment;
         }
         foreach ($comments['__identity'] ?? [] as $commentId) {
             /** @var Comment|null $comment */
             $comment = $this->commentRepository->findByUid((int)$commentId);
-            if ($comment !== null) {
-                $updateComment = true;
-                switch ($status) {
-                    case 'approve':
-                        $comment->setStatus(Comment::STATUS_APPROVED);
-                        break;
-                    case 'decline':
-                        $comment->setStatus(Comment::STATUS_DECLINED);
-                        break;
-                    case 'delete':
-                        $comment->setStatus(Comment::STATUS_DELETED);
-                        break;
-                    default:
-                        $updateComment = false;
-                }
-                if ($updateComment) {
-                    $this->commentRepository->update($comment);
-                    $this->cacheService->flushCacheByTag('tx_blog_comment_' . $comment->getUid());
-                }
+            if (!$comment instanceof Comment) {
+                continue;
             }
+            if (!$this->backendAccessService->canModerateComment($comment)) {
+                $permissionDenied = true;
+                continue;
+            }
+            if ($this->applyCommentStatus($comment, $status)) {
+                $updatedComment = true;
+                $this->commentRepository->update($comment);
+                $this->cacheService->flushCacheByTag('tx_blog_comment_' . $comment->getUid());
+            }
+        }
+        if ($permissionDenied) {
+            $this->addFlashMessage(
+                'One or more comments were skipped because you do not have permission to moderate them.',
+                'Permission denied',
+                ContextualFeedbackSeverity::ERROR
+            );
+        }
+        if (!$updatedComment && !in_array($status, ['approve', 'decline', 'delete'], true)) {
+            $this->addFlashMessage(
+                'The requested comment status change is not supported.',
+                'Invalid action',
+                ContextualFeedbackSeverity::ERROR
+            );
         }
 
         return new RedirectResponse($this->uriBuilder->reset()->uriFor('comments', ['filter' => $filter, 'blogSetup' => $blogSetup]));
@@ -151,5 +162,86 @@ class BackendController extends ActionController
         }
 
         return new RedirectResponse($this->uriBuilder->reset()->uriFor('setupWizard'));
+    }
+
+    protected function extractBlogSetupIds(array $blogSetups): array
+    {
+        return array_values(array_filter(array_map(static function (array $blogSetup): int {
+            return (int)($blogSetup['uid'] ?? 0);
+        }, $blogSetups)));
+    }
+
+    protected function resolveActiveBlogSetup(?int $blogSetup, array $accessibleBlogSetupIds): ?int
+    {
+        if ($blogSetup !== null && in_array($blogSetup, $accessibleBlogSetupIds, true)) {
+            return $blogSetup;
+        }
+
+        return null;
+    }
+
+    protected function getPostsForBlogSelection(?int $blogSetup, array $accessibleBlogSetupIds): iterable
+    {
+        if (!$this->backendAccessService->canReadTable('pages')) {
+            return [];
+        }
+        if ($blogSetup !== null) {
+            return $this->postRepository->findAllByPid($blogSetup);
+        }
+
+        return $this->postRepository->findAllByPids($accessibleBlogSetupIds);
+    }
+
+    protected function getCommentsForBlogSelection(?string $filter, ?int $blogSetup, array $accessibleBlogSetupIds): iterable
+    {
+        if (!$this->backendAccessService->canReadTable('tx_blog_domain_model_comment')) {
+            return [];
+        }
+        if ($blogSetup !== null) {
+            return $this->commentRepository->findAllByFilter($filter, $blogSetup);
+        }
+
+        return $this->commentRepository->findAllByFilterAndBlogSetups($filter, $accessibleBlogSetupIds);
+    }
+
+    protected function getCommentCountsForBlogSelection(?int $blogSetup, array $accessibleBlogSetupIds): array
+    {
+        $counts = [
+            'all' => 0,
+            'pending' => 0,
+            'approved' => 0,
+            'declined' => 0,
+            'deleted' => 0,
+        ];
+        if (!$this->backendAccessService->canReadTable('tx_blog_domain_model_comment')) {
+            return $counts;
+        }
+
+        foreach ($counts as $filter => $_) {
+            $currentFilter = $filter === 'all' ? null : $filter;
+            $comments = $blogSetup !== null
+                ? $this->commentRepository->findAllByFilter($currentFilter, $blogSetup)
+                : $this->commentRepository->findAllByFilterAndBlogSetups($currentFilter, $accessibleBlogSetupIds);
+            $counts[$filter] = count($comments);
+        }
+
+        return $counts;
+    }
+
+    protected function applyCommentStatus(Comment $comment, string $status): bool
+    {
+        switch ($status) {
+            case 'approve':
+                $comment->setStatus(Comment::STATUS_APPROVED);
+                return true;
+            case 'decline':
+                $comment->setStatus(Comment::STATUS_DECLINED);
+                return true;
+            case 'delete':
+                $comment->setStatus(Comment::STATUS_DELETED);
+                return true;
+            default:
+                return false;
+        }
     }
 }

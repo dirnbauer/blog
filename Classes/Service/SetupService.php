@@ -27,7 +27,8 @@ class SetupService
 {
     public function __construct(
         private readonly SiteFinder $siteFinder,
-        private readonly SiteWriter $siteWriter
+        private readonly SiteWriter $siteWriter,
+        private readonly BackendAccessService $backendAccessService,
     ) {
     }
 
@@ -76,7 +77,7 @@ class SetupService
             }
         }
 
-        return $setups;
+        return $this->backendAccessService->filterAccessibleBlogSetups($setups);
     }
 
     public function createBlogSetup(array $data = []): void

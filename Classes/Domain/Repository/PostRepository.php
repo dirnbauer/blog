@@ -196,6 +196,27 @@ class PostRepository extends Repository
         return $query->execute();
     }
 
+    /**
+     * @return QueryResultInterface<int, Post>|array<int, Post>
+     */
+    public function findAllByPids(array $blogSetups): QueryResultInterface|array
+    {
+        $blogSetups = array_values(array_unique(array_filter(array_map('intval', $blogSetups))));
+        if ($blogSetups === []) {
+            return [];
+        }
+
+        $query = $this->getFindAllQuery();
+        $constraints = [];
+        if ($query->getConstraint() !== null) {
+            $constraints[] = $query->getConstraint();
+        }
+        $constraints[] = $query->in('pid', $blogSetups);
+        $query->matching($query->logicalAnd(...$constraints));
+
+        return $query->execute();
+    }
+
     public function findAllWithLimit(int $limit): QueryResultInterface
     {
         $query = $this->getFindAllQuery();
