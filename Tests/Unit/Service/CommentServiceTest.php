@@ -87,6 +87,47 @@ class CommentServiceTest extends UnitTestCase
     }
 
     #[Test]
+    public function disabledPostCommentsReturnErrorOnAdd(): void
+    {
+        $this->initialize();
+
+        $this->postRepositoryMock
+            ->expects(self::never())
+            ->method('update');
+        $this->persistenceManagerMock
+            ->expects(self::never())
+            ->method('persistAll');
+
+        $post = new Post();
+        $post->_setProperty('uid', 1);
+        $post->setCommentsActive(false);
+        $comment = new Comment();
+
+        $this->commentService->setSettings(['active' => 1, 'moderation' => 0]);
+        $result = $this->commentService->addComment($post, $comment);
+
+        self::assertSame(CommentService::STATE_ERROR, $result);
+        self::assertCount(0, $post->getComments());
+    }
+
+    #[Test]
+    public function legacyFirstCommentModerationModeStillRequiresModeration(): void
+    {
+        $this->initialize();
+
+        $post = new Post();
+        $post->_setProperty('uid', 1);
+        $comment = new Comment();
+        $comment->setEmail('approved@example.com');
+
+        $this->commentService->setSettings(['active' => 1, 'moderation' => 2]);
+        $result = $this->commentService->addComment($post, $comment);
+
+        self::assertEquals(Comment::STATUS_PENDING, $comment->getStatus());
+        self::assertSame(CommentService::STATE_MODERATION, $result);
+    }
+
+    #[Test]
     public function commentGetsAddedToPost(): void
     {
         $this->initialize();
