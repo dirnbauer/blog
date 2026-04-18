@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <path fill="currentColor" opacity=".8" d="M18 16h24l8 8v24H18z"/>
-  <path fill="currentColor" d="M14 12h30l10 10v30H14V12zm4 4v32h32V23.7L40.3 14H18zm24 2.8V24h5.2L42 18.8z"/>
-  <path fill="var(--icon-color-accent, #ff8700)" d="M22 16h8v18.5L26 31l-4 3.5V16z"/>
-  <path fill="currentColor" opacity=".55" d="M24 37h18v4H24zm0 8h16v4H24z"/>
+  <path fill="currentColor" d="M14 12h30l10 10v30H14V12Zm4 4v32h32V23.7L40.3 14H18Zm24 2.8V24h5.2L42 18.8Z"/>
+  <path fill="var(--icon-color-accent, #ff8700)" d="M22 16h8v20l-4-3.5L22 36V16Z"/>
+  <path fill="currentColor" d="M22 40h20v3H22Zm0 6h14v3H22Z"/>
 </svg>
