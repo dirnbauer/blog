@@ -13,4 +13,11 @@
             <directory>../Classes</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <clover outputFile="../var/coverage/clover.xml"/>
+            <html outputDirectory="../var/coverage/html"/>
+            <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
+        </report>
+    </coverage>
 </phpunit>

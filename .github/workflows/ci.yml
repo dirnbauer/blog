@@ -111,3 +111,56 @@ jobs:
 
       - name: Verify committed assets
         run: git diff --exit-code -- Resources/Public
+
+  e2e:
+    name: Playwright E2E (opt-in)
+    runs-on: ubuntu-latest
+    needs: frontend-build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # The Playwright spec skips itself silently when BLOG_BASE_URL is
+      # unset. We make that visible in CI: the job emits a clear message
+      # instead of pretending to have run the tests.
+      - name: Check BLOG_BASE_URL
+        id: gate
+        env:
+          BLOG_BASE_URL: ${{ secrets.BLOG_BASE_URL }}
+        run: |
+          if [[ -z "${BLOG_BASE_URL:-}" ]]; then
+            echo "::warning::Set the BLOG_BASE_URL secret to a running blog instance to run Playwright E2E tests. Skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install Node.js dependencies
+        if: steps.gate.outputs.skip != 'true'
+        run: npm ci
+
+      - name: Install Playwright browsers
+        if: steps.gate.outputs.skip != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          BLOG_BASE_URL: ${{ secrets.BLOG_BASE_URL }}
+          BLOG_LIST_PATH: ${{ vars.BLOG_LIST_PATH || '/blog1/' }}
+          BLOG_POST_PATH: ${{ vars.BLOG_POST_PATH || '/blog1/first-blog-post' }}
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: steps.gate.outputs.skip != 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

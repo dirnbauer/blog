@@ -54,6 +54,10 @@
             "phplint"
         ],
         "test:php:unit": [
+            "phpunit -c Build/UnitTests.xml --no-coverage"
+        ],
+        "test:php:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
             "phpunit -c Build/UnitTests.xml"
         ],
         "test:php:functional": [
