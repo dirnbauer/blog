@@ -105,6 +105,9 @@ class DataHandlerHook
             return false;
         }
 
-        return in_array(TypeUtility::toInt($row['t3ver_state'] ?? null), [1, 2, 3], true);
+        // TYPO3 v14 workspace placeholder states: 1 = new, 2 = delete, 4 = move.
+        // State 3 (legacy "move placeholder") and state -1 (legacy "new version"
+        // pendant) were removed in v11 with the single-row workspace model.
+        return in_array(TypeUtility::toInt($row['t3ver_state'] ?? null), [1, 2, 4], true);
     }
 }

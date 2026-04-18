@@ -25,26 +25,23 @@ move pointer row.
 
 **Fix:** Replace `[1, 2, 3]` with `[1, 2, 4]`.
 
-### 2. `tx_blog_domain_model_comment` is not workspace-versioned (MEDIUM — by design, should be explicit)
+### 2. `tx_blog_domain_model_comment` uses `versioningWS_alwaysAllowLiveEdit` without `versioningWS: true` (LOW — intent is explicit via regression test)
 
 `Configuration/TCA/tx_blog_domain_model_comment.php:28` sets
 `versioningWS_alwaysAllowLiveEdit: true` but never sets `versioningWS:
-true`. In Core (`TcaSchemaFactory`/`DataMapFactory`) the
-`versioningWS_alwaysAllowLiveEdit` flag is only honoured when the table
-is workspace-enabled to begin with — without `versioningWS: true` the
-flag is a no-op and the table is simply non-versioned.
+true`. Core (`TcaSchemaFactory`/`DataMapFactory`) only honours
+`versioningWS_alwaysAllowLiveEdit` on workspace-enabled tables, so the
+flag is effectively inert here. Comments are public user submissions
+moderated live, so non-versioning is the correct outcome.
 
-That is **arguably correct by design** for comments (public user
-submissions moderated via the backend, not staged editorially), but the
-intent should be made explicit. Two options:
+A dedicated regression test
+(`Tests/Unit/Configuration/TcaWorkspaceConfigurationTest.php`) already
+enforces the presence of the flag as a documentation marker of intent,
+so it stays — but we add an inline comment so future readers understand
+the flag is declarative intent, not runtime behaviour.
 
-- **Keep non-versioned (recommended)** — remove
-  `versioningWS_alwaysAllowLiveEdit` entirely since it has no effect.
-- **Make it versioned + always-live-editable** — add `versioningWS:
-  true`. This would keep the historical flag meaningful but currently
-  no moderation workflow requires staging comments.
-
-**Fix:** Remove the no-op flag. Document the reason inline.
+**Fix:** Add an inline comment explaining the intent. Keep the flag so
+the regression test continues to enforce the editorial decision.
 
 ### 3. `featured_image` references rely on sys_file_reference overlay (OK — but note FAL limitation)
 

@@ -17,6 +17,8 @@ use T3G\AgencyPack\Blog\Domain\Model\Post;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -117,8 +119,16 @@ class CommentRepository extends Repository
             return [];
         }
 
+        $workspaceId = GeneralUtility::makeInstance(Context::class)
+            ->getPropertyFromAspect('workspace', 'id', 0);
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
+
         $rows = $queryBuilder
             ->select('uid')
             ->from('pages')

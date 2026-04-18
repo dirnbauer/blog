@@ -25,6 +25,9 @@ return [
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY crdate DESC',
         'delete' => 'deleted',
+        // Comments are submitted by the frontend public and moderated live;
+        // intentionally not workspace-versioned. `versioningWS_alwaysAllowLiveEdit`
+        // documents the intent + keeps edits in LIVE when a workspace is active.
         'versioningWS_alwaysAllowLiveEdit' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
