@@ -71,7 +71,10 @@ return (new PhpCsFixer\Config())
                 __DIR__ . '/Tests',
             ])
             ->append([
-                __DIR__ . '/ext_emconf.php',
+                // ext_emconf.php is a data file: it is parsed by the install
+                // tool and the TER pipeline as bare array config. It must NOT
+                // carry `declare(strict_types=1)` -- excluded here so
+                // `declare_strict_types` does not re-add it.
                 __DIR__ . '/ext_localconf.php',
                 __DIR__ . '/ext_tables.php',
             ])
