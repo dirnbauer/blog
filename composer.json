@@ -109,6 +109,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
+        "saschaegerer/phpstan-typo3": "^3.0",
         "typo3/cms-belog": "^14.0",
         "typo3/cms-beuser": "^14.0",
         "typo3/cms-filelist": "^14.0",

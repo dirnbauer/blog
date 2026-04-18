@@ -48,7 +48,6 @@ final class CategoryViewHelperTest extends FunctionalTestCase
         $category->setTitle('Demo');
 
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
-        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
         $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 

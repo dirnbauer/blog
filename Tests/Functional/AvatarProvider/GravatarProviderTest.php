@@ -58,7 +58,6 @@ class GravatarProviderTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
         $configurationManager->setRequest($request);
 
         $author = (new Author())->setEmail('name@host.tld');
@@ -85,7 +84,6 @@ class GravatarProviderTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
         $configurationManager->setRequest($request);
 
         $author = (new Author())->setEmail('name@host.tld');

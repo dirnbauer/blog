@@ -70,7 +70,6 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
 
         GeneralUtility::rmdir($this->instancePath . '/typo3conf/sites/' . $identifier, true);
         $siteWriter = $this->get(SiteWriter::class);
-        self::assertInstanceOf(SiteWriter::class, $siteWriter);
         $siteWriter->write($identifier, $configuration);
         $siteWriter->writeSettings(
             $identifier,

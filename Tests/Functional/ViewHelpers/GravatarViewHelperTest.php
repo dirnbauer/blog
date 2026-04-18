@@ -43,11 +43,9 @@ final class GravatarViewHelperTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
         $configurationManager->setRequest($request);
 
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
-        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
         $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = (new TemplateView($context));

@@ -50,7 +50,6 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $backendUser = $this->setUpBackendUser(1);
         $languageServiceFactory = $this->get(LanguageServiceFactory::class);
-        self::assertInstanceOf(LanguageServiceFactory::class, $languageServiceFactory);
         $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($backendUser);
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
@@ -84,7 +83,6 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
     private function createPostRepository(): PostRepository
     {
         $repository = $this->get(PostRepository::class);
-        self::assertInstanceOf(PostRepository::class, $repository);
 
         $query = $repository->createQuery();
         $querySettings = $query->getQuerySettings();
@@ -184,6 +182,5 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $this->setUpBackendRequest(['id' => 6]);
 
         $repository = $this->get(PostRepository::class);
-        self::assertInstanceOf(PostRepository::class, $repository);
     }
 }

@@ -44,7 +44,6 @@ final class AvatarViewHelperTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
         $configurationManager = $this->get(ConfigurationManagerInterface::class);
-        self::assertInstanceOf(ConfigurationManagerInterface::class, $configurationManager);
         $configurationManager->setRequest($request);
 
         $author = new Author();
@@ -53,7 +52,6 @@ final class AvatarViewHelperTest extends FunctionalTestCase
         $author->setAvatarProvider('T3G\AgencyPack\Blog\AvatarProvider\GravatarProvider');
 
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
-        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
         $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = (new TemplateView($context));

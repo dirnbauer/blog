@@ -49,7 +49,6 @@ final class AuthorViewHelperTest extends FunctionalTestCase
         $author->setName('Info');
 
         $renderingContextFactory = $this->get(RenderingContextFactory::class);
-        self::assertInstanceOf(RenderingContextFactory::class, $renderingContextFactory);
         $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 

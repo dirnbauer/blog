@@ -43,7 +43,6 @@ final class SetupServiceTest extends FunctionalTestCase
     {
         $backendUser = $this->setUpBackendUser($backendUserUid);
         $languageServiceFactory = $this->get(LanguageServiceFactory::class);
-        self::assertInstanceOf(LanguageServiceFactory::class, $languageServiceFactory);
         $GLOBALS['LANG'] = $languageServiceFactory->createFromUserPreferences($backendUser);
     }
 
