@@ -92,8 +92,11 @@ The blog extension hooks into TYPO3's DataHandler to maintain derived
 fields (``publish_date``, ``crdate_month``, ``crdate_year``) on blog
 post pages. In workspace context:
 
-- Workspace placeholder records (new, delete, move placeholders) are
-  skipped to avoid corrupting structural records.
+- Workspace placeholder records are skipped to avoid corrupting
+  structural records. The TYPO3 v14 valid non-live states are
+  ``t3ver_state = 1`` (workspace-new), ``2`` (delete placeholder) and
+  ``4`` (move pointer). States ``-1`` and ``3`` from pre-v11 releases
+  were removed together with ``t3ver_move_id``.
 - Cache is only flushed when operating in the live workspace. Workspace
   saves do not trigger cache invalidation since workspace content is
   not visible on the live site.

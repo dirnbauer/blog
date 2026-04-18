@@ -1,7 +1,32 @@
 # Unreleased
 
+## SECURITY
+
+- [SECURITY] Require admin role at entry of `BackendController::createBlogAction` (defense in depth)
+- [SECURITY] Migrate author social and comment URL TCA columns to `type: link` so the link wizard enforces http/https schemes
+- [SECURITY] Wire the Comment model honeypot field through the form factory and reject filled submissions silently
+- [SECURITY] `GoogleCaptchaValidator`: drop `$GLOBALS` caching in favour of a request attribute and add an HTTP timeout
+- [SECURITY] Upgrade the Standalone Set Bootstrap pin to 5.3.3 stable and add Subresource Integrity hashes
+- [SECURITY] Retire the Tailwind Play CDN include from `ModernTailwind`; document that production sites must ship a pre-compiled stylesheet
+
+## FEATURE
+
+- [FEATURE] Extract `RelatedPostsService` from `PostRepository` and wire it through DI
+- [FEATURE] Convert `MetaTagService` from static to injectable and update controller callers
+- [FEATURE] Add `Build/Scripts/runTests.sh` dispatcher and a `composer test:php:coverage` script
+- [FEATURE] Opt-in Playwright CI job gated by the `BLOG_BASE_URL` secret
+
 ## TASK
 
+- [TASK] Adopt `saschaegerer/phpstan-typo3` on PHPStan level 9 and remove redundant `assertInstanceOf` calls
+- [TASK] Fix `DataHandlerHook` to use the TYPO3 v14 valid `t3ver_state` values (`1, 2, 4`)
+- [TASK] Migrate default Fluid templates to Bootstrap 5 (`data-bs-*`) and drop `declare(strict_types=1)` from `ext_emconf.php`
+- [TASK] Delete the legacy `Configuration/TypoScript/` tree and `ext_typoscript_setup.txt` now that Site Sets ship the same content
+- [TASK] Mark leaf services, listeners, validators, finishers, factories, view helpers, updates, hooks and notification processors `final`
+- [TASK] Type `Post::$authors` as `ObjectStorage` and tighten TCA `eval` migrations (`domainname`/`www`/`num` → `type: link|number`)
+- [TASK] Restore `$GLOBALS['TYPO3_CONF_VARS']` in `GravatarProviderTest::tearDown` to avoid state leaks
+- [TASK] Align `composer test` with CI: add `composer validate --strict` and `@cgl`
+- [TASK] Collapse `README.rst` to a pointer at `README.md`; move the v14 template-migration rationale into the Development guide
 - [TASK] Remove tracked DDEV and local VS Code project files from the repository
 - [TASK] Delete tracked `*_REPORT.md` audit artefacts and keep future reports ignored
 - [TASK] Modernize repository metadata, issue templates, and GitHub workflows for TYPO3 v14

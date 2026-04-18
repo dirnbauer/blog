@@ -83,5 +83,58 @@ GitHub Actions runs:
 - PHP linting, coding standards, PHPStan, unit tests, and functional tests
   against PHP 8.2, 8.3, and 8.4
 - a frontend build job that verifies committed assets are up to date
+- an opt-in Playwright job that only runs when the ``BLOG_BASE_URL``
+  repository secret is set (and emits a clear warning otherwise)
 
 Tagged releases use Tailor to publish the extension to TER.
+
+.. _template-migration-notes:
+
+Template migration notes
+========================
+
+Sitepackages that override the shipped blog page templates need to align
+their ``renderPlugin`` section with the current rendering pipeline:
+
+.. code-block:: html
+
+   <f:section name="renderPlugin">
+       <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
+   </f:section>
+
+Why this changed
+----------------
+
+TYPO3 v14 introduced the ``record-transformation`` data processor on
+``lib.contentElement``. The processor requires every ``tt_content`` row to
+carry the full set of system fields (``sys_language_uid``, ``l18n_parent``,
+``t3ver_wsid``, ``header`` and the rest). The pre-v14 pattern rendered
+synthetic ``tt_content`` rows that lacked those fields, which surfaced as
+``IncompleteRecordException`` during rendering.
+
+Rendering the ``EXTBASEPLUGIN`` content object directly (``tt_content.{listType}.20``)
+bypasses the content-element pipeline and keeps the output
+workspace-safe.
+
+Affected files
+--------------
+
+All files under the following paths ship the new pattern out of the box:
+
+- ``Resources/Private/Templates/Pages/*.fluid.html``
+  (the TYPO3 v14 ``PAGEVIEW`` templates — recommended)
+- ``Resources/Private/Templates/Page/*.html``
+  (the legacy integration templates kept for backwards compatibility)
+- ``Resources/Private/Templates/Layouts/Pages/Default.fluid.html``
+- The ``ModernTailwind`` and ``ModernBootstrap`` Template variants
+
+If your sitepackage overrides any of those files, update the
+``renderPlugin`` section to the form above. No other template changes
+are required.
+
+Removal
+-------
+
+The legacy synthetic ``tt_content`` rendering pattern is no longer part
+of the supported rendering path. Overrides that still render synthetic
+rows must be migrated to ``tt_content.{listType}.20``.

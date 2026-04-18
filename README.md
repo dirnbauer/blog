@@ -8,41 +8,11 @@ A blog extension for TYPO3 built entirely on core concepts — pages as posts, c
 article bodies, and categories/tags for organization. If you know TYPO3, you already know how to
 use this blog.
 
-## ⚠️ Breaking Changes for TYPO3 v14
-
-### Blog page templates: new plugin rendering approach
-
-The `renderPlugin` section in the shipped blog page templates has changed.
-This affects both the legacy integration templates under `Templates/Page/*.html`
-and the TYPO3 v14 `PAGEVIEW` templates under `Templates/Pages/*.fluid.html`.
-
-**New (v14-compatible, workspace-safe):**
-
-```html
-<f:section name="renderPlugin">
-    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
-</f:section>
-```
-
-**Why:** TYPO3 v14 added the `record-transformation` data processor to
-`lib.contentElement`. It requires all system fields (`sys_language_uid`,
-`l18n_parent`, `t3ver_wsid`, `header`, …) on every `tt_content` row. The old
-approach rendered synthetic `tt_content` rows that lacked these fields, causing
-`IncompleteRecordException`. The new approach renders the `EXTBASEPLUGIN`
-content object directly, bypassing the content-element pipeline entirely.
-
-**Action required:** If your sitepackage overrides `BlogList` / `BlogPost`
-templates in either `Page/*.html` or `Pages/*.fluid.html` (including the
-`ModernTailwind` / `ModernBootstrap` variants), update the `renderPlugin`
-section to use the new pattern shown above.
-
-For TYPO3 v14 standalone rendering, the recommended templates are the
-`PAGEVIEW` files in `Resources/Private/Templates/Pages/*.fluid.html` together
-with `Resources/Private/Templates/Layouts/Pages/Default.fluid.html`.
-
-**Removal:** The legacy synthetic `tt_content` rendering pattern is no longer
-part of the supported rendering path. Template overrides still using that
-approach must be updated to `tt_content.{listType}.20`.
+> **Upgrading a sitepackage from a previous version?** The `renderPlugin`
+> section in the shipped templates moved to `tt_content.{listType}.20` for
+> TYPO3 v14 workspace safety. See
+> [Development: Template migration notes](https://docs.typo3.org/p/t3g/blog/master/en-us/Development/Index.html#template-migration-notes)
+> for the rationale and the one-line template change.
 
 ## Requirements
 
