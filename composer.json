@@ -112,6 +112,7 @@
         "typo3/cms-filelist": "^14.0",
         "typo3/cms-fluid-styled-content": "^14.0",
         "typo3/cms-lowlevel": "^14.0",
+        "typo3/cms-redirects": "^14.0",
         "typo3/cms-rte-ckeditor": "^14.0",
         "typo3/cms-seo": "^14.0",
         "typo3/cms-setup": "^14.0",
