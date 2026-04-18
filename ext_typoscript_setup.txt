@@ -1,5 +1,0 @@
-plugin.tx_blog {
-    persistence {
-        storagePid = {$plugin.tx_blog.settings.storagePid}
-    }
-}

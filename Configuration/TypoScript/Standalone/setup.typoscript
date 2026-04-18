@@ -1,4 +1,0 @@
-@import "EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript"
-@import "EXT:blog/Configuration/Sets/Static/setup.typoscript"
-@import "EXT:blog/Configuration/Sets/Shared/setup.typoscript"
-@import "EXT:blog/Configuration/Sets/Standalone/setup.typoscript"

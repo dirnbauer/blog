@@ -153,9 +153,6 @@ final class TypoScriptSetupTest extends TestCase
     public function staticSetupDefinesPluginPersistenceSettings(): void
     {
         $path = self::getExtensionPath() . '/Configuration/Sets/Static/setup.typoscript';
-        if (!file_exists($path)) {
-            $path = self::getExtensionPath() . '/Configuration/TypoScript/Static/setup.typoscript';
-        }
         self::assertFileExists($path);
         $content = file_get_contents($path);
         self::assertNotFalse($content);
