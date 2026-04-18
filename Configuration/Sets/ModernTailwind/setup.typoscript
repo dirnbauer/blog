@@ -35,10 +35,16 @@ page {
     typeNum = 0
     10 < lib.fluidPage
 
-    includeJSFooterlibs {
-        tailwind = https://cdn.tailwindcss.com
-        tailwind.external = 1
-    }
+    # The Tailwind Play CDN (`cdn.tailwindcss.com`) is an in-browser
+    # runtime compiler the Tailwind team explicitly flags as "NOT for
+    # production". It is wired up here for local previews only; remove
+    # this block and ship a pre-compiled stylesheet via the extension's
+    # Vite pipeline before deploying. Keeping the line active guarantees
+    # a CSP violation on hardened sites (default-src 'self').
+    # includeJSFooterlibs {
+    #     tailwind = https://cdn.tailwindcss.com
+    #     tailwind.external = 1
+    # }
 }
 
 plugin.tx_blog.view {
