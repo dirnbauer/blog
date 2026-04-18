@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -38,7 +45,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'extends Repository',
             self::$repositorySource,
-            'PostRepository must extend Extbase\Persistence\Repository for workspace-aware queries.'
+            'PostRepository must extend Extbase\Persistence\Repository for workspace-aware queries.',
         );
     }
 
@@ -48,7 +55,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'Context::class',
             self::$repositorySource,
-            'PostRepository must use TYPO3 Context singleton which carries WorkspaceAspect.'
+            'PostRepository must use TYPO3 Context singleton which carries WorkspaceAspect.',
         );
     }
 
@@ -58,7 +65,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'Typo3QuerySettings',
             self::$repositorySource,
-            'PostRepository must use Typo3QuerySettings which reads workspace context.'
+            'PostRepository must use Typo3QuerySettings which reads workspace context.',
         );
     }
 
@@ -69,7 +76,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             '/Typo3QuerySettings::class.*Context::class/s',
             self::$repositorySource,
             'Typo3QuerySettings must be initialised with Context '
-            . 'so WorkspaceAspect flows into query restrictions.'
+            . 'so WorkspaceAspect flows into query restrictions.',
         );
     }
 
@@ -80,7 +87,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             'Constants::DOKTYPE_BLOG_POST',
             self::$repositorySource,
             'PostRepository must filter by DOKTYPE_BLOG_POST (137) — '
-            . 'blog posts are pages, and pages are always workspace-aware in TYPO3.'
+            . 'blog posts are pages, and pages are always workspace-aware in TYPO3.',
         );
     }
 
@@ -90,7 +97,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'function initializeObject',
             self::$repositorySource,
-            'PostRepository must define initializeObject() to set up workspace-safe query defaults.'
+            'PostRepository must define initializeObject() to set up workspace-safe query defaults.',
         );
     }
 
@@ -100,7 +107,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'setDefaultQuerySettings',
             self::$repositorySource,
-            'PostRepository must call setDefaultQuerySettings() to apply Context-aware settings globally.'
+            'PostRepository must call setDefaultQuerySettings() to apply Context-aware settings globally.',
         );
     }
 
@@ -111,7 +118,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             'setRespectStoragePage(false)',
             self::$repositorySource,
             'PostRepository must disable storage page respect — blog posts '
-            . 'are pages in a page tree, not records in a storage folder.'
+            . 'are pages in a page tree, not records in a storage folder.',
         );
     }
 
@@ -122,7 +129,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             "/Context::class\).*getAspect\('language'\)/s",
             self::$repositorySource,
             'PostRepository must read the language aspect from Context '
-            . '(the same Context that carries WorkspaceAspect).'
+            . '(the same Context that carries WorkspaceAspect).',
         );
     }
 
@@ -136,7 +143,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             . 'Extbase does not apply WorkspaceRestriction when '
             . 'setIgnoreEnableFields(true) is used, so blog posts '
             . '(pages with doktype 137) need explicit workspace filtering '
-            . 'to prevent workspace-only records from appearing in LIVE.'
+            . 'to prevent workspace-only records from appearing in LIVE.',
         );
     }
 
@@ -148,7 +155,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             self::$repositorySource,
             'Workspace filtering via t3ver_wsid must only be applied in '
             . 'backend context.  Frontend workspace overlay is handled by '
-            . 'the TSFE rendering pipeline.'
+            . 'the TSFE rendering pipeline.',
         );
     }
 
@@ -162,7 +169,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             . 'When the current backend page is a workspace-only page '
             . '(t3ver_oid=0, t3ver_wsid>0) and the editor is in LIVE, '
             . 'the rootline cannot be resolved.  The repository must survive '
-            . 'this so the DI container does not crash.'
+            . 'this so the DI container does not crash.',
         );
     }
 
@@ -173,7 +180,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             'RequestUtility::getPageInformation',
             self::$repositorySource,
             'findCurrentPost() must use the workspace-aware frontend.page.information '
-            . 'request attribute in TYPO3 v14.'
+            . 'request attribute in TYPO3 v14.',
         );
     }
 
@@ -184,7 +191,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             'applyLanguageFallback',
             self::$repositorySource,
             'PostRepository must handle language fallback — workspace overlay '
-            . 'must also work for translated blog posts.'
+            . 'must also work for translated blog posts.',
         );
     }
 
@@ -195,7 +202,7 @@ final class PostRepositoryWorkspaceAwarenessTest extends TestCase
             'WorkspaceService',
             self::$repositorySource,
             'PostRepository must NOT depend on typo3/cms-workspaces. '
-            . 'It must work identically whether workspaces is installed or not.'
+            . 'It must work identically whether workspaces is installed or not.',
         );
     }
 }

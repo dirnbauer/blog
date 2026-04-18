@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -36,7 +37,7 @@ class GravatarUriBuilderTest extends UnitTestCase
     {
         self::assertSame(
             $expectedUriString,
-            (string)$this->gravatarUriBuilder->getUri($email, $size, $rating, $default)
+            (string)$this->gravatarUriBuilder->getUri($email, $size, $rating, $default),
         );
     }
 

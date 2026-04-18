@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -104,8 +105,8 @@ class StaticDatabaseMapper implements StaticMappableAspectInterface, \Countable
         }
 
         return array_map(
-            static fn(mixed $value): string => TypeUtility::toString($value),
-            array_column($queryBuilder->executeQuery()->fetchAllAssociative(), $this->field)
+            static fn (mixed $value): string => TypeUtility::toString($value),
+            array_column($queryBuilder->executeQuery()->fetchAllAssociative(), $this->field),
         );
     }
 }

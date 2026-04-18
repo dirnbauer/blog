@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,7 +30,8 @@ final class TtContentTcaRegistrationTest extends TestCase
             define('TYPO3', true);
         }
 
-        $this->originalTca = $GLOBALS['TCA'] ?? [];
+        $existingTca = $GLOBALS['TCA'] ?? [];
+        $this->originalTca = is_array($existingTca) ? $existingTca : [];
         $GLOBALS['TCA'] = [
             'tt_content' => [
                 'ctrl' => [
@@ -84,24 +92,57 @@ final class TtContentTcaRegistrationTest extends TestCase
     #[DataProvider('registeredTypeProvider')]
     public function ttContentOverrideKeepsRegisteredTypes(string $typeName): void
     {
-        require dirname(__DIR__, 3) . '/Configuration/TCA/Overrides/tt_content.php';
-
+        $types = $this->loadTtContentTypes();
         self::assertArrayHasKey(
             $typeName,
-            $GLOBALS['TCA']['tt_content']['types'],
-            sprintf('The tt_content override must keep the "%s" CType registered.', $typeName)
+            $types,
+            sprintf('The tt_content override must keep the "%s" CType registered.', $typeName),
         );
     }
 
     #[Test]
     public function demandedPostsTypeKeepsItsFlexFormConfiguration(): void
     {
-        require dirname(__DIR__, 3) . '/Configuration/TCA/Overrides/tt_content.php';
-
+        $types = $this->loadTtContentTypes();
+        self::assertArrayHasKey('blog_demandedposts', $types);
+        $blogDemandedPosts = $types['blog_demandedposts'];
+        self::assertIsArray($blogDemandedPosts);
+        $columnsOverrides = $blogDemandedPosts['columnsOverrides'] ?? null;
+        self::assertIsArray($columnsOverrides);
+        $piFlexform = $columnsOverrides['pi_flexform'] ?? null;
+        self::assertIsArray($piFlexform);
+        $config = $piFlexform['config'] ?? null;
+        self::assertIsArray($config);
+        $ds = $config['ds'] ?? null;
+        self::assertIsArray($ds);
         self::assertSame(
             'FILE:EXT:blog/Configuration/FlexForms/Demand.xml',
-            $GLOBALS['TCA']['tt_content']['types']['blog_demandedposts']['columnsOverrides']['pi_flexform']['config']['ds']['default'] ?? null,
-            'The blog_demandedposts CType must keep its FlexForm data structure.'
+            $ds['default'] ?? null,
+            'The blog_demandedposts CType must keep its FlexForm data structure.',
         );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function loadTtContentTypes(): array
+    {
+        require dirname(__DIR__, 3) . '/Configuration/TCA/Overrides/tt_content.php';
+
+        $tca = $GLOBALS['TCA'] ?? null;
+        self::assertIsArray($tca);
+        self::assertArrayHasKey('tt_content', $tca);
+        $ttContent = $tca['tt_content'];
+        self::assertIsArray($ttContent);
+        self::assertArrayHasKey('types', $ttContent);
+        $types = $ttContent['types'];
+        self::assertIsArray($types);
+
+        $typed = [];
+        foreach ($types as $key => $value) {
+            $typed[(string) $key] = $value;
+        }
+
+        return $typed;
     }
 }

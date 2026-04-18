@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -105,16 +106,16 @@ class SetupService
         $basicSiteConfiguration = [
             'imports' => [
                 [
-                    'resource' => 'EXT:blog/Configuration/Routes/Default.yaml'
-                ]
+                    'resource' => 'EXT:blog/Configuration/Routes/Default.yaml',
+                ],
             ],
             'dependencies' => [
                 'blog/standalone',
-            ]
+            ],
         ];
         $this->siteWriter->write(
             $siteIdentifier,
-            array_merge_recursive($siteConfiguration, $basicSiteConfiguration)
+            array_merge_recursive($siteConfiguration, $basicSiteConfiguration),
         );
         $this->siteWriter->writeSettings(
             $siteIdentifier,
@@ -128,10 +129,10 @@ class SetupService
                             'authorUid' => TypeUtility::toInt($recordUidArray['NEW_blogAuthorPage'] ?? null),
                             'archiveUid' => TypeUtility::toInt($recordUidArray['NEW_blogArchivePage'] ?? null),
                             'storagePid' => TypeUtility::toInt($recordUidArray['NEW_blogFolder'] ?? null),
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         );
 
         // Relations
@@ -166,7 +167,7 @@ class SetupService
         return $newSetup;
     }
 
-    protected function getQueryBuilderForTable(string $table) : QueryBuilder
+    protected function getQueryBuilderForTable(string $table): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);

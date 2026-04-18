@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -44,8 +45,8 @@ class CommentFormFactory extends AbstractFormFactory
         ArrayUtility::mergeRecursiveWithOverrule(
             $prototypeConfiguration['formElementsDefinition']['BlogGoogleCaptcha'],
             [
-                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-            ]
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
+            ],
         );
 
         $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
@@ -90,6 +91,17 @@ class CommentFormFactory extends AbstractFormFactory
         $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class);
         $stringLengthValidator->setOptions(['minimum' => 5]);
         $commentField->addValidator($stringLengthValidator);
+
+        // Honeypot field — hidden via CSS, bots fill it; humans never see it.
+        /** @var GenericFormElement $honeypotField */
+        $honeypotField = $page->createElement('hp', 'Text');
+        $honeypotField->setLabel('Leave this field empty');
+        $honeypotField->setRenderingOption('fluidAdditionalAttributes', [
+            'autocomplete' => 'off',
+            'tabindex' => '-1',
+        ]);
+        $honeypotField->setProperty('elementClassAttribute', 't3g-blog-hp');
+        $honeypotField->setProperty('containerClassAttribute', 't3g-blog-hp-wrap');
 
         $explanationText = $page->createElement('explanation', 'StaticText');
         $explanationText->setProperty('text', LocalizationUtility::translate('label.required.field', 'blog') . ' ' . LocalizationUtility::translate('label.required.field.explanation', 'blog'));

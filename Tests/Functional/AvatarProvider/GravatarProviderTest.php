@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -22,12 +23,31 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class GravatarProviderTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
+
+    private ?array $typo3ConfVarsBackup = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $current = $GLOBALS['TYPO3_CONF_VARS'] ?? null;
+        $this->typo3ConfVarsBackup = is_array($current) ? $current : null;
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->typo3ConfVarsBackup === null) {
+            unset($GLOBALS['TYPO3_CONF_VARS']);
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVarsBackup;
+        }
+        parent::tearDown();
+    }
 
     public function testGetAvatarUrlReturnsOriginalGravatarComUrl(): void
     {
@@ -45,7 +65,7 @@ class GravatarProviderTest extends FunctionalTestCase
         $gravatarProvider = new GravatarProvider();
         self::assertSame(
             'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164?s=64',
-            $gravatarProvider->getAvatarUrl($author, 64)
+            $gravatarProvider->getAvatarUrl($author, 64),
         );
     }
 
@@ -72,7 +92,7 @@ class GravatarProviderTest extends FunctionalTestCase
         $gravatarProvider = new GravatarProvider();
         self::assertStringContainsString(
             'typo3temp/assets/t3g/blog/gravatar/',
-            $gravatarProvider->getAvatarUrl($author, 64)
+            $gravatarProvider->getAvatarUrl($author, 64),
         );
     }
 }

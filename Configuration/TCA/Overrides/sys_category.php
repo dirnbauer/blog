@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -21,7 +23,7 @@ $typeIconClasses[(string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] = '
 
 $defaultTypeIcon = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedString(
     $sysCategoryTca,
-    ['ctrl', 'typeicon_classes', 'default']
+    ['ctrl', 'typeicon_classes', 'default'],
 );
 $columns = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['columns']);
 
@@ -35,36 +37,36 @@ $columns['record_type'] = [
             [
                 'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:sys_category.record_type.default',
                 'value' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT,
-                'icon' => $defaultTypeIcon
+                'icon' => $defaultTypeIcon,
             ],
             [
                 'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:sys_category.record_type.blog',
                 'value' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG,
-                'icon' => 'record-blog-category'
-            ]
+                'icon' => 'record-blog-category',
+            ],
         ],
-        'default' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT
-    ]
+        'default' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT,
+    ],
 ];
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['columns'], $columns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_category',
     'record_type',
     '',
-    'before:title'
+    'before:title',
 );
 $types = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($sysCategoryTca, ['types']);
 $types[(string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG] =
     \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
         $sysCategoryTca,
-        ['types', (string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT]
+        ['types', (string)\T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_DEFAULT],
     );
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['types'], $types);
 
 // Limit parent categories to blog types
 $pagesCategoryWhere = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedString(
     \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('pages'),
-    ['columns', 'categories', 'config', 'foreign_table_where']
+    ['columns', 'categories', 'config', 'foreign_table_where'],
 );
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['types', \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG, 'columnsOverrides'], [
     'parent' => [
@@ -72,9 +74,9 @@ $pagesCategoryWhere = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedString(
             'foreign_table_where' => '' .
                 ' AND sys_category.record_type = ' . (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG . ' ' .
                 ' AND sys_category.pid = ###CURRENT_PID### ' .
-                $pagesCategoryWhere
-        ]
-    ]
+                $pagesCategoryWhere,
+        ],
+    ],
 ]);
 
 // Register fields
@@ -88,13 +90,13 @@ $columns = array_replace_recursive(
                 'generatorOptions' => [
                     'fields' => ['title'],
                     'replacements' => [
-                        '/' => ''
+                        '/' => '',
                     ],
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'content' => [
             'label' => $ll . 'sys_category.content',
@@ -118,7 +120,7 @@ $columns = array_replace_recursive(
                         'info' => false,
                     ],
                 ],
-                'richtextConfiguration' => 'default'
+                'richtextConfiguration' => 'default',
             ],
         ],
         'posts' => [
@@ -133,10 +135,10 @@ $columns = array_replace_recursive(
                     'fieldname' => 'categories',
                     'tablenames' => 'pages',
                 ],
-                'maxitems' => 1000
+                'maxitems' => 1000,
             ],
         ],
-    ]
+    ],
 );
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($sysCategoryTca, ['columns'], $columns);
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('sys_category', $sysCategoryTca);
@@ -146,7 +148,7 @@ $columns = array_replace_recursive(
     'sys_category',
     'slug',
     '',
-    'after:title'
+    'after:title',
 );
 
 // Add blog specific fields to blog categories
@@ -158,5 +160,5 @@ $columns = array_replace_recursive(
         --div--;' . $ll . 'sys_category.tabs.blog,
             posts
     ',
-    (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG
+    (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG,
 );

@@ -24,11 +24,11 @@ final class SetupServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
         'form',
-        'fluid_styled_content'
+        'fluid_styled_content',
     ];
 
     protected array $testExtensionsToLoad = [
-        'blog'
+        'blog',
     ];
 
     protected function setUp(): void

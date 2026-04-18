@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,7 +34,7 @@ final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWiz
             $timestamp = $record['crdate'] ?? time();
             $this->updateRecord($this->table, (int) $record['uid'], [
                 'crdate_month' => date('n', (int)$timestamp),
-                'crdate_year' => date('Y', (int)$timestamp)
+                'crdate_year' => date('Y', (int)$timestamp),
             ]);
         }
         return true;
@@ -45,7 +46,7 @@ final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWiz
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'doktype', Constants::DOKTYPE_BLOG_POST),
             $this->createEqualIntCriteria($queryBuilder, 'crdate_month', 0),
-            $this->createEqualIntCriteria($queryBuilder, 'crdate_year', 0)
+            $this->createEqualIntCriteria($queryBuilder, 'crdate_year', 0),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 

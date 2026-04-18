@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -31,7 +32,7 @@ final class AvatarProviderUpdate extends AbstractUpdate implements UpgradeWizard
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'avatar_provider' => GravatarProvider::class
+                'avatar_provider' => GravatarProvider::class,
             ]);
         }
 

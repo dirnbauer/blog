@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -16,6 +17,6 @@ use TYPO3\CMS\Core\Hooks\CreateSiteConfiguration as CoreCreateSiteConfiguration;
 class CreateSiteConfigurationHook extends CoreCreateSiteConfiguration
 {
     protected $allowedPageTypes = [
-        Constants::DOKTYPE_BLOG_PAGE
+        Constants::DOKTYPE_BLOG_PAGE,
     ];
 }

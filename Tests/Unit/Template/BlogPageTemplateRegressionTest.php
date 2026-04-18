@@ -92,7 +92,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
             $content,
             'Template must not use the removed synthetic rendering helper — synthetic records '
             . 'break record-transformation in TYPO3 v14. '
-            . 'Use <f:cObject typoscriptObjectPath="tt_content.{listType}.20" /> instead.'
+            . 'Use <f:cObject typoscriptObjectPath="tt_content.{listType}.20" /> instead.',
         );
     }
 
@@ -109,7 +109,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
             '/data="\{contentObjectData\}".*table="tt_content"/s',
             $content,
             'Template must not pass synthetic data as tt_content table — '
-            . 'record-transformation requires complete database rows.'
+            . 'record-transformation requires complete database rows.',
         );
     }
 
@@ -128,7 +128,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
             '/typoscriptObjectPath="tt_content\.\{listType\}\.20"/',
             $content,
             'renderPlugin section must render Extbase plugins directly via '
-            . 'tt_content.{listType}.20 to avoid record-transformation.'
+            . 'tt_content.{listType}.20 to avoid record-transformation.',
         );
     }
 
@@ -159,7 +159,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
             $sectionContent,
             'renderPlugin must NOT pass a data attribute to <f:cObject>. '
             . 'Synthetic data lacks t3ver_wsid/t3ver_oid/t3ver_state and would '
-            . 'break workspace overlay on the ContentObjectRenderer.'
+            . 'break workspace overlay on the ContentObjectRenderer.',
         );
     }
 
@@ -188,7 +188,7 @@ final class BlogPageTemplateRegressionTest extends TestCase
             '/<f:cObject[^>]+\btable\s*=\s*"tt_content"/',
             $sectionContent,
             'renderPlugin must NOT set table="tt_content" on <f:cObject>. '
-            . 'This triggers workspace-field validation on synthetic data.'
+            . 'This triggers workspace-field validation on synthetic data.',
         );
     }
 
@@ -224,8 +224,8 @@ final class BlogPageTemplateRegressionTest extends TestCase
                     . 'tt_content.%s.20 (EXTBASEPLUGIN) exists for workspace-safe rendering.',
                     $pluginName,
                     $ctype,
-                    $ctype
-                )
+                    $ctype,
+                ),
             );
         }
     }

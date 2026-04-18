@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Template;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -40,7 +47,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             $modernTailwindPageTemplates === false ? [] : $modernTailwindPageTemplates,
             $modernTailwindPagesTemplates === false ? [] : $modernTailwindPagesTemplates,
             $modernBootstrapPageTemplates === false ? [] : $modernBootstrapPageTemplates,
-            $modernBootstrapPagesTemplates === false ? [] : $modernBootstrapPagesTemplates
+            $modernBootstrapPagesTemplates === false ? [] : $modernBootstrapPagesTemplates,
         );
     }
 
@@ -52,7 +59,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $base = self::getTemplateBase();
         $templates = [];
         $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
         );
         foreach ($iterator as $file) {
             \assert($file instanceof \SplFileInfo);
@@ -78,7 +85,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             '/data="[^"]*"[^>]*table="tt_content"/',
             $content,
             'Must not pass data with table="tt_content" — '
-            . 'record-transformation requires workspace fields on every row.'
+            . 'record-transformation requires workspace fields on every row.',
         );
     }
 
@@ -93,7 +100,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             'contentListOptions',
             $content,
             'Must not use the removed synthetic content helper — synthetic records '
-            . 'miss workspace system fields (t3ver_wsid, t3ver_oid, t3ver_state).'
+            . 'miss workspace system fields (t3ver_wsid, t3ver_oid, t3ver_state).',
         );
     }
 
@@ -108,7 +115,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             'contentObjectData',
             $content,
             'Must not reference {contentObjectData} — this variable belonged to the '
-            . 'removed synthetic content rendering path.'
+            . 'removed synthetic content rendering path.',
         );
     }
 
@@ -125,7 +132,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         self::assertDoesNotMatchRegularExpression(
             '/typoscriptObjectPath="tt_content"\s+data="/',
             $content,
-            'Must not render tt_content CASE with synthetic data attribute.'
+            'Must not render tt_content CASE with synthetic data attribute.',
         );
     }
 
@@ -141,7 +148,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         self::assertDoesNotMatchRegularExpression(
             '/-16000000\d{2}/',
             $content,
-            'Templates must not contain hardcoded legacy fake UID values.'
+            'Templates must not contain hardcoded legacy fake UID values.',
         );
     }
 
@@ -161,7 +168,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             self::assertStringContainsString(
                 '<f:section name="renderPlugin">',
                 $content,
-                'Page template must contain renderPlugin section: ' . basename($path)
+                'Page template must contain renderPlugin section: ' . basename($path),
             );
         }
     }
@@ -177,17 +184,17 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
                 self::assertStringContainsString(
                     'tt_content.{listType}.20',
                     $m[1],
-                    'renderPlugin must use tt_content.{listType}.20 in: ' . basename($path)
+                    'renderPlugin must use tt_content.{listType}.20 in: ' . basename($path),
                 );
                 self::assertStringNotContainsString(
                     'data=',
                     $m[1],
-                    'renderPlugin must NOT pass data attribute in: ' . basename($path)
+                    'renderPlugin must NOT pass data attribute in: ' . basename($path),
                 );
                 self::assertStringNotContainsString(
                     'table=',
                     $m[1],
-                    'renderPlugin must NOT pass table attribute in: ' . basename($path)
+                    'renderPlugin must NOT pass table attribute in: ' . basename($path),
                 );
             }
         }
@@ -227,7 +234,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
                 self::assertStringContainsString(
                     "listType: '" . $listType . "'",
                     $content,
-                    sprintf('%s must render plugin %s', basename($path), $listType)
+                    sprintf('%s must render plugin %s', basename($path), $listType),
                 );
             }
         }
@@ -256,7 +263,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
             self::assertStringContainsString(
                 "listType: 'blog_sidebar'",
                 $content,
-                basename($path) . ' must render blog_sidebar plugin.'
+                basename($path) . ' must render blog_sidebar plugin.',
             );
         }
     }

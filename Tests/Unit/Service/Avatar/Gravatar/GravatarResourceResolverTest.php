@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -40,7 +41,7 @@ class GravatarResourceResolverTest extends UnitTestCase
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';
@@ -70,7 +71,7 @@ class GravatarResourceResolverTest extends UnitTestCase
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';
@@ -97,7 +98,7 @@ class GravatarResourceResolverTest extends UnitTestCase
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';

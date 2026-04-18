@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -35,7 +36,7 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
             ]);
             $this->updateRecord('pages', (int) $record['uid_foreign'], [
                 'featured_image' => 1,
-                'media' => 0
+                'media' => 0,
             ]);
         }
 
@@ -61,7 +62,7 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
             function ($page) {
                 return $page['uid'];
             },
-            $this->getAffectedPages()
+            $this->getAffectedPages(),
         );
 
         $queryBuilder = $this->createQueryBuilder('sys_file_reference');

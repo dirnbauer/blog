@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -40,7 +42,7 @@ $itemGroups['blog'] = 'Blog';
         'group' => 'blog',
     ],
     '1',
-    'after'
+    'after',
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
     'pages',
@@ -52,7 +54,7 @@ $itemGroups['blog'] = 'Blog';
         'group' => 'blog',
     ],
     (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
-    'after'
+    'after',
 );
 
 // Add icon for new page types:
@@ -69,10 +71,10 @@ $itemGroups['blog'] = 'Blog';
         'types' => [
             (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST => \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
                 $pagesTca,
-                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT]
+                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
             ),
         ],
-    ]
+    ],
 );
 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
     $pagesTca,
@@ -85,10 +87,10 @@ $itemGroups['blog'] = 'Blog';
         'types' => [
             (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_PAGE => \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray(
                 $pagesTca,
-                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT]
+                ['types', \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
             ),
         ],
-    ]
+    ],
 );
 
 // Register fields
@@ -131,20 +133,18 @@ $columns = array_replace_recursive(
         'crdate_month' => [
             'label' => $ll . 'pages.crdate_month',
             'config' => [
-                'type' => 'input',
-                'size' => '13',
-                'eval' => 'num',
-                'default' => '0',
+                'type' => 'number',
+                'size' => 13,
+                'default' => 0,
                 'readOnly' => true,
             ],
         ],
         'crdate_year' => [
             'label' => $ll . 'pages.crdate_year',
             'config' => [
-                'type' => 'input',
-                'size' => '13',
-                'eval' => 'num',
-                'default' => '0',
+                'type' => 'number',
+                'size' => 13,
+                'default' => 0,
                 'readOnly' => true,
             ],
         ],
@@ -155,8 +155,8 @@ $columns = array_replace_recursive(
                 'size' => '13',
                 'default' => '0',
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'publish_date' => [
@@ -166,8 +166,8 @@ $columns = array_replace_recursive(
                 'size' => '13',
                 'default' => '0',
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'tags' => [
@@ -184,8 +184,8 @@ $columns = array_replace_recursive(
                 'foreign_table_where' => 'AND tx_blog_domain_model_tag.sys_language_uid IN (0,-1) AND tx_blog_domain_model_tag.pid = ###PAGE_TSCONFIG_ID### ORDER BY tx_blog_domain_model_tag.title ASC',
                 'MM' => 'tx_blog_tag_pages_mm',
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'authors' => [
@@ -200,8 +200,8 @@ $columns = array_replace_recursive(
                 'minitems' => 0,
                 'maxitems' => 99999,
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'featured_image' => [
@@ -212,18 +212,18 @@ $columns = array_replace_recursive(
                 'maxitems' => 1,
                 'allowed' => 'common-image-types',
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'categories' => [
             'config' => [
                 'behaviour' => [
-                    'allowLanguageSynchronization' => true
-                ]
-            ]
-        ]
-    ]
+                    'allowLanguageSynchronization' => true,
+                ],
+            ],
+        ],
+    ],
 );
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['columns'], $columns);
 
@@ -231,8 +231,8 @@ $columns = array_replace_recursive(
     'categories' => [
         'config' => [
             'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) AND sys_category.pid = ###PAGE_TSCONFIG_ID###',
-        ]
-    ]
+        ],
+    ],
 ]);
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('pages', $pagesTca);
 
@@ -241,5 +241,5 @@ $columns = array_replace_recursive(
     'pages',
     '--div--;' . $ll . 'pages.tabs.blog,
     --palette--;' . $ll . 'pages.palettes.publish_date;publish_date, featured_image, archive_date, tags, authors, comments_active, comments',
-    (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST
+    (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
 );

@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Rendering;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -50,7 +57,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
             'setRequest',
             $source,
             'CObjectViewHelper must call setRequest() on ContentObjectRenderer '
-            . 'so that workspace context flows from the PSR-7 request.'
+            . 'so that workspace context flows from the PSR-7 request.',
         );
     }
 
@@ -68,7 +75,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
             't3ver_',
             $source,
             'CObjectViewHelper must not contain workspace-specific logic. '
-            . 'Workspace context is carried by the request, not by the VH.'
+            . 'Workspace context is carried by the request, not by the VH.',
         );
     }
 
@@ -85,13 +92,13 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'setContentObjectRenderer',
             $source,
-            'ExtbasePluginContentObject must pass ContentObjectRenderer to Bootstrap.'
+            'ExtbasePluginContentObject must pass ContentObjectRenderer to Bootstrap.',
         );
 
         self::assertStringContainsString(
             'initialize',
             $source,
-            'ExtbasePluginContentObject must call Bootstrap::initialize() with request.'
+            'ExtbasePluginContentObject must call Bootstrap::initialize() with request.',
         );
     }
 
@@ -108,7 +115,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'configurationManager->setRequest',
             $source,
-            'Extbase Bootstrap must forward PSR-7 request to ConfigurationManager.'
+            'Extbase Bootstrap must forward PSR-7 request to ConfigurationManager.',
         );
     }
 
@@ -122,7 +129,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'extends ActionController',
             $source,
-            'PostController must extend Extbase ActionController which is workspace-aware.'
+            'PostController must extend Extbase ActionController which is workspace-aware.',
         );
     }
 
@@ -136,7 +143,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'PostRepository',
             $source,
-            'PostController must use PostRepository (workspace-aware via Context).'
+            'PostController must use PostRepository (workspace-aware via Context).',
         );
     }
 
@@ -150,7 +157,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'extends ActionController',
             $source,
-            'CommentController must extend Extbase ActionController.'
+            'CommentController must extend Extbase ActionController.',
         );
     }
 
@@ -164,7 +171,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
         self::assertStringContainsString(
             'extends ActionController',
             $source,
-            'WidgetController must extend Extbase ActionController.'
+            'WidgetController must extend Extbase ActionController.',
         );
     }
 
@@ -179,13 +186,13 @@ final class BlogRenderingChainSafetyTest extends TestCase
             'cms-workspaces',
             $source,
             'ext_localconf.php must not conditionally check for workspaces extension. '
-            . 'Plugin registration must be identical with and without workspaces.'
+            . 'Plugin registration must be identical with and without workspaces.',
         );
 
         self::assertStringNotContainsString(
             'WorkspaceService',
             $source,
-            'ext_localconf.php must not reference WorkspaceService.'
+            'ext_localconf.php must not reference WorkspaceService.',
         );
     }
 
@@ -200,7 +207,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
             'DOKTYPE_BLOG_POST = 137',
             $source,
             'Blog posts are pages (doktype 137). Pages are always workspace-aware '
-            . 'in TYPO3, so blog posts inherit workspace support automatically.'
+            . 'in TYPO3, so blog posts inherit workspace support automatically.',
         );
     }
 
@@ -218,7 +225,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
                 '/t3ver_wsid|t3ver_oid|t3ver_state/',
                 $source,
                 basename($path) . ' must not query workspace fields directly. '
-                . 'Workspace handling is done by Core, not by controllers.'
+                . 'Workspace handling is done by Core, not by controllers.',
             );
         }
     }
@@ -240,7 +247,7 @@ final class BlogRenderingChainSafetyTest extends TestCase
             self::assertStringNotContainsString(
                 'WorkspaceService',
                 $source,
-                basename($path) . ' must not depend on WorkspaceService.'
+                basename($path) . ' must not depend on WorkspaceService.',
             );
         }
     }

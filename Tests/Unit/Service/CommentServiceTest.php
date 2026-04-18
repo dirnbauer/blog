@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -37,7 +38,7 @@ class CommentServiceTest extends UnitTestCase
         $this->commentService = new CommentService(
             $this->postRepositoryMock,
             $this->commentRepositoryMock,
-            $this->persistenceManagerMock
+            $this->persistenceManagerMock,
         );
     }
 
@@ -157,5 +158,45 @@ class CommentServiceTest extends UnitTestCase
 
         $this->commentService->setSettings(['active' => 1, 'moderation' => 0]);
         $this->commentService->addComment($post, $comment);
+    }
+
+    #[Test]
+    public function honeypotFieldRejectsCommentSilently(): void
+    {
+        $this->initialize();
+
+        $this->postRepositoryMock
+            ->expects(self::never())
+            ->method('update');
+        $this->persistenceManagerMock
+            ->expects(self::never())
+            ->method('persistAll');
+
+        $post = new Post();
+        $post->_setProperty('uid', 1);
+        $comment = new Comment();
+        $comment->setHp('bot filled this');
+
+        $this->commentService->setSettings(['active' => 1, 'moderation' => 0]);
+        $result = $this->commentService->addComment($post, $comment);
+
+        self::assertSame(CommentService::STATE_ERROR, $result);
+        self::assertCount(0, $post->getComments());
+    }
+
+    #[Test]
+    public function whitespaceOnlyHoneypotIsTreatedAsEmpty(): void
+    {
+        $this->initialize();
+
+        $post = new Post();
+        $post->_setProperty('uid', 1);
+        $comment = new Comment();
+        $comment->setHp("   \t\n");
+
+        $this->commentService->setSettings(['active' => 1, 'moderation' => 0]);
+        $result = $this->commentService->addComment($post, $comment);
+
+        self::assertSame(CommentService::STATE_SUCCESS, $result);
     }
 }

@@ -32,8 +32,8 @@ final class PostViewHelperTest extends SiteBasedTestCase
                 'pid' => self::STORAGE_UID,
                 'doktype' => Constants::DOKTYPE_BLOG_POST,
                 'title' => 'First blog post',
-                'slug' => '/first-blog-post'
-            ]
+                'slug' => '/first-blog-post',
+            ],
         );
 
         $instructions = [
@@ -41,12 +41,12 @@ final class PostViewHelperTest extends SiteBasedTestCase
                 'type' => 'post',
                 'uid' => 100,
                 'as' => 'post',
-            ]
+            ],
         ];
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template, $instructions)
+            $this->renderFluidTemplateInTestSite($template, $instructions),
         );
     }
 

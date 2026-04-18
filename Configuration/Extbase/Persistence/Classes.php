@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -22,7 +23,7 @@ return [
         'tableName' => 'tx_blog_domain_model_comment',
         'properties' => [
             'post' => [
-                'fieldName' => 'parentid'
+                'fieldName' => 'parentid',
             ],
         ],
     ],

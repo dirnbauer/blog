@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,8 +34,8 @@ class EqualIntCriteria extends AbstractCriteria implements CriteriaInterface
             $this->getField(),
             $this->queryBuilder->createNamedParameter(
                 $this->getValue(),
-                Connection::PARAM_INT
-            )
+                Connection::PARAM_INT,
+            ),
         );
     }
 }

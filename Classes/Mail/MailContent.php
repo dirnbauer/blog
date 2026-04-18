@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,7 +20,7 @@ use TYPO3\CMS\Core\View\ViewInterface;
 class MailContent
 {
     public function __construct(
-        protected readonly ViewFactoryInterface $viewFactory
+        protected readonly ViewFactoryInterface $viewFactory,
     ) {
     }
 
@@ -38,16 +39,16 @@ class MailContent
         return $this->viewFactory->create(new ViewFactoryData(
             templateRootPaths: [
                 'EXT:blog/Resources/Private/Mails/Templates/',
-                $settings->get('plugin.tx_blog.view.emails.templateRootPath')
+                $settings->get('plugin.tx_blog.view.emails.templateRootPath'),
             ],
             partialRootPaths: [
                 'EXT:blog/Resources/Private/Mails/Partials/',
-                $settings->get('plugin.tx_blog.view.emails.partialRootPath')
+                $settings->get('plugin.tx_blog.view.emails.partialRootPath'),
 
             ],
             layoutRootPaths: [
                 'EXT:blog/Resources/Private/Mails/Layouts/',
-                $settings->get('plugin.tx_blog.view.emails.layoutRootPath')
+                $settings->get('plugin.tx_blog.view.emails.layoutRootPath'),
             ],
             request: $request,
         ));

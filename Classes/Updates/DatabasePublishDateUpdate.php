@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -31,7 +32,7 @@ final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeW
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'publish_date' => $record['crdate'] ?? time()
+                'publish_date' => $record['crdate'] ?? time(),
             ]);
         }
 
@@ -43,7 +44,7 @@ final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeW
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'doktype', Constants::DOKTYPE_BLOG_POST),
-            $this->createEqualIntCriteria($queryBuilder, 'publish_date', 0)
+            $this->createEqualIntCriteria($queryBuilder, 'publish_date', 0),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 

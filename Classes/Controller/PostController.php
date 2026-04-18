@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -24,15 +25,16 @@ use T3G\AgencyPack\Blog\Factory\PostRepositoryDemandFactory;
 use T3G\AgencyPack\Blog\Pagination\BlogPagination;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\MetaTagService;
+use T3G\AgencyPack\Blog\Service\RelatedPostsService;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 class PostController extends ActionController
@@ -44,6 +46,8 @@ class PostController extends ActionController
         protected readonly TagRepository $tagRepository,
         protected readonly CacheService $blogCacheService,
         protected readonly PostRepositoryDemandFactory $postRepositoryDemandFactory,
+        protected readonly MetaTagService $metaTagService,
+        protected readonly RelatedPostsService $relatedPostsService,
     ) {
     }
 
@@ -177,8 +181,8 @@ class PostController extends ActionController
                 $dateTime->format('F'),
                 (string) $year,
             ], (string) LocalizationUtility::translate('meta.title.listPostsByDate', 'blog'));
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $title);
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) LocalizationUtility::translate('meta.description.listPostsByDate', 'blog'));
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $title);
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) LocalizationUtility::translate('meta.description.listPostsByDate', 'blog'));
         }
         return $this->htmlResponse();
     }
@@ -207,8 +211,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('category', $category);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $category->getTitle());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $category->getDescription());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $category->getTitle());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $category->getDescription());
         } else {
             $this->view->assign('categories', $this->categoryRepository->findAll());
         }
@@ -227,8 +231,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('author', $author);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $author->getName());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $author->getBio());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $author->getName());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $author->getBio());
         } else {
             $this->view->assign('authors', $this->authorRepository->findAll());
         }
@@ -247,8 +251,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('tag', $tag);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $tag->getTitle());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $tag->getDescription());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $tag->getTitle());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $tag->getDescription());
         } else {
             $this->view->assign('tags', $this->tagRepository->findAll());
         }
@@ -308,10 +312,10 @@ class PostController extends ActionController
     public function relatedPostsAction(): ResponseInterface
     {
         $post = $this->postRepository->findCurrentPost();
-        $posts = $this->postRepository->findRelatedPosts(
+        $posts = $this->relatedPostsService->findRelatedPosts(
             (int)$this->settings['relatedPosts']['categoryMultiplier'],
             (int)$this->settings['relatedPosts']['tagMultiplier'],
-            (int)$this->settings['relatedPosts']['limit']
+            (int)$this->settings['relatedPosts']['limit'],
         );
         $this->view->assign('type', 'related');
         $this->view->assign('post', $post);

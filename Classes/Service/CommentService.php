@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -45,6 +46,9 @@ class CommentService
     public function addComment(Post $post, Comment $comment): string
     {
         $result = self::STATE_ERROR;
+        if (trim((string) $comment->getHp()) !== '') {
+            return $result;
+        }
         if ((int)$this->settings['active'] === 1 && $post->getCommentsActive()) {
             $result = self::STATE_SUCCESS;
             switch ((int)$this->settings['moderation']) {

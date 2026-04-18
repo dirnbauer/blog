@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -22,7 +23,7 @@ class CacheService
 {
     public function __construct(
         private readonly ConfigurationManagerInterface $configurationManager,
-        private readonly CacheManager $cacheManager
+        private readonly CacheManager $cacheManager,
     ) {
     }
 
@@ -62,7 +63,7 @@ class CacheService
         }
 
         $cacheCollector->addCacheTags(
-            ...array_map(fn (string $tag) => new CacheTag($tag), $tags)
+            ...array_map(fn (string $tag) => new CacheTag($tag), $tags),
         );
     }
 
@@ -82,7 +83,7 @@ class CacheService
     {
         return $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            'blog'
+            'blog',
         );
     }
 }

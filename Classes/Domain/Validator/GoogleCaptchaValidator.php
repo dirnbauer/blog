@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -19,13 +20,23 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 class GoogleCaptchaValidator extends AbstractValidator
 {
+    private const VERIFY_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
+    private const VERIFY_TIMEOUT_SECONDS = 5.0;
+    private const REQUEST_ATTRIBUTE = 't3g-blog-recaptcha-verified';
+
     protected $acceptsEmptyValues = false;
+
+    public function __construct(
+        private readonly ConfigurationManagerInterface $configurationManager,
+        private readonly RequestFactory $requestFactory,
+    ) {
+    }
 
     public function isValid(mixed $value): void
     {
         $action = 'form';
         $controller = 'Comment';
-        $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
+        $settings = $this->configurationManager
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
         $request = $this->resolveRequest();
         $queryData = $request->getQueryParams()['tx_blog_commentform'] ?? [];
@@ -40,7 +51,7 @@ class GoogleCaptchaValidator extends AbstractValidator
         $requestData = array_merge($queryData, $postData);
 
         if (
-            ($GLOBALS['google_recaptcha'] ?? null) === null
+            $request->getAttribute(self::REQUEST_ATTRIBUTE) !== true
             && ($requestData['action'] ?? null) === $action
             && ($requestData['controller'] ?? null) === $controller
             && (int)($settings['comments']['google_recaptcha']['enable'] ?? 0) === 1
@@ -48,15 +59,16 @@ class GoogleCaptchaValidator extends AbstractValidator
             $captchaResponse = is_array($bodyData) ? (string)($bodyData['g-recaptcha-response'] ?? '') : '';
             $additionalOptions = [
                 'headers' => ['Content-type' => 'application/x-www-form-urlencoded'],
+                'timeout' => self::VERIFY_TIMEOUT_SECONDS,
                 'query' => [
                     'secret' => $settings['comments']['google_recaptcha']['secret_key'],
                     'response' => $captchaResponse,
-                    'remoteip' => GeneralUtility::getIndpEnv('REMOTE_ADDR')
-                ]
+                    'remoteip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                ],
             ];
             try {
-                $response = GeneralUtility::makeInstance(RequestFactory::class)
-                    ->request('https://www.google.com/recaptcha/api/siteverify', 'POST', $additionalOptions);
+                $response = $this->requestFactory
+                    ->request(self::VERIFY_ENDPOINT, 'POST', $additionalOptions);
             } catch (\Throwable $exception) {
                 $this->addError('The re-captcha failed', 1501341100);
                 return;
@@ -71,7 +83,8 @@ class GoogleCaptchaValidator extends AbstractValidator
             if (!is_array($result) || ($result['success'] ?? false) !== true) {
                 $this->addError('The re-captcha failed', 1501341100);
             } else {
-                $GLOBALS['google_recaptcha'] = true;
+                $request = $request->withAttribute(self::REQUEST_ATTRIBUTE, true);
+                $GLOBALS['TYPO3_REQUEST'] = $request;
             }
         }
     }

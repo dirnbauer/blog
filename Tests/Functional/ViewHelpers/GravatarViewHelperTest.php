@@ -25,11 +25,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class GravatarViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     #[Test]

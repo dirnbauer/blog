@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -41,7 +42,7 @@ class TagRepository extends Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->in('uid', $uids)
+            $query->in('uid', $uids),
         );
 
         return $query->execute();
@@ -66,8 +67,8 @@ class TagRepository extends Repository
             $queryBuilder->where(
                 $queryBuilder->expr()->in(
                     't.pid',
-                    $queryBuilder->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY)
-                )
+                    $queryBuilder->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY),
+                ),
             );
         }
 

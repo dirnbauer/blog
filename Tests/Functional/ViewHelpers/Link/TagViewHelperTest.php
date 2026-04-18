@@ -30,8 +30,8 @@ final class TagViewHelperTest extends SiteBasedTestCase
                 'uid' => 100,
                 'pid' => self::STORAGE_UID,
                 'title' => 'TYPO3',
-                'slug' => 'typo3'
-            ]
+                'slug' => 'typo3',
+            ],
         );
 
         $instructions = [
@@ -39,12 +39,12 @@ final class TagViewHelperTest extends SiteBasedTestCase
                 'type' => 'tag',
                 'uid' => 100,
                 'as' => 'tag',
-            ]
+            ],
         ];
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template, $instructions)
+            $this->renderFluidTemplateInTestSite($template, $instructions),
         );
     }
 

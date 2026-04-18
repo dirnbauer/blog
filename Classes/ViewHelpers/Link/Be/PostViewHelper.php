@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -65,7 +66,7 @@ class PostViewHelper extends AbstractTagBasedViewHelper
             $this->renderChildren(),
             $post->getTitle() !== ''
                 ? $post->getTitle()
-                : TypeUtility::toString(LocalizationUtility::translate('backend.message.nopost', 'blog'))
+                : TypeUtility::toString(LocalizationUtility::translate('backend.message.nopost', 'blog')),
         );
         $this->tag->addAttribute('href', $uri);
         $this->tag->setContent($linkText);

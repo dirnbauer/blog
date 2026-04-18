@@ -106,8 +106,8 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(Post $post): string => $post->getTitle(),
-            $postArray
+            static fn (Post $post): string => $post->getTitle(),
+            $postArray,
         );
 
         self::assertContains('First Blog Post', $titles);
@@ -115,12 +115,12 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         self::assertNotContains(
             'New WS Blog Post',
             $titles,
-            'Workspace-only posts must not appear in LIVE workspace.'
+            'Workspace-only posts must not appear in LIVE workspace.',
         );
         self::assertNotContains(
             'First Blog Post - WS Modified',
             $titles,
-            'Workspace versions of live records must not leak into LIVE.'
+            'Workspace versions of live records must not leak into LIVE.',
         );
     }
 
@@ -136,15 +136,15 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(Post $post): string => $post->getTitle(),
-            $postArray
+            static fn (Post $post): string => $post->getTitle(),
+            $postArray,
         );
 
         self::assertContains('Second Blog Post', $titles);
         self::assertContains(
             'New WS Blog Post',
             $titles,
-            'Workspace-only posts must appear when the matching workspace is active.'
+            'Workspace-only posts must appear when the matching workspace is active.',
         );
     }
 
@@ -161,8 +161,8 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
         $titles = array_map(
-            static fn(Post $post): string => $post->getTitle(),
-            $postArray
+            static fn (Post $post): string => $post->getTitle(),
+            $postArray,
         );
 
         self::assertContains('First Blog Post', $titles, 'LIVE posts must still be visible.');
@@ -170,7 +170,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         self::assertNotContains(
             'New WS Blog Post',
             $titles,
-            'Posts from workspace 1 must not appear in workspace 99.'
+            'Posts from workspace 1 must not appear in workspace 99.',
         );
     }
 

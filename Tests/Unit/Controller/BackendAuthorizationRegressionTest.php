@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -27,7 +34,7 @@ final class BackendAuthorizationRegressionTest extends TestCase
         self::assertStringContainsString(
             'BackendAccessService',
             $backendControllerSource,
-            'BackendController must depend on BackendAccessService for backend authorization checks.'
+            'BackendController must depend on BackendAccessService for backend authorization checks.',
         );
     }
 
@@ -39,7 +46,7 @@ final class BackendAuthorizationRegressionTest extends TestCase
         self::assertStringContainsString(
             'canModerateComment',
             $backendControllerSource,
-            'updateCommentStatusAction() must verify comment moderation permission before mutating records.'
+            'updateCommentStatusAction() must verify comment moderation permission before mutating records.',
         );
     }
 
@@ -51,12 +58,12 @@ final class BackendAuthorizationRegressionTest extends TestCase
         self::assertStringContainsString(
             'findAllByPids',
             $backendControllerSource,
-            'postsAction() must scope post queries to accessible blog setup ids.'
+            'postsAction() must scope post queries to accessible blog setup ids.',
         );
         self::assertStringContainsString(
             'findAllByFilterAndBlogSetups',
             $backendControllerSource,
-            'commentsAction() must scope comment queries to accessible blog setup ids.'
+            'commentsAction() must scope comment queries to accessible blog setup ids.',
         );
     }
 
@@ -68,12 +75,12 @@ final class BackendAuthorizationRegressionTest extends TestCase
         self::assertStringContainsString(
             'BackendAccessService',
             $setupServiceSource,
-            'SetupService must depend on BackendAccessService to respect backend page mounts.'
+            'SetupService must depend on BackendAccessService to respect backend page mounts.',
         );
         self::assertStringContainsString(
             'filterAccessibleBlogSetups',
             $setupServiceSource,
-            'SetupService::determineBlogSetups() must filter inaccessible blog roots.'
+            'SetupService::determineBlogSetups() must filter inaccessible blog roots.',
         );
     }
 }

@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -40,7 +47,7 @@ final class TypoScriptSetupTest extends TestCase
                 continue;
             }
             $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
+                new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
             );
             foreach ($iterator as $file) {
                 \assert($file instanceof \SplFileInfo);
@@ -66,7 +73,7 @@ final class TypoScriptSetupTest extends TestCase
             '/\[.*workspace.*\]/i',
             $content,
             'TypoScript must not contain workspace-specific conditions. '
-            . 'The blog must work identically with and without workspaces.'
+            . 'The blog must work identically with and without workspaces.',
         );
     }
 
@@ -80,7 +87,7 @@ final class TypoScriptSetupTest extends TestCase
         self::assertStringNotContainsString(
             'cms-workspaces',
             $content,
-            'TypoScript must not reference typo3/cms-workspaces.'
+            'TypoScript must not reference typo3/cms-workspaces.',
         );
     }
 
@@ -95,7 +102,7 @@ final class TypoScriptSetupTest extends TestCase
             'record-transformation >',
             $content,
             'TypoScript must not unset record-transformation. '
-            . 'The template fix bypasses it via .20 path instead.'
+            . 'The template fix bypasses it via .20 path instead.',
         );
     }
 
@@ -111,7 +118,7 @@ final class TypoScriptSetupTest extends TestCase
             'contentListOptions',
             $content,
             'Shared setup must define contentListOptions for backward compatibility '
-            . 'with sitepackages that may still use the deprecated ViewHelper.'
+            . 'with sitepackages that may still use the deprecated ViewHelper.',
         );
     }
 
@@ -137,7 +144,7 @@ final class TypoScriptSetupTest extends TestCase
             self::assertStringContainsString(
                 $key,
                 $content,
-                sprintf('Shared setup must define contentListOptions for "%s".', $key)
+                sprintf('Shared setup must define contentListOptions for "%s".', $key),
             );
         }
     }
@@ -156,7 +163,7 @@ final class TypoScriptSetupTest extends TestCase
         self::assertStringContainsString(
             'persistence',
             $content,
-            'Static setup must configure Extbase persistence (storagePid).'
+            'Static setup must configure Extbase persistence (storagePid).',
         );
     }
 }

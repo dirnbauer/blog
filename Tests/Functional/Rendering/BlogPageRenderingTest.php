@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Functional\Rendering;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -82,13 +89,13 @@ YAML;
     public function blogListPageRendersWithoutException(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(2)
+            (new InternalRequest('http://localhost/'))->withPageId(2),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog list page (doktype 138) must return HTTP 200 in live mode.'
+            'Blog list page (doktype 138) must return HTTP 200 in live mode.',
         );
     }
 
@@ -96,13 +103,13 @@ YAML;
     public function blogPostPageRendersWithoutException(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(3)
+            (new InternalRequest('http://localhost/'))->withPageId(3),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog post page (doktype 137) must return HTTP 200 in live mode.'
+            'Blog post page (doktype 137) must return HTTP 200 in live mode.',
         );
     }
 
@@ -110,7 +117,7 @@ YAML;
     public function blogListPageContainsHtmlOutput(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(2)
+            (new InternalRequest('http://localhost/'))->withPageId(2),
         );
 
         $body = (string)$response->getBody();
@@ -121,7 +128,7 @@ YAML;
     public function blogPostPageContainsHtmlOutput(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(3)
+            (new InternalRequest('http://localhost/'))->withPageId(3),
         );
 
         $body = (string)$response->getBody();
@@ -132,14 +139,14 @@ YAML;
     public function blogPostPageDoesNotContainIncompleteRecordException(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(3)
+            (new InternalRequest('http://localhost/'))->withPageId(3),
         );
 
         $body = (string)$response->getBody();
         self::assertStringNotContainsString(
             'IncompleteRecordException',
             $body,
-            'Blog post must NOT throw IncompleteRecordException in live mode.'
+            'Blog post must NOT throw IncompleteRecordException in live mode.',
         );
     }
 
@@ -147,14 +154,14 @@ YAML;
     public function blogListPageDoesNotContainIncompleteRecordException(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(2)
+            (new InternalRequest('http://localhost/'))->withPageId(2),
         );
 
         $body = (string)$response->getBody();
         self::assertStringNotContainsString(
             'IncompleteRecordException',
             $body,
-            'Blog list must NOT throw IncompleteRecordException in live mode.'
+            'Blog list must NOT throw IncompleteRecordException in live mode.',
         );
     }
 
@@ -162,13 +169,13 @@ YAML;
     public function secondBlogPostPageRendersInLiveMode(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(4)
+            (new InternalRequest('http://localhost/'))->withPageId(4),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Second blog post page must return HTTP 200 in live mode.'
+            'Second blog post page must return HTTP 200 in live mode.',
         );
     }
 
@@ -176,14 +183,14 @@ YAML;
     public function blogPostPageDoesNotContainRecordPropertyNotFoundException(): void
     {
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest('http://localhost/'))->withPageId(3)
+            (new InternalRequest('http://localhost/'))->withPageId(3),
         );
 
         $body = (string)$response->getBody();
         self::assertStringNotContainsString(
             'RecordPropertyNotFoundException',
             $body,
-            'Blog post must NOT throw RecordPropertyNotFoundException.'
+            'Blog post must NOT throw RecordPropertyNotFoundException.',
         );
     }
 
@@ -201,13 +208,13 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(2),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog list page must return HTTP 200 in workspace preview.'
+            'Blog list page must return HTTP 200 in workspace preview.',
         );
     }
 
@@ -221,13 +228,13 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(3),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog post page must return HTTP 200 in workspace preview.'
+            'Blog post page must return HTTP 200 in workspace preview.',
         );
     }
 
@@ -241,19 +248,19 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(3),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         $body = (string)$response->getBody();
         self::assertStringNotContainsString(
             'IncompleteRecordException',
             $body,
-            'Blog post must NOT throw IncompleteRecordException in workspace mode.'
+            'Blog post must NOT throw IncompleteRecordException in workspace mode.',
         );
         self::assertStringNotContainsString(
             'RecordPropertyNotFoundException',
             $body,
-            'Blog post must NOT throw RecordPropertyNotFoundException in workspace mode.'
+            'Blog post must NOT throw RecordPropertyNotFoundException in workspace mode.',
         );
     }
 
@@ -267,14 +274,14 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(2),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         $body = (string)$response->getBody();
         self::assertStringNotContainsString(
             'IncompleteRecordException',
             $body,
-            'Blog list must NOT throw IncompleteRecordException in workspace mode.'
+            'Blog list must NOT throw IncompleteRecordException in workspace mode.',
         );
     }
 
@@ -288,14 +295,14 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(3),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         $body = (string)$response->getBody();
         self::assertStringContainsString(
             '</html>',
             $body,
-            'Blog post page must produce valid HTML in workspace preview.'
+            'Blog post page must produce valid HTML in workspace preview.',
         );
     }
 
@@ -309,13 +316,13 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(4),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(1)
+                ->withWorkspaceId(1),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Unmodified blog post must also render HTTP 200 in workspace preview.'
+            'Unmodified blog post must also render HTTP 200 in workspace preview.',
         );
     }
 
@@ -332,13 +339,13 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(3),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(0)
+                ->withWorkspaceId(0),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog post must render HTTP 200 with backend user in live workspace (id=0).'
+            'Blog post must render HTTP 200 with backend user in live workspace (id=0).',
         );
     }
 
@@ -351,13 +358,13 @@ YAML;
             (new InternalRequest('http://localhost/'))->withPageId(2),
             (new InternalRequestContext())
                 ->withBackendUserId(1)
-                ->withWorkspaceId(0)
+                ->withWorkspaceId(0),
         );
 
         self::assertSame(
             200,
             $response->getStatusCode(),
-            'Blog list must render HTTP 200 with backend user in live workspace (id=0).'
+            'Blog list must render HTTP 200 with backend user in live workspace (id=0).',
         );
     }
 }

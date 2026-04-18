@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,7 +33,7 @@ final class ListTypeMigration extends AbstractListTypeToCTypeUpdate
             'blog_demandedposts',
             'blog_relatedposts',
             'blog_header',
-            'blog_footer'
+            'blog_footer',
         ];
         return array_combine($ctypes, $ctypes);
     }

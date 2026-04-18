@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -18,7 +19,7 @@ class ConditionProvider extends AbstractProvider
     public function __construct()
     {
         $this->expressionLanguageVariables = [
-            'blog' => GeneralUtility::makeInstance(BlogVariableProvider::class)
+            'blog' => GeneralUtility::makeInstance(BlogVariableProvider::class),
         ];
     }
 }

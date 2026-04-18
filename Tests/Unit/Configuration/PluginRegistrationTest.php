@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -95,8 +102,8 @@ final class PluginRegistrationTest extends TestCase
                 . 'fail in both live and workspace modes.',
                 $pluginName,
                 $ctype,
-                $ctype
-            )
+                $ctype,
+            ),
         );
     }
 
@@ -109,7 +116,7 @@ final class PluginRegistrationTest extends TestCase
         self::assertStringContainsString(
             'PLUGIN_TYPE_CONTENT_ELEMENT',
             $content,
-            'All blog plugins must be registered with PLUGIN_TYPE_CONTENT_ELEMENT.'
+            'All blog plugins must be registered with PLUGIN_TYPE_CONTENT_ELEMENT.',
         );
     }
 
@@ -118,7 +125,7 @@ final class PluginRegistrationTest extends TestCase
     {
         self::assertFileExists(
             self::getExtensionPath() . '/ext_localconf.php',
-            'ext_localconf.php must exist for plugin registration.'
+            'ext_localconf.php must exist for plugin registration.',
         );
     }
 
@@ -130,7 +137,7 @@ final class PluginRegistrationTest extends TestCase
         self::assertStringContainsString(
             "['SYS']['fluid']['namespaces']['blogvh']",
             $content,
-            'The "blogvh" Fluid namespace must be registered for the extension ViewHelpers.'
+            'The "blogvh" Fluid namespace must be registered for the extension ViewHelpers.',
         );
     }
 }

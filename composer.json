@@ -66,6 +66,8 @@
             "phpstan analyze --configuration Build/phpstan.neon --memory-limit=1G --generate-baseline Build/phpstan-baseline.neon"
         ],
         "test": [
+            "@composer validate --strict",
+            "@cgl",
             "@test:php:lint",
             "@phpstan",
             "@test:php:unit",

@@ -3,6 +3,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 $extensionRoot = dirname(__DIR__, 2);
 $phpunitBinary = $extensionRoot . '/.build/bin/phpunit';
 $configurationFile = $extensionRoot . '/Build/FunctionalTests.xml';
@@ -11,7 +18,7 @@ if (!is_file($phpunitBinary)) {
     fwrite(
         STDERR,
         "Missing PHPUnit binary at {$phpunitBinary}.\n"
-        . "Run 'composer update' or 'composer install' first.\n"
+        . "Run 'composer update' or 'composer install' first.\n",
     );
     exit(1);
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -45,7 +46,7 @@ class ArchiveViewHelper extends AbstractTagBasedViewHelper
         $rssTypeNum = RequestUtility::getTypoScriptTypeNum($request, 'blog_rss_archive');
 
         $arguments = [
-            'year' => $year
+            'year' => $year,
         ];
         if ($month > 0) {
             $arguments['month'] = $month;
@@ -85,7 +86,7 @@ class ArchiveViewHelper extends AbstractTagBasedViewHelper
         if ($request === null || !$request instanceof RequestInterface) {
             throw new \RuntimeException(
                 'ViewHelper blogvh:link.archive can be used only in extbase context and needs a request implementing extbase RequestInterface.',
-                1729082933
+                1729082933,
             );
         }
 

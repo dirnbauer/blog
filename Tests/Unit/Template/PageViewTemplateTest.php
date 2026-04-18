@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Template;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -65,12 +72,12 @@ final class PageViewTemplateTest extends TestCase
         self::assertStringContainsString(
             '<f:layout name="Pages/Default" />',
             $content,
-            'PAGEVIEW templates must use the Camino-style Pages/Default layout.'
+            'PAGEVIEW templates must use the Camino-style Pages/Default layout.',
         );
         self::assertStringContainsString(
             '<f:render.contentArea contentArea="{blogContentAreas.content}"',
             $content,
-            'PAGEVIEW templates must render the named "content" area.'
+            'PAGEVIEW templates must render the named "content" area.',
         );
     }
 
@@ -91,7 +98,7 @@ final class PageViewTemplateTest extends TestCase
         self::assertStringContainsString(
             '<f:render section="Main"',
             $content,
-            'PAGEVIEW page layout must render the Main section from page templates.'
+            'PAGEVIEW page layout must render the Main section from page templates.',
         );
     }
 
@@ -105,7 +112,7 @@ final class PageViewTemplateTest extends TestCase
         self::assertStringNotContainsString(
             'lib.dynamicContent',
             $content,
-            'PAGEVIEW templates must not fall back to lib.dynamicContent.'
+            'PAGEVIEW templates must not fall back to lib.dynamicContent.',
         );
     }
 }

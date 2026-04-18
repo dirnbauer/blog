@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -27,14 +28,13 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
     }
 
     /**
-     * @return bool
      */
     public function executeUpdate(): bool
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'record_type' => Constants::CATEGORY_TYPE_BLOG
+                'record_type' => Constants::CATEGORY_TYPE_BLOG,
             ]);
         }
 
@@ -47,13 +47,13 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
             function ($page) {
                 return $page['uid'];
             },
-            $this->getBlogStorageFolders()
+            $this->getBlogStorageFolders(),
         );
 
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'record_type', Constants::CATEGORY_TYPE_DEFAULT),
-            $this->createInCriteria($queryBuilder, 'pid', $pages)
+            $this->createInCriteria($queryBuilder, 'pid', $pages),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 

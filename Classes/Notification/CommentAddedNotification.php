@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -41,8 +42,8 @@ class CommentAddedNotification extends AbstractNotification
             'CommentAdded',
             [
                 'comment' => $comment,
-                'post' => $post
-            ]
+                'post' => $post,
+            ],
         );
     }
 

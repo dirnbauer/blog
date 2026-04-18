@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,8 +11,8 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Mail;
 
-use TYPO3\CMS\Core\Mail\MailMessage as CoreMailMessage;
 use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Mail\MailMessage as CoreMailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class MailMessage

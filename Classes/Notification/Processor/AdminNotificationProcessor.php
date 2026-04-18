@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,7 +34,7 @@ class AdminNotificationProcessor implements ProcessorInterface
         if (RequestUtility::getSiteSettingBool($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.enable')) {
             $emailAddresses = GeneralUtility::trimExplode(
                 ',',
-                RequestUtility::getSiteSettingString($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email')
+                RequestUtility::getSiteSettingString($request, 'plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email'),
             );
             $mail = GeneralUtility::makeInstance(MailMessage::class);
             $mail

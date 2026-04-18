@@ -26,11 +26,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class AvatarViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     #[Test]
@@ -72,7 +72,7 @@ final class AvatarViewHelperTest extends FunctionalTestCase
             'size' => [
                 '{blogvh:uri.avatar(author: author, size: 32)}',
                 'https://www.gravatar.com/avatar/edce5ecb76b1dcb9f9d7647a13e7fc97?s=32',
-            ]
+            ],
         ];
     }
 }

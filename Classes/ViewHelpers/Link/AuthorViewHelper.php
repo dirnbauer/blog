@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -108,7 +109,7 @@ class AuthorViewHelper extends AbstractTagBasedViewHelper
         if ($request === null || !$request instanceof RequestInterface) {
             throw new \RuntimeException(
                 'ViewHelper blogvh:link.author can be used only in extbase context and needs a request implementing extbase RequestInterface.',
-                1729082934
+                1729082934,
             );
         }
 

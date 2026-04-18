@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -28,7 +30,7 @@ return [
             'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'record-blog-comment'
+            'default' => 'record-blog-comment',
         ],
         'searchFields' => 'comment,name,email',
         'security' => [
@@ -72,9 +74,9 @@ return [
         'url' => [
             'label' => $ll . 'tx_blog_domain_model_comment.url',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => 'www',
+                'allowedTypes' => ['url'],
             ],
         ],
         'email' => [

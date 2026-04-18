@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,11 +13,11 @@ namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Utility\TcaUtility;
 use T3G\AgencyPack\Blog\Utility\TypeUtility;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[UpgradeWizard(TagSlugUpdate::class)]
 final class TagSlugUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -56,7 +57,7 @@ final class TagSlugUpdate extends AbstractUpdate implements UpgradeWizardInterfa
 
             // Update Record
             $this->updateRecord($this->table, $recordId, [
-                'slug' => $slug
+                'slug' => $slug,
             ]);
         }
 
@@ -68,7 +69,7 @@ final class TagSlugUpdate extends AbstractUpdate implements UpgradeWizardInterfa
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualStringCriteria($queryBuilder, 'slug', ''),
-            $this->createIsNullCriteria($queryBuilder, 'slug')
+            $this->createIsNullCriteria($queryBuilder, 'slug'),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria, AbstractUpdate::CONDITION_OR);
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -120,7 +121,7 @@ final class RequestUtility
             $frontendTypoScript->getSetupTree()
                 ->getChildByName($setupName)
                 ?->getChildByName('typeNum')
-                ?->getValue()
+                ?->getValue(),
         );
     }
 }

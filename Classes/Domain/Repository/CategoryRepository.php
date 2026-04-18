@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -31,7 +32,7 @@ class CategoryRepository extends Repository
         $querySettings = GeneralUtility::makeInstance(
             Typo3QuerySettings::class,
             GeneralUtility::makeInstance(Context::class),
-            $configurationManager
+            $configurationManager,
         );
         $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', (string) $this->settings['persistence']['storagePid']));
         $this->setDefaultQuerySettings($querySettings);
@@ -59,7 +60,7 @@ class CategoryRepository extends Repository
             ->where(
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($table)),
                 $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($field)),
-                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($uid))
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($uid)),
             );
         $categories = array_column($queryBuilder->executeQuery()->fetchAllAssociative(), 'uid_local');
 
@@ -73,7 +74,7 @@ class CategoryRepository extends Repository
             $conditions[] = $query->in('uid', $categories);
 
             return $query->matching(
-                $query->logicalAnd(...$conditions)
+                $query->logicalAnd(...$conditions),
             )->execute();
         }
 

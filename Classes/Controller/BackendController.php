@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -33,7 +34,8 @@ class BackendController extends ActionController
         protected readonly SetupService $setupService,
         protected readonly CacheService $cacheService,
         protected readonly BackendAccessService $backendAccessService,
-    ) {}
+    ) {
+    }
 
     public function initializeAction(): void
     {
@@ -138,14 +140,14 @@ class BackendController extends ActionController
             $this->addFlashMessage(
                 'One or more comments were skipped because you do not have permission to moderate them.',
                 'Permission denied',
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
         }
         if (!$updatedComment && !in_array($status, ['approve', 'decline', 'delete'], true)) {
             $this->addFlashMessage(
                 'The requested comment status change is not supported.',
                 'Invalid action',
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
         }
 
@@ -154,6 +156,16 @@ class BackendController extends ActionController
 
     public function createBlogAction(?array $data = null): ResponseInterface
     {
+        if ($this->backendAccessService->getBackendUser()?->isAdmin() !== true) {
+            $this->addFlashMessage(
+                'Only administrators may create a blog setup.',
+                'Permission denied',
+                ContextualFeedbackSeverity::ERROR,
+            );
+
+            return new RedirectResponse($this->uriBuilder->reset()->uriFor('setupWizard'));
+        }
+
         if ($data !== null) {
             $this->setupService->createBlogSetup($data);
             $this->addFlashMessage('Your blog setup has been created.', 'Congratulation');
@@ -168,7 +180,7 @@ class BackendController extends ActionController
     {
         return array_values(array_filter(array_map(static function (array $blogSetup): int {
             return (int)($blogSetup['uid'] ?? 0);
-        }, $blogSetups)));
+        }, $blogSetups), static fn (int $uid): bool => $uid > 0));
     }
 
     protected function resolveActiveBlogSetup(?int $blogSetup, array $accessibleBlogSetupIds): ?int

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -36,7 +37,7 @@ final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardI
                 $status = 50;
             }
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'status' => (string) $status
+                'status' => (string) $status,
             ]);
         }
 

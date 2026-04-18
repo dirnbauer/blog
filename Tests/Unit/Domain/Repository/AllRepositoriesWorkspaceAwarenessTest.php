@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Domain\Repository;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -49,7 +56,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'extends Repository',
             $content,
-            basename($path) . ' must extend Extbase Repository for workspace-safe queries.'
+            basename($path) . ' must extend Extbase Repository for workspace-safe queries.',
         );
     }
 
@@ -64,7 +71,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
             self::assertStringContainsString(
                 't3ver_wsid',
                 (string)file_get_contents($path),
-                'PostRepository must filter by t3ver_wsid in backend context.'
+                'PostRepository must filter by t3ver_wsid in backend context.',
             );
             return;
         }
@@ -76,7 +83,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
             '/t3ver_wsid|t3ver_oid|t3ver_state|t3ver_stage/',
             $content,
             basename($path) . ' must NOT manually query workspace fields. '
-            . 'Workspace overlay is handled by TYPO3 Core.'
+            . 'Workspace overlay is handled by TYPO3 Core.',
         );
     }
 
@@ -91,7 +98,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
             'WorkspaceService',
             $content,
             basename($path) . ' must NOT depend on WorkspaceService. '
-            . 'Blog must work without workspaces installed.'
+            . 'Blog must work without workspaces installed.',
         );
     }
 
@@ -109,7 +116,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'extends Repository',
             $content,
-            basename($path) . ' must extend Extbase Repository for workspace-safe primary queries.'
+            basename($path) . ' must extend Extbase Repository for workspace-safe primary queries.',
         );
 
         // If ConnectionPool is used, verify the repository also uses createQuery()
@@ -119,7 +126,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
                 'createQuery()',
                 $content,
                 basename($path) . ' uses ConnectionPool but must also use '
-                . 'createQuery() for primary domain queries (workspace-safe).'
+                . 'createQuery() for primary domain queries (workspace-safe).',
             );
         }
     }
@@ -139,7 +146,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
         foreach ($expected as $file) {
             self::assertFileExists(
                 $base . '/' . $file,
-                'Repository file must exist: ' . $file
+                'Repository file must exist: ' . $file,
             );
         }
     }
@@ -153,7 +160,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'Context::class',
             $content,
-            'PostRepository must use the Context singleton which carries WorkspaceAspect.'
+            'PostRepository must use the Context singleton which carries WorkspaceAspect.',
         );
     }
 
@@ -166,7 +173,7 @@ final class AllRepositoriesWorkspaceAwarenessTest extends TestCase
         self::assertStringContainsString(
             'extends Repository',
             $content,
-            'CommentRepository must extend Extbase Repository.'
+            'CommentRepository must extend Extbase Repository.',
         );
     }
 }

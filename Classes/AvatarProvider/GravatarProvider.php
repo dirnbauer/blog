@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -35,12 +36,12 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
     {
         $this->gravatarUriBuilder = GeneralUtility::makeInstance(
             GravatarUriBuilder::class,
-            GeneralUtility::makeInstance(UriFactory::class)
+            GeneralUtility::makeInstance(UriFactory::class),
         );
         $this->avatarResourceResolver = GeneralUtility::makeInstance(
             GravatarResourceResolver::class,
             GeneralUtility::makeInstance(GuzzleClientFactory::class)->getClient(),
-            GeneralUtility::makeInstance(RequestFactory::class)
+            GeneralUtility::makeInstance(RequestFactory::class),
         );
 
         /** @var ExtensionConfiguration $extensionConfiguration */
@@ -60,7 +61,7 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
             $author->getEmail(),
             $size,
             $rating,
-            $default
+            $default,
         );
 
         if (!$this->proxyGravatarImage) {

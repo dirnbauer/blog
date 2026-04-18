@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -56,13 +63,13 @@ final class TcaWorkspaceConfigurationTest extends TestCase
             self::assertMatchesRegularExpression(
                 "/'versioningWS'\s*=>\s*true/",
                 $content,
-                $tcaFile . ' must have versioningWS => true for workspace support.'
+                $tcaFile . ' must have versioningWS => true for workspace support.',
             );
         } else {
             self::assertMatchesRegularExpression(
                 "/'versioningWS_alwaysAllowLiveEdit'\s*=>\s*true/",
                 $content,
-                $tcaFile . ' must have versioningWS_alwaysAllowLiveEdit => true (comments are live-editable).'
+                $tcaFile . ' must have versioningWS_alwaysAllowLiveEdit => true (comments are live-editable).',
             );
         }
     }
@@ -127,7 +134,7 @@ final class TcaWorkspaceConfigurationTest extends TestCase
         foreach ($tcaFiles as $file) {
             self::assertFileExists(
                 self::getExtensionPath() . '/Configuration/TCA/' . $file,
-                'TCA file must exist: ' . $file
+                'TCA file must exist: ' . $file,
             );
         }
     }

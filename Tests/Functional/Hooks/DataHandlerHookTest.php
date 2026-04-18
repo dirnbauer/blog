@@ -22,11 +22,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class DataHandlerHookTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     protected function setUp(): void
@@ -64,8 +64,8 @@ final class DataHandlerHookTest extends FunctionalTestCase
                     'publish_date' => 1689811200,
                     'crdate_month' => 0,
                     'crdate_year' => 0,
-                ]
-            ]
+                ],
+            ],
         ];
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
@@ -105,7 +105,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
                     'crdate_month' => 0,
                     'crdate_year' => 0,
                 ],
-            ]
+            ],
         ];
         $dataHandler->start($initial, []);
         $dataHandler->process_datamap();
@@ -123,7 +123,7 @@ final class DataHandlerHookTest extends FunctionalTestCase
                 3 => [
                     'publish_date' => 1653004800,
                 ],
-            ]
+            ],
         ];
         $dataHandler->start($update, []);
         $dataHandler->process_datamap();

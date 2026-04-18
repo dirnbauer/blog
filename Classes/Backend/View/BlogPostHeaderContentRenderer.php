@@ -30,7 +30,7 @@ class BlogPostHeaderContentRenderer implements SingletonInterface
     public function __construct(
         protected readonly ExtensionConfiguration $extensionConfiguration,
         protected readonly PostRepository $postRepository,
-        protected readonly ViewFactoryInterface $viewFactory
+        protected readonly ViewFactoryInterface $viewFactory,
     ) {
     }
 

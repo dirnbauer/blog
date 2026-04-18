@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -46,7 +53,7 @@ final class PageViewSetupTest extends TestCase
 
         self::assertStringContainsString(
             'lib.fluidPage.paths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/',
-            $content
+            $content,
         );
     }
 

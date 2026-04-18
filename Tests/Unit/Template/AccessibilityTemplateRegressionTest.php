@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the package t3g/blog.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace T3G\AgencyPack\Blog\Tests\Unit\Template;
 
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -36,7 +43,7 @@ final class AccessibilityTemplateRegressionTest extends TestCase
             'ModernTailwind/Pages/BlogPost' => $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
         ];
 
-        return array_map(static fn(string $path): array => [$path], $paths);
+        return array_map(static fn (string $path): array => [$path], $paths);
     }
 
     /**
@@ -57,7 +64,7 @@ final class AccessibilityTemplateRegressionTest extends TestCase
             'ModernTailwind/Layouts/Pages/Default' => $base . '/Templates/ModernTailwind/Layouts/Pages/Default.fluid.html',
         ];
 
-        return array_map(static fn(string $path): array => [$path], $paths);
+        return array_map(static fn (string $path): array => [$path], $paths);
     }
 
     #[Test]
@@ -70,7 +77,7 @@ final class AccessibilityTemplateRegressionTest extends TestCase
         self::assertStringNotContainsString(
             'role="main"',
             $content,
-            'Page templates must rely on the shared layout main landmark instead of nesting role="main".'
+            'Page templates must rely on the shared layout main landmark instead of nesting role="main".',
         );
     }
 
