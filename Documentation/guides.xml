@@ -4,7 +4,7 @@
         xsi:schemaLocation="https://www.phpdoc.org/guides https://docs.typo3.org/render-guides/guides.xsd"
         input-format="rst"
 >
-    <project title="TYPO3 Blog Extension" version="14.1.0" />
+    <project title="TYPO3 Blog Extension" version="14.3.0" />
     <extension
         class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
         name="blog"

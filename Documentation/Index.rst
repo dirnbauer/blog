@@ -9,7 +9,7 @@ TYPO3 Blog Extension
 
 :Extension key:   blog
 :Package name:    t3g/blog
-:Version:         14.1.0
+:Version:         14.3.0
 :Language:        en
 :Author:          TYPO3 GmbH Team
 :License:         GPL-2.0-or-later

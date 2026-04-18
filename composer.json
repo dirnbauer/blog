@@ -42,7 +42,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "14.1.x-dev"
+            "dev-master": "14.3.x-dev"
         },
         "typo3/cms": {
             "extension-key": "blog",
