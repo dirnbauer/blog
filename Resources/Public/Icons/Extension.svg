@@ -1,5 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <path fill="currentColor" d="M14 12h30l10 10v30H14V12Zm4 4v32h32V23.7L40.3 14H18Zm24 2.8V24h5.2L42 18.8Z"/>
-  <path fill="var(--icon-color-accent, #ff8700)" d="M22 16h8v20l-4-3.5L22 36V16Z"/>
-  <path fill="currentColor" d="M22 40h20v3H22Zm0 6h14v3H22Z"/>
+  <path fill="#EFEFEF" d="M18 14h22.3L50 23.7V48H18V14Z"/>
+  <path fill="#B9B9B9" d="M40.3 14v9.7H50L40.3 14Z"/>
+  <path fill="#515151" d="M14 12h30l10 10v30H14V12Zm4 4v32h32V23.7L40.3 14H18Zm24 2.8V24h5.2L42 18.8Z"/>
+  <path fill="#FF8700" d="M22 16h8v20l-4-3.5L22 36V16Z"/>
+  <path fill="#8C8C8C" d="M22 40h20v3H22Zm0 6h14v3H22Z"/>
 </svg>
