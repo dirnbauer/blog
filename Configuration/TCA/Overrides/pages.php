@@ -31,32 +31,6 @@ $itemGroups = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($pagesTca,
 $itemGroups['blog'] = 'Blog';
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['columns', 'doktype', 'config', 'itemGroups'], $itemGroups);
 
-// Add new page types as possible select item:
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'pages',
-    'doktype',
-    [
-        'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-post',
-        'value' => (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
-        'icon' => 'record-blog-post',
-        'group' => 'blog',
-    ],
-    '1',
-    'after',
-);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
-    'pages',
-    'doktype',
-    [
-        'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-page',
-        'value' => (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_PAGE,
-        'icon' => 'record-blog-page',
-        'group' => 'blog',
-    ],
-    (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
-    'after',
-);
-
 // Add icon for new page types:
 \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
     $pagesTca,
@@ -235,6 +209,32 @@ $columns = array_replace_recursive(
     ],
 ]);
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('pages', $pagesTca);
+
+// Register doktype selector items after writing the merged pages TCA back to global scope.
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'pages',
+    'doktype',
+    [
+        'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-post',
+        'value' => (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
+        'icon' => 'record-blog-post',
+        'group' => 'blog',
+    ],
+    '1',
+    'after',
+);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+    'pages',
+    'doktype',
+    [
+        'label' => 'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-page',
+        'value' => (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_PAGE,
+        'icon' => 'record-blog-page',
+        'group' => 'blog',
+    ],
+    (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
+    'after',
+);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('pages', 'publish_date', 'publish_date, crdate_month, crdate_year');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
