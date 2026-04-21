@@ -1,4 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <style>
+    :root {
+      color: #1f2329;
+      --icon-color-accent: #ff8700;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color: #f3f6fb;
+        --icon-color-accent: #ff9f1a;
+      }
+    }
+  </style>
   <path fill="currentColor" d="M3 1h7l4 4v10H3V1Zm1 1v12h9V6h-3V2H4Zm7 .7V5h2.3L11 2.7Z"/>
   <path fill="var(--icon-color-accent, #ff8700)" d="M5 7.5h7v1.5H5Z"/>
   <path fill="currentColor" d="M5 10.5h7v.7H5Zm0 1.7h7v.7H5Z"/>
