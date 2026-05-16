@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -20,12 +21,27 @@ class NotificationManager
 
     public function __construct()
     {
-        $notificationRegistry = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['Blog']['notificationRegistry'] ?? [];
+        $typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'] ?? [];
+        $extConf = is_array($typo3ConfVars) && is_array($typo3ConfVars['EXTCONF'] ?? null)
+            ? $typo3ConfVars['EXTCONF']
+            : [];
+        $blogExtConf = is_array($extConf['Blog'] ?? null)
+            ? $extConf['Blog']
+            : [];
+        $notificationRegistry = is_array($blogExtConf['notificationRegistry'] ?? null)
+            ? $blogExtConf['notificationRegistry']
+            : [];
         foreach ($notificationRegistry as $notificationId => $visitorClassNames) {
             if (!\is_array($this->visitorsRegistry[$notificationId] ?? null)) {
                 $this->visitorsRegistry[$notificationId] = [];
             }
+            if (!is_iterable($visitorClassNames)) {
+                continue;
+            }
             foreach ($visitorClassNames as $visitorClassName) {
+                if (!is_string($visitorClassName)) {
+                    continue;
+                }
                 $this->visitorsRegistry[$notificationId][] = $visitorClassName;
             }
         }

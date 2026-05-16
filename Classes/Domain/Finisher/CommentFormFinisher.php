@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -66,6 +67,7 @@ class CommentFormFinisher extends AbstractFinisher
         $comment->setEmail($values['email'] ?? '');
         $comment->setUrl($values['url'] ?? '');
         $comment->setComment($values['comment'] ?? '');
+        $comment->setHp((string) ($values['hp'] ?? ''));
         $post = $postRepository->findCurrentPost();
         if ($post === null) {
             return null;
@@ -75,14 +77,14 @@ class CommentFormFinisher extends AbstractFinisher
         // Add FlashMessage
         $pluginNamespace = GeneralUtility::makeInstance(ExtensionService::class)->getPluginNamespace(
             $this->finisherContext->getRequest()->getControllerExtensionName(),
-            $this->finisherContext->getRequest()->getPluginName()
+            $this->finisherContext->getRequest()->getPluginName(),
         );
         $flashMessage = GeneralUtility::makeInstance(
             FlashMessage::class,
             LocalizationUtility::translate(self::$messages[$state]['text'], 'blog'),
             LocalizationUtility::translate(self::$messages[$state]['title'], 'blog'),
             self::$messages[$state]['severity'],
-            true
+            true,
         );
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $flashMessageService
@@ -97,7 +99,7 @@ class CommentFormFinisher extends AbstractFinisher
                     GeneralUtility::makeInstance(CommentAddedNotification::class, '', '', [
                         'comment' => $comment,
                         'post' => $post,
-                    ])
+                    ]),
                 );
             $cacheService->flushCacheByTag('tx_blog_post_' . $post->getUid());
         }

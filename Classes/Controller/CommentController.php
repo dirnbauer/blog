@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,6 +12,7 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Service\CacheService;
@@ -19,18 +21,11 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class CommentController extends ActionController
 {
-    protected PostRepository $postRepository;
-    protected CommentService $commentService;
-    protected CacheService $cacheService;
-
     public function __construct(
-        PostRepository $postRepository,
-        CommentService $commentService,
-        CacheService $cacheService
+        protected readonly PostRepository $postRepository,
+        protected readonly CommentService $commentService,
+        protected readonly CacheService $cacheService,
     ) {
-        $this->postRepository = $postRepository;
-        $this->commentService = $commentService;
-        $this->cacheService = $cacheService;
     }
 
     /**
@@ -48,7 +43,9 @@ class CommentController extends ActionController
         if ($post instanceof Post) {
             $comments = $this->commentService->getCommentsByPost($post);
             foreach ($comments as $comment) {
-                $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+                if ($comment instanceof Comment) {
+                    $this->cacheService->addTagToPage($this->request, 'tx_blog_comment_' . $comment->getUid());
+                }
             }
             $this->view->assign('comments', $comments);
             $this->view->assign('post', $post);

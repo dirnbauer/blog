@@ -5,7 +5,7 @@
         <f:for each="{posts}" as="post">
             <li class="blogwidgetlist__item" data-blog-post="{post.uid}">
                 <blogvh:link.post class="blogwidgetlist__itemlink" title="{post.title}" post="{post}">
-                    <span class="blogwidgetlist__itemtitle">{post.title}</span>
+                    <span class="blogwidgetlist__itemtitle">{post -> f:render.text(field: 'title')}</span>
                 </blogvh:link.post>
             </li>
         </f:for>

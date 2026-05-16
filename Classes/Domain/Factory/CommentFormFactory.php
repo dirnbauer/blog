@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -13,7 +14,7 @@ namespace T3G\AgencyPack\Blog\Domain\Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Finisher\CommentFormFinisher;
 use T3G\AgencyPack\Blog\Domain\Validator\GoogleCaptchaValidator;
-use TYPO3\CMS\Core\Information\Typo3Version;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -44,8 +45,8 @@ class CommentFormFactory extends AbstractFormFactory
         ArrayUtility::mergeRecursiveWithOverrule(
             $prototypeConfiguration['formElementsDefinition']['BlogGoogleCaptcha'],
             [
-                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement'
-            ]
+                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
+            ],
         );
 
         $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
@@ -87,13 +88,20 @@ class CommentFormFactory extends AbstractFormFactory
         $commentField = $page->createElement('comment', 'Textarea');
         $commentField->setLabel((string) LocalizationUtility::translate('form.comment.comment', 'blog'));
         $commentField->addValidator(GeneralUtility::makeInstance(NotEmptyValidator::class));
-        if ((GeneralUtility::makeInstance(Typo3Version::class))->getMajorVersion() < 12) {
-            $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class, ['minimum' => 5]);
-        } else {
-            $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class);
-            $stringLengthValidator->setOptions(['minimum' => 5]);
-        }
+        $stringLengthValidator = GeneralUtility::makeInstance(StringLengthValidator::class);
+        $stringLengthValidator->setOptions(['minimum' => 5]);
         $commentField->addValidator($stringLengthValidator);
+
+        // Honeypot field — hidden via CSS, bots fill it; humans never see it.
+        /** @var GenericFormElement $honeypotField */
+        $honeypotField = $page->createElement('hp', 'Text');
+        $honeypotField->setLabel('Leave this field empty');
+        $honeypotField->setRenderingOption('fluidAdditionalAttributes', [
+            'autocomplete' => 'off',
+            'tabindex' => '-1',
+        ]);
+        $honeypotField->setProperty('elementClassAttribute', 't3g-blog-hp');
+        $honeypotField->setProperty('containerClassAttribute', 't3g-blog-hp-wrap');
 
         $explanationText = $page->createElement('explanation', 'StaticText');
         $explanationText->setProperty('text', LocalizationUtility::translate('label.required.field', 'blog') . ' ' . LocalizationUtility::translate('label.required.field.explanation', 'blog'));
@@ -111,7 +119,8 @@ class CommentFormFactory extends AbstractFormFactory
 
         $redirectFinisher = GeneralUtility::makeInstance(RedirectFinisher::class);
         $redirectFinisher->setFinisherIdentifier(RedirectFinisher::class);
-        $redirectFinisher->setOption('pageUid', (string) $this->getRequest()->getAttribute('frontend.page.information')->getId());
+        $pageInformation = RequestUtility::getPageInformation($this->getRequest());
+        $redirectFinisher->setOption('pageUid', (string) ($pageInformation?->getId() ?? 0));
         $form->addFinisher($redirectFinisher);
 
         $this->triggerFormBuildingFinished($form);
@@ -120,6 +129,6 @@ class CommentFormFactory extends AbstractFormFactory
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 }

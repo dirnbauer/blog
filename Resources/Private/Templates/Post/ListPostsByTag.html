@@ -7,14 +7,14 @@
                 <h1 class="blogarchiveheader__title">
                     <span class="page__titletext">
                         <f:translate key="headline.tag.simple" />:
-                        {tag.title}
+                        {tag -> f:render.text(field: 'title')}
                     </span>
                     <blogvh:link.tag class="page__titlelink" rss="true" tag="{tag}">
                         <span class="blogicon"><f:render partial="General/SocialIcons" section="Rss" optional="true" /></span>
                     </blogvh:link.tag>
                 </h1>
                 <div class="blogarchiveheader__description">
-                    <p>{tag.description}</p>
+                    <p>{tag -> f:render.text(field: 'description')}</p>
                 </div>
             </header>
             <f:render partial="List" arguments="{_all}" />

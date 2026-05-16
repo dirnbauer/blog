@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,54 +11,89 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Domain\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 class GoogleCaptchaValidator extends AbstractValidator
 {
+    private const VERIFY_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
+    private const VERIFY_TIMEOUT_SECONDS = 5.0;
+    private const REQUEST_ATTRIBUTE = 't3g-blog-recaptcha-verified';
+
     protected $acceptsEmptyValues = false;
+
+    public function __construct(
+        private readonly ConfigurationManagerInterface $configurationManager,
+        private readonly RequestFactory $requestFactory,
+    ) {
+    }
 
     public function isValid(mixed $value): void
     {
         $action = 'form';
         $controller = 'Comment';
-        $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
+        $settings = $this->configurationManager
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
-        $request = $this->request ?? $GLOBALS['TYPO3_REQUEST'];
-        $queryArguments = $request->getQueryParams();
+        $request = $this->resolveRequest();
+        $queryData = $request->getQueryParams()['tx_blog_commentform'] ?? [];
+        if (!is_array($queryData)) {
+            $queryData = [];
+        }
         $bodyData = $request->getParsedBody();
-        $requestData = $queryArguments['tx_blog_commentform'] ?? [];
+        $postData = is_array($bodyData) ? ($bodyData['tx_blog_commentform'] ?? []) : [];
+        if (!is_array($postData)) {
+            $postData = [];
+        }
+        $requestData = array_merge($queryData, $postData);
 
         if (
-            // this validator is called multiple times, if the first success,
-            // the global variable is set, else validate the re-captcha
-            ($GLOBALS['google_recaptcha'] ?? null) === null
-            // check if we create a new comment, else we don't need a validation
-            && (!(bool)($requestData['action'] ?? null) && $requestData['action'] === $action)
-            && (!(bool)($requestData['controller'] ?? null) && $requestData['controller'] === $controller)
-            // check if google re-captcha is active, else we don't need a validation
-            && (int) $settings['comments']['google_recaptcha']['enable'] === 1
+            $request->getAttribute(self::REQUEST_ATTRIBUTE) !== true
+            && ($requestData['action'] ?? null) === $action
+            && ($requestData['controller'] ?? null) === $controller
+            && (int)($settings['comments']['google_recaptcha']['enable'] ?? 0) === 1
         ) {
+            $captchaResponse = is_array($bodyData) ? (string)($bodyData['g-recaptcha-response'] ?? '') : '';
             $additionalOptions = [
                 'headers' => ['Content-type' => 'application/x-www-form-urlencoded'],
+                'timeout' => self::VERIFY_TIMEOUT_SECONDS,
                 'query' => [
                     'secret' => $settings['comments']['google_recaptcha']['secret_key'],
-                    'response' => $bodyData['g-recaptcha-response'] ?? '',
-                    'remoteip' => GeneralUtility::getIndpEnv('REMOTE_ADDR')
-                ]
+                    'response' => $captchaResponse,
+                    'remoteip' => RequestUtility::getNormalizedParams($request)->getRemoteAddress(),
+                ],
             ];
-            $response = GeneralUtility::makeInstance(RequestFactory::class)
-                ->request('https://www.google.com/recaptcha/api/siteverify', 'POST', $additionalOptions);
-            if ($response->getStatusCode() === 200) {
-                $result = json_decode($response->getBody()->getContents());
-                if (!$result->success) {
-                    $this->addError('The re-captcha failed', 1501341100);
-                } else {
-                    $GLOBALS['google_recaptcha'] = true;
-                }
+            try {
+                $response = $this->requestFactory
+                    ->request(self::VERIFY_ENDPOINT, 'POST', $additionalOptions);
+            } catch (\Throwable $exception) {
+                $this->addError('The re-captcha failed', 1501341100);
+                return;
+            }
+
+            if ($response->getStatusCode() !== 200) {
+                $this->addError('The re-captcha failed', 1501341100);
+                return;
+            }
+
+            $result = json_decode($response->getBody()->getContents(), true);
+            if (!is_array($result) || ($result['success'] ?? false) !== true) {
+                $this->addError('The re-captcha failed', 1501341100);
+            } else {
+                $request = $request->withAttribute(self::REQUEST_ATTRIBUTE, true);
+                $GLOBALS['TYPO3_REQUEST'] = $request;
             }
         }
+    }
+
+    private function resolveRequest(): ServerRequestInterface
+    {
+        if ($this->request instanceof ServerRequestInterface) {
+            return $this->request;
+        }
+
+        return RequestUtility::getGlobalRequest();
     }
 }

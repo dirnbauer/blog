@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -14,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Mail\MailContent;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -40,13 +42,13 @@ class CommentAddedNotification extends AbstractNotification
             'CommentAdded',
             [
                 'comment' => $comment,
-                'post' => $post
-            ]
+                'post' => $post,
+            ],
         );
     }
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 }

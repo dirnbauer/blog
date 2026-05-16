@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -26,7 +28,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_posts',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -41,7 +43,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_latestposts',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -56,7 +58,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_category',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -71,7 +73,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_authorposts',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -86,7 +88,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_tag',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -101,7 +103,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pages, recursive',
     'blog_archive',
-    'after:palette:headers'
+    'after:palette:headers',
 );
 
 ExtensionUtility::registerPlugin(
@@ -118,7 +120,7 @@ ExtensionUtility::registerPlugin(
     pluginName: 'CommentForm',
     pluginTitle: 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:plugin.blog_commentform.title',
     pluginDescription: 'LLL:EXT:blog/Resources/Private/Language/locallang_db.xlf:plugin.blog_commentform.description',
-    pluginIcon: 'plugin-blog-sidebar',
+    pluginIcon: 'plugin-blog-commentform',
     group: 'blog',
 );
 
@@ -152,13 +154,15 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pi_flexform, pages, recursive',
     'blog_demandedposts',
-    'after:palette:headers'
+    'after:palette:headers',
 );
-ExtensionManagementUtility::addPiFlexFormValue(
-    '*',
+$ttContentTca = \T3G\AgencyPack\Blog\Utility\TcaUtility::getTableTca('tt_content');
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue(
+    $ttContentTca,
+    ['types', 'blog_demandedposts', 'columnsOverrides', 'pi_flexform', 'config', 'ds', 'default'],
     'FILE:EXT:blog/Configuration/FlexForms/Demand.xml',
-    'blog_demandedposts'
 );
+\T3G\AgencyPack\Blog\Utility\TcaUtility::setTableTca('tt_content', $ttContentTca);
 
 ExtensionUtility::registerPlugin(
     extensionName: 'Blog',
