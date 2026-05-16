@@ -1,0 +1,44 @@
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:blog/Configuration/Sets/Shared/setup.typoscript'
+@import 'EXT:blog/Configuration/Sets/Static/setup.typoscript'
+
+plugin.tx_blog.settings.storagePid = 2
+plugin.tx_blog.persistence.storagePid = 2
+plugin.tx_blog.settings.blogSetups.1.uid = 2
+plugin.tx_blog.settings.widgets.comments.limit = 5
+plugin.tx_blog.settings.widgets.recentposts.limit = 5
+plugin.tx_blog.settings.widgets.tags.limit = 20
+plugin.tx_blog.settings.widgets.tags.minSize = 100
+plugin.tx_blog.settings.widgets.tags.maxSize = 100
+plugin.tx_blog.settings.widgets.archive.showCounter = 1
+plugin.tx_blog.settings.widgets.archive.groupByYear = 1
+plugin.tx_blog.settings.widgets.archive.groupByMonth = 1
+plugin.tx_blog.settings.lists.posts.maximumDisplayedItems = 10
+plugin.tx_blog.settings.lists.pagination.itemsPerPage = 10
+plugin.tx_blog.settings.latestPosts.limit = 3
+plugin.tx_blog.settings.relatedPosts.limit = 4
+plugin.tx_blog.settings.comments.active = 1
+plugin.tx_blog.settings.comments.moderation = 0
+
+page = PAGE
+page {
+    10 = PAGEVIEW
+    10 {
+        contentAs = blogContentAreas
+        paths {
+            10 = EXT:blog/Tests/Functional/Fixtures/Templates/
+            20 = EXT:blog/Resources/Private/Templates/
+        }
+
+        variables {
+            rootPage = TEXT
+            rootPage.value = 1
+
+            siteTitle = TEXT
+            siteTitle.value = Blog Test
+
+            copyright = TEXT
+            copyright.value = Test Footer
+        }
+    }
+}

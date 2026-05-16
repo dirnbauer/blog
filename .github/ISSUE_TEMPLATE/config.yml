@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: TYPO3 Blog documentation
+    url: https://docs.typo3.org/p/t3g/blog/master/en-us/
+    about: Start with the installation, setup, and workspace guides.
+  - name: TYPO3 Slack channel
+    url: https://typo3.slack.com/archives/t3g-ext-blog
+    about: Ask usage and integration questions in the community channel.

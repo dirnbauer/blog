@@ -1,33 +1,36 @@
 ---
-name: "\U0001F41E Bug report"
-about: Tell us about a bug you may have identified.
-labels:
-
+name: Bug report
+about: Report a reproducible problem in the TYPO3 Blog extension.
+labels: bug
+title: "[BUG] "
 ---
 
 # Bug Report
 
-## Prerequisites
+## Checklist
 
-* [ ] Can you reproduce the problem on TYPO3 v9.5 LTS
-* [ ] Can you reproduce the problem on TYPO3 v10.4 LTS
-* [ ] Can you reproduce the problem on TYPO3 v11.x
-* [ ] Did you [perform a cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+repo%3ATYPO3GmbH%2Fblog) to see if your bug or feature is already reported?
+- [ ] I reproduced this with the latest supported `14.x` release of `t3g/blog`
+- [ ] I checked open and closed issues for duplicates
+- [ ] I can provide TYPO3, PHP, and database versions
 
 ## Description
 
-[Description of the bug]
+[Describe the problem]
 
 ## Steps to Reproduce
 
-1. [First Step]
-2. [Second Step]
-3. [and so on...]
+1. [First step]
+2. [Second step]
+3. [and so on]
 
 **Expected behavior:** [What you expected to happen]
 
 **Actual behavior:** [What actually happened]
 
-## Versions
+## Environment
 
-You can get this information from executing `composer show` at the command line if your TYPO3 installation is composer based, otherwise the version number will be shown in the extension manager.
+- Blog extension version:
+- TYPO3 version:
+- PHP version:
+- Database:
+- Installation type: Composer / Classic

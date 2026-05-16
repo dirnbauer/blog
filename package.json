@@ -1,28 +1,35 @@
 {
     "name": "t3g-blog",
     "scripts": {
-        "build": "webpack",
-        "watch": "webpack --watch"
+        "build": "webpack --config webpack.config.mjs",
+        "playwright:install": "playwright install chromium",
+        "test:e2e": "playwright test",
+        "test:e2e:headed": "playwright test --headed",
+        "watch": "webpack --config webpack.config.mjs --watch"
     },
     "browserslist": [
         "> 1%",
         "last 2 versions"
     ],
     "devDependencies": {
-        "autoprefixer": "^10.4.14",
-        "css-loader": "^6.7.4",
-        "mini-css-extract-plugin": "^2.7.6",
-        "node-sass": "^9.0.0",
-        "postcss-loader": "^7.3.0",
-        "sass": "^1.62.1",
-        "sass-loader": "^13.3.0",
-        "terser-webpack-plugin": "^5.3.9",
-        "webpack": "^5.83.1",
-        "webpack-cli": "^5.1.1",
-        "webpack-remove-empty-scripts": "^1.0.3"
+        "@playwright/test": "^1.59.1",
+        "autoprefixer": "^10.4.27",
+        "css-loader": "^6.11.0",
+        "mini-css-extract-plugin": "^2.10.2",
+        "postcss-loader": "^7.3.4",
+        "sass": "^1.99.0",
+        "sass-loader": "^13.3.3",
+        "terser-webpack-plugin": "^5.4.0",
+        "webpack": "^5.106.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-remove-empty-scripts": "^1.1.1"
     },
     "dependencies": {
-        "datatables.net": "^1.13.4",
-        "datatables.net-bs5": "^1.13.4"
+        "datatables.net": "^1.13.11",
+        "datatables.net-bs5": "^1.13.11"
+    },
+    "overrides": {
+        "ajv": "^8.18.0",
+        "cross-spawn": "^7.0.6"
     }
 }

@@ -1,7 +1,16 @@
-path: ./
-jobs: 10
+path:
+  - ./Build/Scripts
+  - ./Classes
+  - ./Configuration
+  - ./Tests
+  - ./ext_emconf.php
+  - ./ext_localconf.php
+  - ./ext_tables.php
+jobs: 8
 cache: .phplint.cache
 extensions:
   - php
 exclude:
   - .build
+  - node_modules
+  - var
