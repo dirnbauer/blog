@@ -47,7 +47,38 @@ final class BackendAccessService
 
     public function canViewBlogRoot(int $pageUid): bool
     {
-        return $this->hasPagePermission($pageUid, Permission::PAGE_SHOW);
+        if ($pageUid <= 0) {
+            return false;
+        }
+
+        $backendUser = $this->getBackendUser();
+        if (!$backendUser instanceof BackendUserAuthentication) {
+            return false;
+        }
+
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+
+        if ($backendUser->isInWebMount($pageUid, '1=1') !== null) {
+            return true;
+        }
+
+        $rawWebmounts = array_filter(
+            array_map('intval', explode(',', (string)($backendUser->user['db_mountpoints'] ?? ''))),
+            static fn (int $webmount): bool => $webmount > 0,
+        );
+        if ($rawWebmounts === []) {
+            return false;
+        }
+
+        foreach (BackendUtility::BEgetRootLine($pageUid, '', true) as $rootlinePage) {
+            if (in_array((int)($rootlinePage['uid'] ?? 0), $rawWebmounts, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function canModerateComment(Comment $comment): bool

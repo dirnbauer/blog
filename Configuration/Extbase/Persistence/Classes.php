@@ -15,9 +15,11 @@ return [
     ],
     \T3G\AgencyPack\Blog\Domain\Model\Post::class => [
         'tableName' => 'pages',
+        'recordType' => (string) \T3G\AgencyPack\Blog\Constants::DOKTYPE_BLOG_POST,
     ],
     \T3G\AgencyPack\Blog\Domain\Model\Category::class => [
         'tableName' => 'sys_category',
+        'recordType' => (string) \T3G\AgencyPack\Blog\Constants::CATEGORY_TYPE_BLOG,
     ],
     \T3G\AgencyPack\Blog\Domain\Model\Comment::class => [
         'tableName' => 'tx_blog_domain_model_comment',

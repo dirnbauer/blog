@@ -69,7 +69,7 @@ final class BlogVariableProviderTest extends UnitTestCase
     public function isPostReturnsFalseWithoutPageInformation(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('frontend.page.information')->willReturn(null);
+        $request->expects(self::once())->method('getAttribute')->with('frontend.page.information')->willReturn(null);
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $provider = new BlogVariableProvider();
         self::assertFalse($provider->isPost());
@@ -80,7 +80,7 @@ final class BlogVariableProviderTest extends UnitTestCase
         $pageInformation = new PageInformation();
         $pageInformation->setPageRecord(['doktype' => $doktype]);
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->with('frontend.page.information')->willReturn($pageInformation);
+        $request->expects(self::once())->method('getAttribute')->with('frontend.page.information')->willReturn($pageInformation);
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 }
