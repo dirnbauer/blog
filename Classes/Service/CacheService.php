@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,19 +12,18 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
+use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
-/**
- * Class CacheService
- */
 class CacheService
 {
     public function __construct(
         private readonly ConfigurationManagerInterface $configurationManager,
-        private readonly CacheManager $cacheManager
+        private readonly CacheManager $cacheManager,
     ) {
     }
 
@@ -43,7 +43,9 @@ class CacheService
         }
         if (isset($settings['comments']['active']) && $settings['comments']['active']) {
             foreach ($post->getActiveComments() as $comment) {
-                $this->addTagToPage($request, 'tx_blog_comment_' . $comment->getUid());
+                if ($comment instanceof Comment) {
+                    $this->addTagToPage($request, 'tx_blog_comment_' . $comment->getUid());
+                }
             }
         }
     }
@@ -55,8 +57,13 @@ class CacheService
 
     public function addTagsToPage(ServerRequestInterface $request, array $tags): void
     {
-        $request->getAttribute('frontend.cache.collector')->addCacheTags(
-            ...array_map(fn (string $tag) => new CacheTag($tag), $tags)
+        $cacheCollector = $request->getAttribute('frontend.cache.collector');
+        if (!$cacheCollector instanceof CacheDataCollectorInterface) {
+            return;
+        }
+
+        $cacheCollector->addCacheTags(
+            ...array_map(fn (string $tag) => new CacheTag($tag), $tags),
         );
     }
 
@@ -76,7 +83,7 @@ class CacheService
     {
         return $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            'blog'
+            'blog',
         );
     }
 }

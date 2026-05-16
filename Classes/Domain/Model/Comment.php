@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -86,7 +87,6 @@ class Comment extends AbstractEntity
     protected $status;
 
     /**
-     * @return string
      */
     public function getName(): ?string
     {
@@ -94,9 +94,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param string $name
      *
-     * @return Comment
      */
     public function setName(string $name): self
     {
@@ -105,7 +103,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return string
      */
     public function getEmail(): ?string
     {
@@ -113,9 +110,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param string $email
      *
-     * @return Comment
      */
     public function setEmail(string $email): self
     {
@@ -124,7 +119,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return string
      */
     public function getComment(): ?string
     {
@@ -132,9 +126,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param string $comment
      *
-     * @return Comment
      */
     public function setComment(string $comment): self
     {
@@ -143,7 +135,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return int
      */
     public function getHidden(): ?int
     {
@@ -151,9 +142,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param int $hidden
      *
-     * @return Comment
      */
     public function setHidden(int $hidden): self
     {
@@ -162,7 +151,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return string
      */
     public function getUrl(): ?string
     {
@@ -170,18 +158,32 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param string $url
      *
-     * @return Comment
      */
     public function setUrl(string $url): self
     {
+        $url = trim($url);
+        if ($url === '') {
+            $this->url = '';
+            return $this;
+        }
+
+        $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+        if ($scheme === '') {
+            $url = 'https://' . ltrim($url, '/');
+            $scheme = 'https';
+        }
+
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            $this->url = '';
+            return $this;
+        }
+
         $this->url = $url;
         return $this;
     }
 
     /**
-     * @return Post
      */
     public function getPost(): ?Post
     {
@@ -189,9 +191,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param Post $post
      *
-     * @return Comment
      */
     public function setPost(Post $post): self
     {
@@ -200,7 +200,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return \DateTime
      */
     public function getCrdate(): ?\DateTime
     {
@@ -208,9 +207,7 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $crdate
      *
-     * @return Comment
      */
     public function setCrdate(\DateTime $crdate): self
     {
@@ -219,7 +216,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return int
      */
     public function getPostLanguageId(): ?int
     {
@@ -228,7 +224,6 @@ class Comment extends AbstractEntity
 
     /**
      * @param int $postLanguageId
-     * @return Comment
      */
     public function setPostLanguageId($postLanguageId): self
     {
@@ -237,7 +232,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return string
      */
     public function getHp(): ?string
     {
@@ -246,7 +240,6 @@ class Comment extends AbstractEntity
 
     /**
      * @param string $hp
-     * @return Comment
      */
     public function setHp($hp): self
     {
@@ -255,7 +248,6 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return int
      */
     public function getStatus(): ?int
     {
@@ -264,7 +256,6 @@ class Comment extends AbstractEntity
 
     /**
      * @param int $status
-     * @return Comment
      */
     public function setStatus($status): self
     {

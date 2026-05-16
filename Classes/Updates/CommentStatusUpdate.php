@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,8 +11,8 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Updates;
 
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 #[UpgradeWizard(CommentStatusUpdate::class)]
 final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -36,7 +37,7 @@ final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardI
                 $status = 50;
             }
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'status' => (string) $status
+                'status' => (string) $status,
             ]);
         }
 

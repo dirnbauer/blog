@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -44,7 +46,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listRecentPosts',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -54,7 +56,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listByDemand',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -64,7 +66,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listLatestPosts',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -74,7 +76,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listPostsByCategory',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -84,7 +86,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listPostsByAuthor',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -94,7 +96,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listPostsByTag',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -104,7 +106,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'listPostsByDate',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -114,7 +116,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'sidebar',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -126,7 +128,7 @@ ExtensionUtility::configurePlugin(
     [
         CommentController::class => 'form',
     ],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -136,7 +138,7 @@ ExtensionUtility::configurePlugin(
         CommentController::class => 'comments',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -146,7 +148,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'header',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -156,7 +158,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'footer',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -166,7 +168,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'authors',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -176,7 +178,7 @@ ExtensionUtility::configurePlugin(
         PostController::class => 'relatedPosts',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 // Widgets
@@ -187,7 +189,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'recentPosts',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -197,7 +199,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'categories',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -207,7 +209,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'tags',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -217,7 +219,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'comments',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -227,7 +229,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'archive',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 ExtensionUtility::configurePlugin(
@@ -237,7 +239,7 @@ ExtensionUtility::configurePlugin(
         WidgetController::class => 'feed',
     ],
     [],
-    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
 // Hooks

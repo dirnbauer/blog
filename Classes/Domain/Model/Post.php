@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -16,7 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -66,7 +66,7 @@ class Post extends AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\T3G\AgencyPack\Blog\Domain\Model\Author>
      * @Extbase\ORM\Lazy
      */
-    protected $authors;
+    protected ObjectStorage $authors;
 
     public function __construct()
     {
@@ -122,7 +122,6 @@ class Post extends AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\T3G\AgencyPack\Blog\Domain\Model\Author> $authors
-     * @return Post
      */
     public function setAuthors(ObjectStorage $authors): self
     {
@@ -192,7 +191,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Category $category
      */
     public function addCategory(Category $category): self
     {
@@ -201,7 +199,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Category $category
      */
     public function removeCategory(Category $category): self
     {
@@ -255,7 +252,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Comment $comment
      */
     public function addComment(Comment $comment): self
     {
@@ -264,7 +260,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Comment $comment
      */
     public function removeComment(Comment $comment): self
     {
@@ -290,7 +285,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Tag $tag
      */
     public function addTag(Tag $tag): self
     {
@@ -299,7 +293,6 @@ class Post extends AbstractEntity
     }
 
     /**
-     * @param Tag $tag
      */
     public function removeTag(Tag $tag): self
     {
@@ -369,21 +362,14 @@ class Post extends AbstractEntity
 
     public function getUri(): string
     {
-        if (class_exists(LinkFactory::class)) {
-            return (string) GeneralUtility::makeInstance(LinkFactory::class)->create(
-                '',
-                [
-                    'parameter' => (string) $this->getUid(),
-                    'forceAbsoluteUrl' => true
-                ],
-                GeneralUtility::makeInstance(ContentObjectRenderer::class)
-            )->getUrl();
-        }
-
-        return GeneralUtility::makeInstance(UriBuilder::class)
-            ->setCreateAbsoluteUri(true)
-            ->setTargetPageUid((int) $this->getUid())
-            ->build();
+        return (string) GeneralUtility::makeInstance(LinkFactory::class)->create(
+            '',
+            [
+                'parameter' => (string) $this->getUid(),
+                'forceAbsoluteUrl' => true,
+            ],
+            GeneralUtility::makeInstance(ContentObjectRenderer::class),
+        )->getUrl();
     }
 
     public function getAsArray(): array
@@ -400,7 +386,7 @@ class Post extends AbstractEntity
             'title' => $this->getTitle(),
             'subtitle' => $this->getSubtitle(),
             'abstract' => $this->getAbstract(),
-            'description' => $this->getDescription()
+            'description' => $this->getDescription(),
         ];
     }
 }

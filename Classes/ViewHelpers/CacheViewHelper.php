@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -26,7 +27,14 @@ class CacheViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $post = $this->arguments['post'];
-        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
+        if (!$post instanceof Post) {
+            return '';
+        }
+        $renderingContext = $this->renderingContext;
+        if ($renderingContext === null || !$renderingContext->hasAttribute(ServerRequestInterface::class)) {
+            return '';
+        }
+        $request = $renderingContext->getAttribute(ServerRequestInterface::class);
         GeneralUtility::makeInstance(CacheService::class)->addTagsForPost($request, $post);
 
         return '';

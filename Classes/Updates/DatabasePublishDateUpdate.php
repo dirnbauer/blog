@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,8 +12,8 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 #[UpgradeWizard(DatabasePublishDateUpdate::class)]
 final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -31,7 +32,7 @@ final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeW
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'publish_date' => $record['crdate'] ?? time()
+                'publish_date' => $record['crdate'] ?? time(),
             ]);
         }
 
@@ -43,7 +44,7 @@ final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeW
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'doktype', Constants::DOKTYPE_BLOG_POST),
-            $this->createEqualIntCriteria($queryBuilder, 'publish_date', 0)
+            $this->createEqualIntCriteria($queryBuilder, 'publish_date', 0),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 

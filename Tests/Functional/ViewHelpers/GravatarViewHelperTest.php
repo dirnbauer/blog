@@ -25,11 +25,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class GravatarViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     #[Test]
@@ -42,9 +42,11 @@ final class GravatarViewHelperTest extends FunctionalTestCase
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
+        $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = (new TemplateView($context));
 

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -79,7 +80,6 @@ class Author extends AbstractEntity
     }
 
     /**
-     * @return string
      */
     public function getName(): ?string
     {
@@ -87,8 +87,6 @@ class Author extends AbstractEntity
     }
 
     /**
-     * @param string $name
-     * @return Author
      */
     public function setName(string $name): self
     {

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,6 +11,9 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Domain\Repository;
 
+use T3G\AgencyPack\Blog\Domain\Model\Tag;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -17,6 +21,9 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
+/**
+ * @extends Repository<Tag>
+ */
 class TagRepository extends Repository
 {
     protected array $settings = [];
@@ -35,7 +42,7 @@ class TagRepository extends Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->in('uid', $uids)
+            $query->in('uid', $uids),
         );
 
         return $query->execute();
@@ -54,11 +61,15 @@ class TagRepository extends Repository
             ->orderBy('cnt', 'DESC')
             ->setMaxResults($limit);
 
-        // limitation to storage pid for multi domain purpose
-        if ($this->settings['persistence']['storagePid']) {
-            // force storage pids as integer
-            $storagePids = GeneralUtility::intExplode(',', $this->settings['persistence']['storagePid']);
-            $queryBuilder->where('t.pid IN(' . implode(',', $storagePids) . ')');
+        $storagePidSetting = TypeUtility::toString($this->settings['persistence']['storagePid'] ?? '');
+        if ($storagePidSetting !== '') {
+            $storagePids = GeneralUtility::intExplode(',', $storagePidSetting, true);
+            $queryBuilder->where(
+                $queryBuilder->expr()->in(
+                    't.pid',
+                    $queryBuilder->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY),
+                ),
+            );
         }
 
         $result = $queryBuilder
@@ -67,11 +78,15 @@ class TagRepository extends Repository
 
         $rows = [];
         foreach ($result as $row) {
-            $row['tagObject'] = $this->findByUid($row['uid']);
+            $uid = TypeUtility::toInt($row['uid'] ?? null);
+            if ($uid <= 0) {
+                continue;
+            }
+
+            $row['tagObject'] = $this->findByUid($uid);
             $rows[] = $row;
         }
 
-        // Shuffle tags, ordering is only to get the top used tags
         shuffle($rows);
         return $rows;
     }

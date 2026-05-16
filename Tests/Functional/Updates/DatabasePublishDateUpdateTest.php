@@ -21,11 +21,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class DatabasePublishDateUpdateTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     #[Test]

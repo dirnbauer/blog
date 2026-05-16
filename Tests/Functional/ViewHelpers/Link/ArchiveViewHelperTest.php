@@ -34,13 +34,13 @@ final class ArchiveViewHelperTest extends SiteBasedTestCase
                 'crdate_year' => 2023,
                 'crdate_month' => 5,
                 'title' => 'First blog post',
-                'slug' => '/first-blog-post'
-            ]
+                'slug' => '/first-blog-post',
+            ],
         );
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template)
+            $this->renderFluidTemplateInTestSite($template),
         );
     }
 

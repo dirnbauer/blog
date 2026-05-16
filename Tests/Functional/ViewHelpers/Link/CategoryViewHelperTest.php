@@ -32,8 +32,8 @@ final class CategoryViewHelperTest extends SiteBasedTestCase
                 'pid' => self::STORAGE_UID,
                 'record_type' => Constants::CATEGORY_TYPE_BLOG,
                 'title' => 'Blog',
-                'slug' => 'blog'
-            ]
+                'slug' => 'blog',
+            ],
         );
 
         $instructions = [
@@ -41,12 +41,12 @@ final class CategoryViewHelperTest extends SiteBasedTestCase
                 'type' => 'category',
                 'uid' => 100,
                 'as' => 'category',
-            ]
+            ],
         ];
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template, $instructions)
+            $this->renderFluidTemplateInTestSite($template, $instructions),
         );
     }
 

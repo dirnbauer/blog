@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -17,17 +19,17 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class SiteBasedTestCase extends FunctionalTestCase
 {
-    const BASE_URL = 'https://test.typo3.com/';
-    const ROOT_UID = 1;
-    const STORAGE_UID = 2;
+    protected const BASE_URL = 'https://test.typo3.com/';
+    protected const ROOT_UID = 1;
+    protected const STORAGE_UID = 2;
 
     protected array $coreExtensionsToLoad = [
         'form',
-        'fluid_styled_content'
+        'fluid_styled_content',
     ];
 
     protected array $testExtensionsToLoad = [
-        'blog'
+        'blog',
     ];
 
     protected function createTestSite(): void
@@ -53,13 +55,13 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
                     'navigationTitle' => 'English',
                     'hreflang' => 'en-us',
                     'direction' => 'ltr',
-                    'flag' => 'us'
-                ]
+                    'flag' => 'us',
+                ],
             ],
             'imports' => [
                 [
-                    'resource' => 'EXT:blog/Configuration/Routes/Default.yaml'
-                ]
+                    'resource' => 'EXT:blog/Configuration/Routes/Default.yaml',
+                ],
             ],
             'dependencies' => [
                 'blog/standalone',
@@ -81,10 +83,10 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
                             'authorUid' => 5,
                             'archiveUid' => 6,
                             'storagePid' => 2,
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         );
     }
 
@@ -106,8 +108,8 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
                 'pid' => 1,
                 'doktype' => 1,
                 'title' => 'Template Test',
-                'slug' => '/template-test'
-            ]
+                'slug' => '/template-test',
+            ],
         );
         (new ConnectionPool())->getConnectionForTable('sys_template')->delete('sys_template', ['uid' => 9999]);
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert(
@@ -135,9 +137,9 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
                     '           }',
                     '       }',
                     '    }',
-                    '}'
-                ])
-            ]
+                    '}',
+                ]),
+            ],
         );
         $response = $this->executeFrontendSubRequest((new InternalRequest(self::BASE_URL . 'template-test')));
 

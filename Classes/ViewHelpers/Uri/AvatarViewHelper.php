@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,6 +12,7 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\ViewHelpers\Uri;
 
 use T3G\AgencyPack\Blog\Domain\Model\Author;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 class AvatarViewHelper extends AbstractTagBasedViewHelper
@@ -26,7 +28,7 @@ class AvatarViewHelper extends AbstractTagBasedViewHelper
     {
         /** @var Author $author */
         $author = $this->arguments['author'];
-        $size = (int)$this->arguments['size'];
+        $size = TypeUtility::toInt($this->arguments['size'], 64);
 
         return $author->getAvatar($size);
     }

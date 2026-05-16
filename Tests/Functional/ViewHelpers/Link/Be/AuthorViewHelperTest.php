@@ -17,8 +17,6 @@ use T3G\AgencyPack\Blog\Domain\Model\Author;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Information\Typo3Version;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -26,11 +24,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class AuthorViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     public function setUp(): void
@@ -50,7 +48,8 @@ final class AuthorViewHelperTest extends FunctionalTestCase
         $author->setEmail('info+test@typo3.com');
         $author->setName('Info');
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
+        $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
 
         $view = (new TemplateView($context));
@@ -62,9 +61,6 @@ final class AuthorViewHelperTest extends FunctionalTestCase
     public static function renderDataProvider(): array
     {
         $expectedReturnUrl = '/';
-        if ((GeneralUtility::makeInstance(Typo3Version::class))->getMajorVersion() < 12) {
-            $expectedReturnUrl = '%2F';
-        }
 
         return [
             'simple' => [

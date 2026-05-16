@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -35,12 +36,12 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
     {
         $this->gravatarUriBuilder = GeneralUtility::makeInstance(
             GravatarUriBuilder::class,
-            GeneralUtility::makeInstance(UriFactory::class)
+            GeneralUtility::makeInstance(UriFactory::class),
         );
         $this->avatarResourceResolver = GeneralUtility::makeInstance(
             GravatarResourceResolver::class,
             GeneralUtility::makeInstance(GuzzleClientFactory::class)->getClient(),
-            GeneralUtility::makeInstance(RequestFactory::class)
+            GeneralUtility::makeInstance(RequestFactory::class),
         );
 
         /** @var ExtensionConfiguration $extensionConfiguration */
@@ -60,7 +61,7 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
             $author->getEmail(),
             $size,
             $rating,
-            $default
+            $default,
         );
 
         if (!$this->proxyGravatarImage) {
@@ -95,8 +96,14 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
         return $absoluteWebPath;
     }
 
+    private const ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+
     private function deriveFileTypeFromContentType(string $contentType): string
     {
-        return substr($contentType, (int)strrpos($contentType, '/') + 1);
+        $extension = substr($contentType, (int)strrpos($contentType, '/') + 1);
+        if (!in_array($extension, self::ALLOWED_IMAGE_EXTENSIONS, true)) {
+            return 'png';
+        }
+        return $extension;
     }
 }

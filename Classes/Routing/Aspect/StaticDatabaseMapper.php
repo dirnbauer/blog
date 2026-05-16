@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,6 +11,7 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Routing\Aspect;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -102,6 +104,9 @@ class StaticDatabaseMapper implements StaticMappableAspectInterface, \Countable
             $queryBuilder->andWhere($queryBuilder->expr()->eq($key, $queryBuilder->createNamedParameter($value)));
         }
 
-        return array_map('strval', array_column($queryBuilder->executeQuery()->fetchAllAssociative(), $this->field));
+        return array_map(
+            static fn (mixed $value): string => TypeUtility::toString($value),
+            array_column($queryBuilder->executeQuery()->fetchAllAssociative(), $this->field),
+        );
     }
 }

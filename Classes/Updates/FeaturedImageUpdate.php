@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -10,9 +12,9 @@
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\RepeatableInterface;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 #[UpgradeWizard(FeaturedImageUpdate::class)]
 final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardInterface, RepeatableInterface
@@ -34,7 +36,7 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
             ]);
             $this->updateRecord('pages', (int) $record['uid_foreign'], [
                 'featured_image' => 1,
-                'media' => 0
+                'media' => 0,
             ]);
         }
 
@@ -60,7 +62,7 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
             function ($page) {
                 return $page['uid'];
             },
-            $this->getAffectedPages()
+            $this->getAffectedPages(),
         );
 
         $queryBuilder = $this->createQueryBuilder('sys_file_reference');

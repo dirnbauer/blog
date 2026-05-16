@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -23,24 +24,24 @@ class GravatarResourceResolverTest extends UnitTestCase
     public function testResolveReturnsProperResponse(): void
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getStatusCode')
             ->willReturn(200);
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getBody')
             ->willReturn(new Stream('php://temp'));
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getHeaderLine')
             ->willReturn('image/jpeg');
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects(self::any())
+        $client->expects(self::once())
             ->method('sendRequest')
             ->willReturn($response);
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';
@@ -56,21 +57,21 @@ class GravatarResourceResolverTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
 
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getStatusCode')
             ->willReturn(404);
-        $response->expects(self::any())
+        $response->expects(self::once())
             ->method('getReasonPhrase')
             ->willReturn('Not Found');
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects(self::any())
+        $client->expects(self::once())
             ->method('sendRequest')
             ->willReturn($response);
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';
@@ -80,24 +81,24 @@ class GravatarResourceResolverTest extends UnitTestCase
     public function testResolveReturnsResponseWithEmptyContentTypeHeader(): void
     {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getStatusCode')
             ->willReturn(200);
-        $response->expects(self::any())
+        $response->expects(self::atLeastOnce())
             ->method('getBody')
             ->willReturn(new Stream('php://temp'));
-        $response->expects(self::any())
+        $response->expects(self::once())
             ->method('getHeaderLine')
             ->willReturn('');
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects(self::any())
+        $client->expects(self::once())
             ->method('sendRequest')
             ->willReturn($response);
 
         $gravatarResourceResolver = new GravatarResourceResolver(
             $client,
-            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(RequestFactory::class)->disableOriginalConstructor()->getMock(),
         );
 
         $url = 'https://www.gravatar.com/avatar/71803b16fcdb8ac77611d0a977b20164';

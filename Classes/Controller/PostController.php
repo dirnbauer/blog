@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -24,38 +25,30 @@ use T3G\AgencyPack\Blog\Factory\PostRepositoryDemandFactory;
 use T3G\AgencyPack\Blog\Pagination\BlogPagination;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\MetaTagService;
+use T3G\AgencyPack\Blog\Service\RelatedPostsService;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
+use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 class PostController extends ActionController
 {
-    protected PostRepository $postRepository;
-    protected AuthorRepository $authorRepository;
-    protected CategoryRepository $categoryRepository;
-    protected TagRepository $tagRepository;
-    protected CacheService $blogCacheService;
-    protected PostRepositoryDemandFactory $postRepositoryDemandFactory;
-
     public function __construct(
-        PostRepository $postRepository,
-        AuthorRepository $authorRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository,
-        CacheService $blogCacheService,
-        PostRepositoryDemandFactory $postRepositoryDemandFactory
+        protected readonly PostRepository $postRepository,
+        protected readonly AuthorRepository $authorRepository,
+        protected readonly CategoryRepository $categoryRepository,
+        protected readonly TagRepository $tagRepository,
+        protected readonly CacheService $blogCacheService,
+        protected readonly PostRepositoryDemandFactory $postRepositoryDemandFactory,
+        protected readonly MetaTagService $metaTagService,
+        protected readonly RelatedPostsService $relatedPostsService,
     ) {
-        $this->postRepository = $postRepository;
-        $this->authorRepository = $authorRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
-        $this->blogCacheService = $blogCacheService;
-        $this->postRepositoryDemandFactory = $postRepositoryDemandFactory;
     }
 
     /**
@@ -69,23 +62,38 @@ class PostController extends ActionController
             switch ($action) {
                 case '.listPostsByCategory':
                     if (isset($this->arguments['category'])) {
-                        $arguments[] = $this->arguments['category']->getValue()->getTitle();
+                        $category = $this->arguments['category']->getValue();
+                        if ($category instanceof Category) {
+                            $arguments[] = $category->getTitle();
+                        }
                     }
                     break;
                 case '.listPostsByDate':
-                    $arguments[] = (int)$this->arguments['year']->getValue();
+                    $year = $this->arguments['year']->getValue();
+                    if (is_numeric($year)) {
+                        $arguments[] = (int)$year;
+                    }
                     if (isset($this->arguments['month'])) {
-                        $arguments[] = (int)$this->arguments['month']->getValue();
+                        $month = $this->arguments['month']->getValue();
+                        if (is_numeric($month)) {
+                            $arguments[] = (int)$month;
+                        }
                     }
                     break;
                 case '.listPostsByTag':
                     if (isset($this->arguments['tag'])) {
-                        $arguments[] = $this->arguments['tag']->getValue()->getTitle();
+                        $tag = $this->arguments['tag']->getValue();
+                        if ($tag instanceof Tag) {
+                            $arguments[] = $tag->getTitle();
+                        }
                     }
                     break;
                 case '.listPostsByAuthor':
                     if (isset($this->arguments['author'])) {
-                        $arguments[] = $this->arguments['author']->getValue()->getName();
+                        $author = $this->arguments['author']->getValue();
+                        if ($author instanceof Author) {
+                            $arguments[] = $author->getName();
+                        }
                     }
                     break;
                 default:
@@ -101,7 +109,7 @@ class PostController extends ActionController
             $this->view->assign('feed', $feedData);
         }
 
-        $contentObject = $this->request->getAttribute('currentContentObject');
+        $contentObject = RequestUtility::getCurrentContentObject($this->getRequest());
         $this->view->assign('data', $contentObject !== null ? $contentObject->data : null);
     }
 
@@ -173,8 +181,8 @@ class PostController extends ActionController
                 $dateTime->format('F'),
                 (string) $year,
             ], (string) LocalizationUtility::translate('meta.title.listPostsByDate', 'blog'));
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $title);
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) LocalizationUtility::translate('meta.description.listPostsByDate', 'blog'));
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $title);
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) LocalizationUtility::translate('meta.description.listPostsByDate', 'blog'));
         }
         return $this->htmlResponse();
     }
@@ -185,8 +193,8 @@ class PostController extends ActionController
     public function listPostsByCategoryAction(?Category $category = null, int $currentPage = 1): ResponseInterface
     {
         if ($category === null) {
-            $contentObject = $this->request->getAttribute('currentContentObject');
-            $referenceUid = $contentObject !== null ? (int) $contentObject->data['uid'] : null;
+            $contentObject = RequestUtility::getCurrentContentObject($this->getRequest());
+            $referenceUid = $this->getContentObjectUid($contentObject);
             if ($referenceUid !== null) {
                 $categories = $this->categoryRepository->getByReference('tt_content', $referenceUid);
                 if ($categories !== null && $categories->count() > 0) {
@@ -203,8 +211,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('category', $category);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $category->getTitle());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $category->getDescription());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $category->getTitle());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $category->getDescription());
         } else {
             $this->view->assign('categories', $this->categoryRepository->findAll());
         }
@@ -223,8 +231,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('author', $author);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $author->getName());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $author->getBio());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $author->getName());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $author->getBio());
         } else {
             $this->view->assign('authors', $this->authorRepository->findAll());
         }
@@ -243,8 +251,8 @@ class PostController extends ActionController
             $this->view->assign('posts', $posts);
             $this->view->assign('pagination', $pagination);
             $this->view->assign('tag', $tag);
-            MetaTagService::set(MetaTagService::META_TITLE, (string) $tag->getTitle());
-            MetaTagService::set(MetaTagService::META_DESCRIPTION, (string) $tag->getDescription());
+            $this->metaTagService->set(MetaTagService::META_TITLE, (string) $tag->getTitle());
+            $this->metaTagService->set(MetaTagService::META_DESCRIPTION, (string) $tag->getDescription());
         } else {
             $this->view->assign('tags', $this->tagRepository->findAll());
         }
@@ -304,10 +312,10 @@ class PostController extends ActionController
     public function relatedPostsAction(): ResponseInterface
     {
         $post = $this->postRepository->findCurrentPost();
-        $posts = $this->postRepository->findRelatedPosts(
+        $posts = $this->relatedPostsService->findRelatedPosts(
             (int)$this->settings['relatedPosts']['categoryMultiplier'],
             (int)$this->settings['relatedPosts']['tagMultiplier'],
-            (int)$this->settings['relatedPosts']['limit']
+            (int)$this->settings['relatedPosts']['limit'],
         );
         $this->view->assign('type', 'related');
         $this->view->assign('post', $post);
@@ -317,19 +325,30 @@ class PostController extends ActionController
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return RequestUtility::getGlobalRequest();
     }
 
     private function getSiteLanguage(): SiteLanguage
     {
-        return $this->getRequest()->getAttribute('language');
+        return RequestUtility::getSiteLanguage($this->getRequest());
     }
 
     private function getRequestUrl(): string
     {
         /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $this->getRequest()->getAttribute('normalizedParams');
+        $normalizedParams = RequestUtility::getNormalizedParams($this->getRequest());
         return $normalizedParams->getRequestUrl();
+    }
+
+    private function getContentObjectUid(?ContentObjectRenderer $contentObject): ?int
+    {
+        if ($contentObject === null) {
+            return null;
+        }
+
+        $uid = $contentObject->data['uid'] ?? null;
+
+        return is_numeric($uid) ? (int)$uid : null;
     }
 
     protected function getPagination(QueryResultInterface $objects, int $currentPage = 1): ?BlogPagination

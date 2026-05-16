@@ -30,8 +30,8 @@ final class AuthorViewHelperTest extends SiteBasedTestCase
                 'uid' => 100,
                 'pid' => self::STORAGE_UID,
                 'name' => 'TYPO3 Inc Team',
-                'slug' => 'typo3-inc-team'
-            ]
+                'slug' => 'typo3-inc-team',
+            ],
         );
 
         $instructions = [
@@ -39,12 +39,12 @@ final class AuthorViewHelperTest extends SiteBasedTestCase
                 'type' => 'author',
                 'uid' => 100,
                 'as' => 'author',
-            ]
+            ],
         ];
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template, $instructions)
+            $this->renderFluidTemplateInTestSite($template, $instructions),
         );
     }
 
@@ -93,8 +93,8 @@ final class AuthorViewHelperTest extends SiteBasedTestCase
                 'pid' => 1,
                 'doktype' => 1,
                 'title' => 'Detail Page TYPO3 Inc Team',
-                'slug' => '/detail-typo3-inc-team'
-            ]
+                'slug' => '/detail-typo3-inc-team',
+            ],
         );
 
         (new ConnectionPool())->getConnectionForTable('tx_blog_domain_model_author')->insert(
@@ -105,7 +105,7 @@ final class AuthorViewHelperTest extends SiteBasedTestCase
                 'name' => 'TYPO3 Inc Team',
                 'slug' => 'typo3-inc-team',
                 'details_page' => 100,
-            ]
+            ],
         );
 
         $instructions = [
@@ -113,12 +113,12 @@ final class AuthorViewHelperTest extends SiteBasedTestCase
                 'type' => 'author',
                 'uid' => 100,
                 'as' => 'author',
-            ]
+            ],
         ];
 
         self::assertSame(
             $expected,
-            $this->renderFluidTemplateInTestSite($template, $instructions)
+            $this->renderFluidTemplateInTestSite($template, $instructions),
         );
     }
 

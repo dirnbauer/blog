@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,8 +11,8 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Updates;
 
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate;
 
 #[UpgradeWizard(ListTypeMigration::class)]
 final class ListTypeMigration extends AbstractListTypeToCTypeUpdate
@@ -32,7 +33,7 @@ final class ListTypeMigration extends AbstractListTypeToCTypeUpdate
             'blog_demandedposts',
             'blog_relatedposts',
             'blog_header',
-            'blog_footer'
+            'blog_footer',
         ];
         return array_combine($ctypes, $ctypes);
     }

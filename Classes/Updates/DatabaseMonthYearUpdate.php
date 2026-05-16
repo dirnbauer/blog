@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,8 +12,8 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 #[UpgradeWizard(DatabaseMonthYearUpdate::class)]
 final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -33,7 +34,7 @@ final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWiz
             $timestamp = $record['crdate'] ?? time();
             $this->updateRecord($this->table, (int) $record['uid'], [
                 'crdate_month' => date('n', (int)$timestamp),
-                'crdate_year' => date('Y', (int)$timestamp)
+                'crdate_year' => date('Y', (int)$timestamp),
             ]);
         }
         return true;
@@ -45,7 +46,7 @@ final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWiz
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'doktype', Constants::DOKTYPE_BLOG_POST),
             $this->createEqualIntCriteria($queryBuilder, 'crdate_month', 0),
-            $this->createEqualIntCriteria($queryBuilder, 'crdate_year', 0)
+            $this->createEqualIntCriteria($queryBuilder, 'crdate_year', 0),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 

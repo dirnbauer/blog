@@ -26,11 +26,11 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class AvatarViewHelperTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = [
-        'form'
+        'form',
     ];
 
     protected array $testExtensionsToLoad = [
-        'typo3conf/ext/blog'
+        'typo3conf/ext/blog',
     ];
 
     #[Test]
@@ -43,14 +43,16 @@ final class AvatarViewHelperTest extends FunctionalTestCase
         $request = (new ServerRequest())
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('frontend.typoscript', $frontendTypoScript);
-        $this->get(ConfigurationManagerInterface::class)->setRequest($request);
+        $configurationManager = $this->get(ConfigurationManagerInterface::class);
+        $configurationManager->setRequest($request);
 
         $author = new Author();
         $author->setEmail('info+gravatar@typo3.com');
         $author->setName('Info Gravatar');
         $author->setAvatarProvider('T3G\AgencyPack\Blog\AvatarProvider\GravatarProvider');
 
-        $context = $this->get(RenderingContextFactory::class)->create();
+        $renderingContextFactory = $this->get(RenderingContextFactory::class);
+        $context = $renderingContextFactory->create();
         $context->getTemplatePaths()->setTemplateSource($template);
         $view = (new TemplateView($context));
         $view->assign('author', $author);
@@ -68,7 +70,7 @@ final class AvatarViewHelperTest extends FunctionalTestCase
             'size' => [
                 '{blogvh:uri.avatar(author: author, size: 32)}',
                 'https://www.gravatar.com/avatar/edce5ecb76b1dcb9f9d7647a13e7fc97?s=32',
-            ]
+            ],
         ];
     }
 }

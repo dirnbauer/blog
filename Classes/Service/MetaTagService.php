@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -12,47 +13,38 @@ namespace T3G\AgencyPack\Blog\Service;
 
 use T3G\AgencyPack\Blog\TitleTagProvider\BlogTitleTagProvider;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class MetaTagService.
- */
-class MetaTagService
+final class MetaTagService
 {
     public const META_TITLE = 'title';
     public const META_DESCRIPTION = 'description';
 
-    public static function set(string $type, string $value): void
-    {
-        switch ($type) {
-            case self::META_TITLE:
-                self::setTitle($value);
-                break;
-            case self::META_DESCRIPTION:
-                self::setDescription($value);
-                break;
-            default:
-                throw new \InvalidArgumentException('The type "' . $type . '" is not supported.', 1562020008);
-        }
+    public function __construct(
+        private readonly BlogTitleTagProvider $titleTagProvider,
+        private readonly MetaTagManagerRegistry $metaTagManagerRegistry,
+    ) {
     }
 
-    protected static function setTitle(string $value): void
+    public function set(string $type, string $value): void
     {
-        $provider = GeneralUtility::makeInstance(BlogTitleTagProvider::class);
-        $provider->setTitle($value);
-        $ogTitleManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('og:title');
-        $ogTitleManager->addProperty('og:title', $value);
-        $twitterTitleManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('twitter:title');
-        $twitterTitleManager->addProperty('twitter:title', $value);
+        match ($type) {
+            self::META_TITLE => $this->setTitle($value),
+            self::META_DESCRIPTION => $this->setDescription($value),
+            default => throw new \InvalidArgumentException('The type "' . $type . '" is not supported.', 1562020008),
+        };
     }
 
-    protected static function setDescription(string $value): void
+    private function setTitle(string $value): void
     {
-        $descriptionManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('description');
-        $descriptionManager->addProperty('description', $value);
-        $ogDescriptionManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('og:description');
-        $ogDescriptionManager->addProperty('og:description', $value);
-        $twitterDescriptionManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('twitter:description');
-        $twitterDescriptionManager->addProperty('twitter:description', $value);
+        $this->titleTagProvider->setTitle($value);
+        $this->metaTagManagerRegistry->getManagerForProperty('og:title')->addProperty('og:title', $value);
+        $this->metaTagManagerRegistry->getManagerForProperty('twitter:title')->addProperty('twitter:title', $value);
+    }
+
+    private function setDescription(string $value): void
+    {
+        $this->metaTagManagerRegistry->getManagerForProperty('description')->addProperty('description', $value);
+        $this->metaTagManagerRegistry->getManagerForProperty('og:description')->addProperty('og:description', $value);
+        $this->metaTagManagerRegistry->getManagerForProperty('twitter:description')->addProperty('twitter:description', $value);
     }
 }

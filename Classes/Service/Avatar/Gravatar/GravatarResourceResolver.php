@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -35,7 +36,7 @@ final class GravatarResourceResolver implements AvatarResourceResolverInterface
 
     public function __construct(
         ClientInterface $client,
-        RequestFactoryInterface $requestFactory
+        RequestFactoryInterface $requestFactory,
     ) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
@@ -56,7 +57,7 @@ final class GravatarResourceResolver implements AvatarResourceResolverInterface
                 static::HTTP_METHOD,
                 (string)$uri,
                 $response->getStatusCode(),
-                $response->getReasonPhrase()
+                $response->getReasonPhrase(),
             ));
         }
 
@@ -67,7 +68,7 @@ final class GravatarResourceResolver implements AvatarResourceResolverInterface
         return new Gravatar(
             $uri,
             $contentType,
-            $response->getBody()->getContents()
+            $response->getBody()->getContents(),
         );
     }
 }

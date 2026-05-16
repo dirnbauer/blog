@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -10,11 +11,13 @@ declare(strict_types = 1);
 
 namespace T3G\AgencyPack\Blog\Updates;
 
+use T3G\AgencyPack\Blog\Utility\TcaUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 #[UpgradeWizard(AuthorSlugUpdate::class)]
 final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -30,8 +33,9 @@ final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInte
 
     public function executeUpdate(): bool
     {
-        $fieldConfig = $GLOBALS['TCA'][$this->table]['columns']['slug']['config'];
-        $evalInfo = isset($fieldConfig['eval']) && $fieldConfig['eval'] !== '' ? GeneralUtility::trimExplode(',', $fieldConfig['eval'], true) : [];
+        $fieldConfig = TcaUtility::getNestedArray(TcaUtility::getTableTca($this->table), ['columns', 'slug', 'config']);
+        $eval = TypeUtility::toString($fieldConfig['eval'] ?? null);
+        $evalInfo = $eval !== '' ? GeneralUtility::trimExplode(',', $eval, true) : [];
         $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
         $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, $this->table, 'slug', $fieldConfig);
@@ -53,7 +57,7 @@ final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInte
 
             // Update Record
             $this->updateRecord($this->table, $recordId, [
-                'slug' => $slug
+                'slug' => $slug,
             ]);
         }
 
@@ -65,7 +69,7 @@ final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInte
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualStringCriteria($queryBuilder, 'slug', ''),
-            $this->createIsNullCriteria($queryBuilder, 'slug')
+            $this->createIsNullCriteria($queryBuilder, 'slug'),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria, AbstractUpdate::CONDITION_OR);
 

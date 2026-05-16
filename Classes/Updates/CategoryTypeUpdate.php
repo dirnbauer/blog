@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,8 +12,8 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 #[UpgradeWizard(CategoryTypeUpdate::class)]
 final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardInterface
@@ -27,14 +28,13 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
     }
 
     /**
-     * @return bool
      */
     public function executeUpdate(): bool
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
             $this->updateRecord($this->table, (int) $record['uid'], [
-                'record_type' => Constants::CATEGORY_TYPE_BLOG
+                'record_type' => Constants::CATEGORY_TYPE_BLOG,
             ]);
         }
 
@@ -47,13 +47,13 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
             function ($page) {
                 return $page['uid'];
             },
-            $this->getBlogStorageFolders()
+            $this->getBlogStorageFolders(),
         );
 
         $queryBuilder = $this->createQueryBuilder($this->table);
         $criteria = [
             $this->createEqualIntCriteria($queryBuilder, 'record_type', Constants::CATEGORY_TYPE_DEFAULT),
-            $this->createInCriteria($queryBuilder, 'pid', $pages)
+            $this->createInCriteria($queryBuilder, 'pid', $pages),
         ];
         $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
 
