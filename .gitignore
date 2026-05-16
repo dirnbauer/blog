@@ -5,6 +5,7 @@
 /vendor/
 /.vscode/
 /.idea/
+/.claude/
 /composer.lock
 
 # Local runtime files
