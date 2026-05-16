@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -18,45 +20,52 @@ $data['pages']['NEW_blogRoot'] = [
     'hidden' => 1,
     'title' => 'Blog',
     'doktype' => Constants::DOKTYPE_BLOG_PAGE,
-    'is_siteroot' => 1
+    'is_siteroot' => 1,
+    'backend_layout' => 'pagets__BlogList',
 ];
 $data['pages']['NEW_blogFolder'] = [
     'pid' => 'NEW_blogRoot',
     'hidden' => 0,
     'title' => 'Data',
     'doktype' => PageRepository::DOKTYPE_SYSFOLDER,
-    'module' => 'blog'
+    'module' => 'blog',
+    'backend_layout_next_level' => 'pagets__BlogPost',
 ];
 $data['pages']['NEW_blogCategoryPage'] = [
     'pid' => '-NEW_blogFolder',
     'hidden' => 0,
     'title' => 'Category',
     'doktype' => Constants::DOKTYPE_BLOG_PAGE,
+    'backend_layout' => 'pagets__BlogList',
 ];
 $data['pages']['NEW_blogTagPage'] = [
     'pid' => '-NEW_blogCategoryPage',
     'hidden' => 0,
     'title' => 'Tag',
     'doktype' => Constants::DOKTYPE_BLOG_PAGE,
+    'backend_layout' => 'pagets__BlogList',
 ];
 $data['pages']['NEW_blogAuthorPage'] = [
     'pid' => '-NEW_blogTagPage',
     'hidden' => 0,
     'title' => 'Author',
     'doktype' => Constants::DOKTYPE_BLOG_PAGE,
+    'backend_layout' => 'pagets__BlogList',
 ];
 $data['pages']['NEW_blogArchivePage'] = [
     'pid' => '-NEW_blogAuthorPage',
     'hidden' => 0,
     'title' => 'Archive',
     'doktype' => Constants::DOKTYPE_BLOG_PAGE,
+    'backend_layout' => 'pagets__BlogList',
 ];
 $data['pages']['NEW_firstBlogPostPage'] = [
     'pid' => 'NEW_blogFolder',
     'hidden' => 0,
     'title' => 'First blog post',
     'doktype' => Constants::DOKTYPE_BLOG_POST,
-    'abstract' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut consectetur quam. Ut rutrum augue libero, non rhoncus libero imperdiet vel. Pellentesque libero orci, porttitor sed dui vel, tempus sodales ex. Sed placerat lobortis tellus at tempus.'
+    'backend_layout' => 'pagets__BlogPost',
+    'abstract' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut consectetur quam. Ut rutrum augue libero, non rhoncus libero imperdiet vel. Pellentesque libero orci, porttitor sed dui vel, tempus sodales ex. Sed placerat lobortis tellus at tempus.',
 ];
 
 // Content elements
@@ -147,7 +156,7 @@ $data['tx_blog_domain_model_comment']['NEW_blogComment'] = [
     'name' => 'TYPO3 Inc Team',
     'url' => 'https://typo3.com/',
     'email' => 'noreply@typo3.com',
-    'comment' => 'Quisque vulputate, mauris eget tempus luctus, lorem ipsum interdum lorem, vitae maximus nulla est vel urna. In hac habitasse platea dictumst. Fusce lorem est, interdum vitae maximus sed, volutpat quis felis. Proin commodo velit sed rhoncus ornare. Ut a magna vitae est condimentum volutpat et ac ipsum. Nulla facilisi. Integer ut euismod felis. Aenean blandit eros neque.'
+    'comment' => 'Quisque vulputate, mauris eget tempus luctus, lorem ipsum interdum lorem, vitae maximus nulla est vel urna. In hac habitasse platea dictumst. Fusce lorem est, interdum vitae maximus sed, volutpat quis felis. Proin commodo velit sed rhoncus ornare. Ut a magna vitae est condimentum volutpat et ac ipsum. Nulla facilisi. Integer ut euismod felis. Aenean blandit eros neque.',
 ];
 
 return $data;
