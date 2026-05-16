@@ -55,13 +55,14 @@ scripts and can run individual suites:
 Functional Tests
 ================
 
-The functional test runner assumes a local MySQL or MariaDB instance on
-``127.0.0.1:3306`` with database ``t3func`` and credentials ``root`` / ``root``
-unless you override the environment variables.
+The functional test runner defaults to SQLite via ``pdo_sqlite``, so local runs
+do not need a running database server.
 It also defaults ``TYPO3_PATH_APP`` to ``.build`` and ``TYPO3_PATH_ROOT``
 to ``.build/public``.
 
-Typical overrides:
+Set any ``typo3Database*`` variable to use a database server instead. Missing
+database variables then fall back to the local MySQL or MariaDB defaults
+``127.0.0.1:3306``, database ``t3func``, and credentials ``root`` / ``root``:
 
 .. code-block:: bash
 

@@ -24,18 +24,51 @@ if (!is_file($phpunitBinary)) {
     exit(1);
 }
 
-$defaults = [
+$pathDefaults = [
     'TYPO3_PATH_APP' => $extensionRoot . '/.build',
     'TYPO3_PATH_ROOT' => $extensionRoot . '/.build/public',
+];
+
+$databaseEnvironmentVariables = [
+    'typo3DatabaseDriver',
+    'typo3DatabaseHost',
+    'typo3DatabasePort',
+    'typo3DatabaseName',
+    'typo3DatabaseUsername',
+    'typo3DatabasePassword',
+    'typo3DatabaseSocket',
+    'typo3DatabaseCharset',
+];
+$hasDatabaseOverride = false;
+foreach ($databaseEnvironmentVariables as $name) {
+    if ((getenv($name) ?: '') !== '') {
+        $hasDatabaseOverride = true;
+        break;
+    }
+}
+
+if (!$hasDatabaseOverride && !extension_loaded('pdo_sqlite')) {
+    fwrite(
+        STDERR,
+        "The default functional test database uses pdo_sqlite, but the extension is not loaded.\n"
+        . "Enable pdo_sqlite or set typo3DatabaseDriver and the related typo3Database* variables for a database server.\n",
+    );
+    exit(1);
+}
+
+$databaseDefaults = $hasDatabaseOverride ? [
     'typo3DatabaseDriver' => 'mysqli',
     'typo3DatabaseHost' => '127.0.0.1',
     'typo3DatabasePort' => '3306',
     'typo3DatabaseName' => 't3func',
     'typo3DatabaseUsername' => 'root',
     'typo3DatabasePassword' => 'root',
+    'typo3DatabaseSocket' => '',
+] : [
+    'typo3DatabaseDriver' => 'pdo_sqlite',
 ];
 
-foreach ($defaults as $name => $value) {
+foreach (array_merge($pathDefaults, $databaseDefaults) as $name => $value) {
     if ((getenv($name) ?: '') === '') {
         putenv($name . '=' . $value);
         $_ENV[$name] = $value;
