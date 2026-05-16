@@ -3,11 +3,16 @@
 
     <div class="container">
         <div class="blogcontainer">
-            <main class="blogcontainer-main" role="main">
-                <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{
-                        colPos: '0'
-                    }" />
-            </main>
+            <div class="blogcontainer-main">
+                <f:if condition="{blogContentAreas}">
+                    <f:then>
+                        <f:render.contentArea contentArea="{blogContentAreas.content}" />
+                    </f:then>
+                    <f:else>
+                        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
+                    </f:else>
+                </f:if>
+            </div>
             <aside class="blogcontainer-sidebar">
                 <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>
@@ -17,8 +22,6 @@
 </f:section>
 <f:section name="renderPlugin">
 
-    {blogvh:data.contentListOptions(listType: listType)}
-    <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
+    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
 
 </f:section>
-

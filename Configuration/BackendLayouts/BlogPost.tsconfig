@@ -1,0 +1,26 @@
+mod {
+    web_layout {
+        BackendLayouts {
+            BlogPost {
+                title = Blog: Post page
+                config {
+                    backend_layout {
+                        colCount = 1
+                        rowCount = 1
+                        rows {
+                            1 {
+                                columns {
+                                    1 {
+                                        name = Main content
+                                        colPos = 0
+                                        identifier = content
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

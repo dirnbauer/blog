@@ -1,0 +1,4 @@
+name: blog/bootstrap-53
+label: 'Blog: Bootstrap 5.3'
+dependencies:
+  - blog/standalone

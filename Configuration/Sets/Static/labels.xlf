@@ -678,7 +678,7 @@
                 <source>
 - 0: no moderation
 - 1: moderation active
-- 2: moderation only on first comment
+- 2: reserved legacy mode, currently handled like moderation active
                 </source>
             </trans-unit>
             <trans-unit id="settings.plugin.tx_blog.settings.comments.respectPostLanguageId" xml:space="preserve">

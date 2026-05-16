@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -10,5 +12,5 @@
 return [
     'typoscript' => [
         \T3G\AgencyPack\Blog\ExpressionLanguage\ConditionProvider::class,
-    ]
+    ],
 ];
