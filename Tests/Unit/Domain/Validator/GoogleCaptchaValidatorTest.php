@@ -16,6 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use T3G\AgencyPack\Blog\Domain\Validator\GoogleCaptchaValidator;
+use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -154,6 +155,12 @@ final class GoogleCaptchaValidatorTest extends UnitTestCase
     private function buildRequest(array $formValues): ServerRequestInterface
     {
         return (new ServerRequest())
+            ->withAttribute('normalizedParams', new NormalizedParams([
+                'HTTP_HOST' => 'example.org',
+                'REMOTE_ADDR' => '127.0.0.1',
+                'REQUEST_URI' => '/',
+                'SCRIPT_NAME' => '/index.php',
+            ], [], '/var/www/html/index.php', '/var/www/html'))
             ->withParsedBody([
                 'tx_blog_commentform' => $formValues,
                 'g-recaptcha-response' => $formValues['g-recaptcha-response'] ?? '',

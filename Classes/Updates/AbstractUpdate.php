@@ -77,8 +77,12 @@ abstract class AbstractUpdate
 
     protected function tableHasColumn(string $table, string $column): bool
     {
+        if ($table === '') {
+            return false;
+        }
+
         $schemaManager = $this->getConnection($table)->createSchemaManager();
-        $tableColumns = $schemaManager->listTableColumns($table);
+        $tableColumns = $schemaManager->introspectTableColumnsByUnquotedName($table);
 
         if (array_key_exists($column, $tableColumns)) {
             return true;

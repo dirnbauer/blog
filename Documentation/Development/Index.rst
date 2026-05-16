@@ -6,7 +6,7 @@
 Development
 ===========
 
-The repository targets TYPO3 v14.2 and later and does not ship a tracked
+The repository targets TYPO3 v14.3 and later and does not ship a tracked
 DDEV setup. Use any local PHP 8.2-8.4 and MySQL or MariaDB environment
 that can run Composer and Node.js/npm.
 

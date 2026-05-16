@@ -17,7 +17,7 @@ Requirements
      - TYPO3
      - PHP
    * - 14.x
-     - 14.2-14.x
+     - 14.3-14.x
      - 8.2-8.4
 
 Installation via Composer

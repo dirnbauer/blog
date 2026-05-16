@@ -65,7 +65,7 @@ standalone blogs.
 .. _ConfigurationRouting:
 
 Routing
-========
+=======
 
 For clean frontend URLs, import the default route enhancer collection in
 your site configuration:
@@ -118,7 +118,7 @@ to site-specific addresses before using notifications in production.
 .. _ConfigurationAvatars:
 
 Avatars
-========
+=======
 
 Authors can use either the built-in Gravatar provider or the uploaded
 image provider. The Gravatar URL builder uses the following defaults:

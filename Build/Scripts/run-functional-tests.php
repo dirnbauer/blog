@@ -13,6 +13,7 @@ declare(strict_types=1);
 $extensionRoot = dirname(__DIR__, 2);
 $phpunitBinary = $extensionRoot . '/.build/bin/phpunit';
 $configurationFile = $extensionRoot . '/Build/FunctionalTests.xml';
+$memoryLimit = getenv('TYPO3_TESTING_MEMORY_LIMIT') ?: '1G';
 
 if (!is_file($phpunitBinary)) {
     fwrite(
@@ -43,6 +44,9 @@ foreach ($defaults as $name => $value) {
 }
 
 $command = [
+    escapeshellarg(PHP_BINARY),
+    '-d',
+    escapeshellarg('memory_limit=' . $memoryLimit),
     escapeshellarg($phpunitBinary),
     '-c',
     escapeshellarg($configurationFile),

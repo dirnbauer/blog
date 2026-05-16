@@ -14,7 +14,6 @@ namespace T3G\AgencyPack\Blog\Domain\Validator;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
@@ -63,7 +62,7 @@ class GoogleCaptchaValidator extends AbstractValidator
                 'query' => [
                     'secret' => $settings['comments']['google_recaptcha']['secret_key'],
                     'response' => $captchaResponse,
-                    'remoteip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                    'remoteip' => RequestUtility::getNormalizedParams($request)->getRemoteAddress(),
                 ],
             ];
             try {

@@ -7,7 +7,7 @@
 - [SECURITY] Wire the Comment model honeypot field through the form factory and reject filled submissions silently
 - [SECURITY] `GoogleCaptchaValidator`: drop `$GLOBALS` caching in favour of a request attribute and add an HTTP timeout
 - [SECURITY] Upgrade the Standalone Set Bootstrap pin to 5.3.3 stable and add Subresource Integrity hashes
-- [SECURITY] Retire the Tailwind Play CDN include from `ModernTailwind`; document that production sites must ship a pre-compiled stylesheet
+- [SECURITY] Remove obsolete Tailwind Play CDN guidance and keep Bootstrap 5.3 assets self-hosted
 
 ## FEATURE
 

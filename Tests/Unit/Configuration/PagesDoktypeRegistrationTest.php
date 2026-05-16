@@ -32,13 +32,17 @@ final class PagesDoktypeRegistrationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->originalTca = $GLOBALS['TCA'] ?? [];
-        $this->originalTypo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'] ?? [];
+        $this->originalTca = is_array($GLOBALS['TCA'] ?? null) ? $GLOBALS['TCA'] : [];
+        $this->originalTypo3ConfVars = is_array($GLOBALS['TYPO3_CONF_VARS'] ?? null) ? $GLOBALS['TYPO3_CONF_VARS'] : [];
 
         if (!defined('TYPO3')) {
             define('TYPO3', true);
         }
 
+        $GLOBALS['TYPO3_CONF_VARS'] = $this->originalTypo3ConfVars;
+        $GLOBALS['TYPO3_CONF_VARS']['FE'] = is_array($GLOBALS['TYPO3_CONF_VARS']['FE'] ?? null)
+            ? $GLOBALS['TYPO3_CONF_VARS']['FE']
+            : [];
         $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] = false;
     }
 
@@ -51,33 +55,65 @@ final class PagesDoktypeRegistrationTest extends TestCase
     #[Test]
     public function pagesOverrideKeepsCustomDoktypeItemsRegistered(): void
     {
-        $GLOBALS['TCA']['pages'] = require self::getCorePagesTcaPath();
-        require self::getExtensionPath() . '/Configuration/TCA/Overrides/pages.php';
-
-        $items = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] ?? [];
-        $itemsByValue = [];
-
-        foreach ($items as $item) {
-            $itemsByValue[(string)($item['value'] ?? '')] = $item;
+        $pagesTca = require self::getCorePagesTcaPath();
+        if (!is_array($pagesTca)) {
+            self::fail('Core pages TCA must return an array.');
         }
 
-        self::assertArrayHasKey(
-            (string)Constants::DOKTYPE_BLOG_POST,
-            $itemsByValue,
-            'Blog post doktype must remain in the pages.doktype selector.',
-        );
+        $GLOBALS['TCA'] = ['pages' => $pagesTca];
+        require self::getExtensionPath() . '/Configuration/TCA/Overrides/pages.php';
+
+        $pages = $GLOBALS['TCA']['pages'];
+
+        $columns = $pages['columns'] ?? [];
+        if (!is_array($columns)) {
+            self::fail('Pages columns TCA must be an array.');
+        }
+
+        $doktype = $columns['doktype'] ?? [];
+        if (!is_array($doktype)) {
+            self::fail('pages.doktype TCA must be an array.');
+        }
+
+        $config = $doktype['config'] ?? [];
+        if (!is_array($config)) {
+            self::fail('pages.doktype config must be an array.');
+        }
+
+        $items = $config['items'] ?? [];
+        if (!is_array($items)) {
+            self::fail('pages.doktype items must be an array.');
+        }
+
         self::assertSame(
             'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-post',
-            $itemsByValue[(string)Constants::DOKTYPE_BLOG_POST]['label'] ?? null,
-        );
-        self::assertArrayHasKey(
-            (string)Constants::DOKTYPE_BLOG_PAGE,
-            $itemsByValue,
-            'Blog page doktype must remain in the pages.doktype selector.',
+            self::findDoktypeLabel($items, Constants::DOKTYPE_BLOG_POST),
         );
         self::assertSame(
             'LLL:EXT:blog/Resources/Private/Language/locallang_tca.xlf:pages.doktype.blog-page',
-            $itemsByValue[(string)Constants::DOKTYPE_BLOG_PAGE]['label'] ?? null,
+            self::findDoktypeLabel($items, Constants::DOKTYPE_BLOG_PAGE),
         );
+    }
+
+    /**
+     * @param array<mixed> $items
+     */
+    private static function findDoktypeLabel(array $items, int $doktype): ?string
+    {
+        foreach ($items as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $value = $item['value'] ?? null;
+            if (!is_scalar($value) || (string)$value !== (string)$doktype) {
+                continue;
+            }
+
+            $label = $item['label'] ?? null;
+            return is_string($label) ? $label : null;
+        }
+
+        return null;
     }
 }
