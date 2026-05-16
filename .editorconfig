@@ -1,9 +1,5 @@
-# EditorConfig is awesome: http://EditorConfig.org
-
-# top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file
 [*]
 indent_style = space
 charset = utf-8
@@ -16,9 +12,16 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+[*.json]
+indent_style = space
+indent_size = 2
+
 [*.rst]
 indent_style = space
 indent_size = 3
+
+[*.md]
+trim_trailing_whitespace = false
 
 [*.neon]
 indent_style = tab

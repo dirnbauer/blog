@@ -6,37 +6,61 @@
 Installation
 ============
 
-Install TYPO3 Blog Extension like any other TYPO3 extension.
+Requirements
+============
 
-.. rst-class:: bignums
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 15
 
-1. Composer
+   * - Blog Extension
+     - TYPO3
+     - PHP
+   * - 14.x
+     - 14.3-14.x
+     - 8.2-8.4
 
-   .. code-block:: bash
+Installation via Composer
+=========================
 
-      composer require t3g/blog
+.. code-block:: bash
 
-2. Git
+   composer require t3g/blog
 
-   .. code-block:: bash
+This is the recommended installation method for TYPO3 v14.
 
-      cd typo3conf/ext/
-      git clone git@github.com:TYPO3GmbH/blog.git
+Local Development Setup
+=======================
 
+The extension repository does not ship a tracked DDEV setup. Use any local
+PHP 8.2-8.4 and MySQL or MariaDB environment that can run Composer and
+Node.js/npm.
 
-3. Extension Manager
+Typical project bootstrap:
 
-   1. Log into your TYPO3
-   2. Go to Admin Tools / Extensions
-   3. Select "Get Extensions" in the Document-Header
-   4. Click "Update now"
-   5. Search for "TYPO3 Blog Extension"
-   6. Click Import and Install
+.. code-block:: bash
+
+   composer update
+   npm ci
+   npm run build
+
+See :ref:`Development <Development>` for the full local testing workflow.
 
 
 Activation
 ==========
 
-1. Go to Admin Tools / Extensions
-2. Select "Installed Extensions" in the Document-Header
-3. Activate the "TYPO3 Blog Extension"
+.. rst-class:: bignums
+
+1. Add a Blog site set
+
+   Go to your site configuration and add one of the public Blog site sets:
+   ``blog/standalone``, ``blog/integration`` or ``blog/bootstrap-53``.
+
+2. Configure settings
+
+   Adjust the blog settings in your site configuration. At minimum,
+   set the page IDs for the blog root, data folder, and list pages.
+
+See :ref:`Setup <Setup>` for detailed instructions.
+See :ref:`ConfigurationSiteSets` for the site set overview.
