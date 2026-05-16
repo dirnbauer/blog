@@ -7,12 +7,12 @@
         </div>
         <div class="postauthor__body">
             <div class="postauthor__intro"><f:translate key="author.aboutTheAuthor"/></div>
-            <div class="postauthor__name"><f:render section="ProfileLink" arguments="{_all}" contentAs="content">{author.name}</f:render></div>
+            <div class="postauthor__name"><f:render section="ProfileLink" arguments="{_all}" contentAs="content">{author -> f:render.text(field: 'name')}</f:render></div>
             <f:if condition="{author.title} || {author.location}">
                 <div class="postauthor__subline">
-                    <f:if condition="{author.title}"><span class="postauthor__title" itemprop="jobTitle">{author.title}</span></f:if>
+                    <f:if condition="{author.title}"><span class="postauthor__title" itemprop="jobTitle">{author -> f:render.text(field: 'title')}</span></f:if>
                     <f:if condition="{author.title} && {author.location}"><span class="postauthor__sublinedivider">,</span></f:if>
-                    <f:if condition="{author.location}"><span class="postauthor__location" itemprop="homeLocation">{author.location}</span></f:if>
+                    <f:if condition="{author.location}"><span class="postauthor__location" itemprop="homeLocation">{author -> f:render.text(field: 'location')}</span></f:if>
                 </div>
             </f:if>
             <f:if condition="{author.website} || {author.twitter} || {author.linkedin} || {author.xing}">
@@ -60,7 +60,7 @@
                 </div>
             </f:if>
             <f:if condition="{author.bio}">
-                <div class="postauthor__bio" itemprop="description"><f:format.html>{author.bio}</f:format.html></div>
+                <div class="postauthor__bio" itemprop="description">{author -> f:render.text(field: 'bio')}</div>
             </f:if>
             <f:if condition="{author.detailsPage} || {settings.authorUid}">
                 <div class="postauthor__actions">

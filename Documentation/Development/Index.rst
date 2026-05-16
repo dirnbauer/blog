@@ -6,8 +6,9 @@
 Development
 ===========
 
-The repository targets TYPO3 v14 and does not ship a tracked DDEV setup.
-Use any local PHP/MySQL environment that can run Composer and Node.js.
+The repository targets TYPO3 v14.2 and later and does not ship a tracked
+DDEV setup. Use any local PHP 8.2-8.4 and MySQL or MariaDB environment
+that can run Composer and Node.js/npm.
 
 Local Setup
 ===========
@@ -39,12 +40,26 @@ The extension exposes the main PHP checks through Composer scripts:
    composer cgl
    composer cgl:fix
 
+The dispatcher in ``Build/Scripts/runTests.sh`` mirrors the Composer
+scripts and can run individual suites:
+
+.. code-block:: bash
+
+   Build/Scripts/runTests.sh -s lint
+   Build/Scripts/runTests.sh -s cgl
+   Build/Scripts/runTests.sh -s phpstan
+   Build/Scripts/runTests.sh -s unit
+   Build/Scripts/runTests.sh -s functional
+   Build/Scripts/runTests.sh -s all
+
 Functional Tests
 ================
 
 The functional test runner assumes a local MySQL or MariaDB instance on
 ``127.0.0.1:3306`` with database ``t3func`` and credentials ``root`` / ``root``
 unless you override the environment variables.
+It also defaults ``TYPO3_PATH_APP`` to ``.build`` and ``TYPO3_PATH_ROOT``
+to ``.build/public``.
 
 Typical overrides:
 
@@ -82,7 +97,8 @@ GitHub Actions runs:
 
 - PHP linting, coding standards, PHPStan, unit tests, and functional tests
   against PHP 8.2, 8.3, and 8.4
-- a frontend build job that verifies committed assets are up to date
+- a frontend build job on Node.js 22 that verifies committed assets are up
+  to date
 - an opt-in Playwright job that only runs when the ``BLOG_BASE_URL``
   repository secret is set (and emits a clear warning otherwise)
 
@@ -126,7 +142,7 @@ All files under the following paths ship the new pattern out of the box:
 - ``Resources/Private/Templates/Page/*.html``
   (the legacy integration templates kept for backwards compatibility)
 - ``Resources/Private/Templates/Layouts/Pages/Default.fluid.html``
-- The ``ModernTailwind`` and ``ModernBootstrap`` Template variants
+- The ``Resources/Private/Templates/Bootstrap53/`` template variant
 
 If your sitepackage overrides any of those files, update the
 ``renderPlugin`` section to the form above. No other template changes

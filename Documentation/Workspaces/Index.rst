@@ -112,7 +112,7 @@ Version Compatibility
      - TYPO3
      - PHP
    * - 14.x
-     - 14.x
-     - 8.2+
+     - 14.2-14.x
+     - 8.2-8.4
 
 The extension targets TYPO3 v14 only.

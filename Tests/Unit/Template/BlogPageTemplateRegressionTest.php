@@ -59,14 +59,8 @@ final class BlogPageTemplateRegressionTest extends TestCase
             'Page/BlogPost' => $base . '/Page/BlogPost.html',
             'Pages/BlogList' => $base . '/Pages/BlogList.fluid.html',
             'Pages/BlogPost' => $base . '/Pages/BlogPost.fluid.html',
-            'ModernTailwind/Page/BlogList' => $base . '/ModernTailwind/Page/BlogList.html',
-            'ModernTailwind/Page/BlogPost' => $base . '/ModernTailwind/Page/BlogPost.html',
-            'ModernTailwind/Pages/BlogList' => $base . '/ModernTailwind/Pages/BlogList.fluid.html',
-            'ModernTailwind/Pages/BlogPost' => $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
-            'ModernBootstrap/Page/BlogList' => $base . '/ModernBootstrap/Page/BlogList.html',
-            'ModernBootstrap/Page/BlogPost' => $base . '/ModernBootstrap/Page/BlogPost.html',
-            'ModernBootstrap/Pages/BlogList' => $base . '/ModernBootstrap/Pages/BlogList.fluid.html',
-            'ModernBootstrap/Pages/BlogPost' => $base . '/ModernBootstrap/Pages/BlogPost.fluid.html',
+            'Bootstrap53/Pages/BlogList' => $base . '/Bootstrap53/Pages/BlogList.fluid.html',
+            'Bootstrap53/Pages/BlogPost' => $base . '/Bootstrap53/Pages/BlogPost.fluid.html',
         ];
 
         foreach ($paths as $label => $path) {

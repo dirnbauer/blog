@@ -32,10 +32,8 @@ final class PageViewTemplateTest extends TestCase
         return [
             'Pages/BlogList' => [$base . '/Pages/BlogList.fluid.html'],
             'Pages/BlogPost' => [$base . '/Pages/BlogPost.fluid.html'],
-            'ModernTailwind/Pages/BlogList' => [$base . '/ModernTailwind/Pages/BlogList.fluid.html'],
-            'ModernTailwind/Pages/BlogPost' => [$base . '/ModernTailwind/Pages/BlogPost.fluid.html'],
-            'ModernBootstrap/Pages/BlogList' => [$base . '/ModernBootstrap/Pages/BlogList.fluid.html'],
-            'ModernBootstrap/Pages/BlogPost' => [$base . '/ModernBootstrap/Pages/BlogPost.fluid.html'],
+            'Bootstrap53/Pages/BlogList' => [$base . '/Bootstrap53/Pages/BlogList.fluid.html'],
+            'Bootstrap53/Pages/BlogPost' => [$base . '/Bootstrap53/Pages/BlogPost.fluid.html'],
         ];
     }
 
@@ -50,8 +48,7 @@ final class PageViewTemplateTest extends TestCase
 
         return [
             'Pages/Default (standalone)' => [$base . '/Pages/Default/default.fluid.html'],
-            'ModernTailwind/Pages/Default' => [$base . '/ModernTailwind/Pages/Default/default.fluid.html'],
-            'ModernBootstrap/Pages/Default' => [$base . '/ModernBootstrap/Pages/Default/default.fluid.html'],
+            'Bootstrap53/Pages/Default' => [$base . '/Bootstrap53/Pages/Default/default.fluid.html'],
         ];
     }
 

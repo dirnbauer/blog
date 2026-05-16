@@ -8,10 +8,10 @@
     <f:render partial="Meta/ListHeader" arguments="{_all}" />
     <f:if condition="{post.abstract}">
         <f:then>
-            <p class="postlist__postdescription" itemprop="description">{post.abstract}</p>
+            <p class="postlist__postdescription" itemprop="description">{post -> f:render.text(field: 'abstract')}</p>
         </f:then>
         <f:else>
-            <p class="postlist__postdescription" itemprop="description">{post.description}</p>
+            <p class="postlist__postdescription" itemprop="description">{post -> f:render.text(field: 'description')}</p>
         </f:else>
     </f:if>
     <f:render partial="Meta/ListFooter" arguments="{_all}" />

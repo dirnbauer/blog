@@ -38,11 +38,11 @@ To implement your own AvatarProvider:
 
 .. note::
 
-   Since v10, Gravatar proxying is enabled by default. TYPO3 downloads
-   the Gravatar, stores it on the filesystem, and delivers the image
-   locally from ``typo3temp``. This prevents third-party tracking and is
-   useful when users have not consented to external requests. Only safe
-   image formats (PNG, JPG, GIF, WebP) are accepted — SVG is rejected.
+   Gravatar proxying is disabled by default. Enable the
+   ``enableGravatarProxy`` extension configuration option if TYPO3 should
+   download Gravatar images, store them below
+   ``typo3temp/assets/t3g/blog/gravatar/`` and deliver the cached local
+   file to visitors.
 
 
 Comment Notifications
@@ -62,7 +62,8 @@ Custom processors can be registered in ``ext_localconf.php``:
        [\T3G\AgencyPack\Blog\Notification\CommentAddedNotification::class][]
        = \Your\Extension\Notification\CustomProcessor::class;
 
-Your processor must implement ``ProcessorInterface``.
+Your processor must implement ``ProcessorInterface``. Processors receive
+the current ``ServerRequestInterface`` and the notification object.
 
 
 DataHandler Hooks
@@ -75,7 +76,8 @@ The extension uses two DataHandler hooks:
   posts and flushes page cache on record changes. Workspace placeholder
   records are skipped, and cache is only flushed in the live workspace.
 - ``CreateSiteConfigurationHook`` — automatically creates a site
-  configuration when a new blog root page (doktype 138) is created.
+  configuration when a blog page (doktype 138) is created through TYPO3's
+  site configuration hook.
 
 
 Template Overrides

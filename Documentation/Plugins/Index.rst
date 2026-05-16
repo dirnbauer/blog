@@ -8,7 +8,9 @@ Plugins
 
 .. figure:: plugins-teaser.png
 
-The following plugins are available after installing the extension.
+The extension configures 20 Extbase plugins. The 14 plugins registered in
+the content element wizard can be selected by editors. The 6 widget/feed
+plugins are used by the shipped sidebar and RSS rendering.
 
 .. contents::
    :local:
@@ -64,6 +66,13 @@ Latest posts
 ------------
 
 Displays a number of latest posts. You can specify the amount of items yourself.
+
+
+Demanded posts
+--------------
+
+Displays posts selected by a demand configuration. The plugin provides a
+FlexForm for explicit posts, categories, tags, sort order and limit.
 
 
 List by category
@@ -188,3 +197,16 @@ links.
 
 - :ref:`Usage on Blog Pages <BlogPagePlugins>`
 - :ref:`Usage on Blog Posts <BlogPostPlugins>`
+
+
+Widget and Feed Renderers
+=========================
+
+The sidebar and feed templates use these internal renderers:
+
+- ``blog_recentpostswidget``
+- ``blog_categorywidget``
+- ``blog_tagwidget``
+- ``blog_commentswidget``
+- ``blog_archivewidget``
+- ``blog_feedwidget``

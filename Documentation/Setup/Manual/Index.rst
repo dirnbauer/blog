@@ -150,6 +150,7 @@ Prerequisites:
 
    8. Congratulations
 
-      Your blog is now ready, please read on in the chapters about "how to add a blog post" and learn more about configuration options.
+      Your blog is now ready. Continue with the guides about adding a blog
+      post and configuring the extension.
 
       .. figure:: manual-13.png

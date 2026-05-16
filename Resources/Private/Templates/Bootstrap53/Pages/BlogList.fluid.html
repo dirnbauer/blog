@@ -4,14 +4,12 @@
 
 <f:section name="Main">
     <div class="container">
-        <div class="row gx-5">
+        <div class="row g-4 g-lg-5">
             <div class="col-lg-8">
                 <f:render.contentArea contentArea="{blogContentAreas.content}" />
             </div>
             <aside class="col-lg-4">
-                <div class="sticky-top" style="top: 2rem;">
-                    <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
-                </div>
+                <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
             </aside>
         </div>
     </div>

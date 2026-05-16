@@ -7,7 +7,7 @@ Posts
 =====
 
 Create a new post
------------------
+=================
 
 .. rst-class:: bignums
 
@@ -74,9 +74,11 @@ Create a new post
 
       .. tip::
 
-         You can add all kinds of content elements that you are using on the rest of your web site, too. The blog itself doesn't
-         provide any special elements for the content of your blog entry as sticking close to the rest of your website ensures a
-         consistent look and feel for your visitors.
+         You can add all kinds of content elements that you are using on
+         the rest of your web site, too. The blog itself does not provide
+         any special elements for the content of your blog entry as
+         sticking close to the rest of your website ensures a consistent
+         look and feel for your visitors.
 
    7. Enable your blog post
 

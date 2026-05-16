@@ -1,7 +1,0 @@
-lib.fluidPage.paths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/
-
-plugin.tx_blog.view {
-    templateRootPaths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/
-    partialRootPaths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/Partials/
-    layoutRootPaths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/Layouts/
-}

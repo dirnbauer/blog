@@ -33,14 +33,8 @@ final class AccessibilityTemplateRegressionTest extends TestCase
             'Page/BlogPost' => $base . '/Page/BlogPost.html',
             'Pages/BlogList' => $base . '/Pages/BlogList.fluid.html',
             'Pages/BlogPost' => $base . '/Pages/BlogPost.fluid.html',
-            'ModernBootstrap/Page/BlogList' => $base . '/ModernBootstrap/Page/BlogList.html',
-            'ModernBootstrap/Page/BlogPost' => $base . '/ModernBootstrap/Page/BlogPost.html',
-            'ModernBootstrap/Pages/BlogList' => $base . '/ModernBootstrap/Pages/BlogList.fluid.html',
-            'ModernBootstrap/Pages/BlogPost' => $base . '/ModernBootstrap/Pages/BlogPost.fluid.html',
-            'ModernTailwind/Page/BlogList' => $base . '/ModernTailwind/Page/BlogList.html',
-            'ModernTailwind/Page/BlogPost' => $base . '/ModernTailwind/Page/BlogPost.html',
-            'ModernTailwind/Pages/BlogList' => $base . '/ModernTailwind/Pages/BlogList.fluid.html',
-            'ModernTailwind/Pages/BlogPost' => $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
+            'Bootstrap53/Pages/BlogList' => $base . '/Bootstrap53/Pages/BlogList.fluid.html',
+            'Bootstrap53/Pages/BlogPost' => $base . '/Bootstrap53/Pages/BlogPost.fluid.html',
         ];
 
         return array_map(static fn (string $path): array => [$path], $paths);
@@ -56,12 +50,7 @@ final class AccessibilityTemplateRegressionTest extends TestCase
             'Layouts/Page/Default' => $base . '/Layouts/Page/Default.html',
             'Templates/Pages/Default/default' => $base . '/Templates/Pages/Default/default.fluid.html',
             'Templates/Layouts/Pages/Default' => $base . '/Templates/Layouts/Pages/Default.fluid.html',
-            'ModernBootstrap/Layouts/Page/Default' => $base . '/Templates/ModernBootstrap/Layouts/Page/Default.html',
-            'ModernBootstrap/Pages/Default/default' => $base . '/Templates/ModernBootstrap/Pages/Default/default.fluid.html',
-            'ModernBootstrap/Layouts/Pages/Default' => $base . '/Templates/ModernBootstrap/Layouts/Pages/Default.fluid.html',
-            'ModernTailwind/Layouts/Page/Default' => $base . '/Templates/ModernTailwind/Layouts/Page/Default.html',
-            'ModernTailwind/Pages/Default/default' => $base . '/Templates/ModernTailwind/Pages/Default/default.fluid.html',
-            'ModernTailwind/Layouts/Pages/Default' => $base . '/Templates/ModernTailwind/Layouts/Pages/Default.fluid.html',
+            'Bootstrap53/Pages/Default/default' => $base . '/Templates/Bootstrap53/Pages/Default/default.fluid.html',
         ];
 
         return array_map(static fn (string $path): array => [$path], $paths);

@@ -7,7 +7,7 @@
                 <h1 class="blogarchiveheader__title">
                     <span class="blogarchiveheader__titletext">
                         <f:translate key="headline.author.simple" />:
-                        {author.name}
+                        {author -> f:render.text(field: 'name')}
                     </span>
                     <blogvh:link.author class="blogarchiveheader__titlelink" rss="true" author="{author}">
                         <span class="blogicon"><f:render partial="General/SocialIcons" section="Rss" optional="true" /></span>
@@ -15,7 +15,7 @@
                 </h1>
                 <f:if condition="{author.bio}">
                     <div class="blogarchiveheader__description">
-                        <p>{author.bio}</p>
+                        <p>{author -> f:render.text(field: 'bio')}</p>
                     </div>
                 </f:if>
                 <f:if condition="{author.allTags}">

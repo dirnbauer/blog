@@ -29,30 +29,19 @@ final class PageViewSetupTest extends TestCase
 
         self::assertStringContainsString('lib.fluidPage = PAGEVIEW', $content);
         self::assertStringContainsString('contentAs = blogContentAreas', $content);
+        self::assertStringContainsString('10 = record-transformation', $content);
         self::assertStringContainsString('10 < lib.fluidPage', $content);
         self::assertStringNotContainsString('10 = FLUIDTEMPLATE', $content);
     }
 
     #[Test]
-    public function modernTailwindSetUsesPageView(): void
+    public function bootstrap53OverridesPageViewPaths(): void
     {
-        $content = file_get_contents(self::getExtensionPath() . '/Configuration/Sets/ModernTailwind/setup.typoscript');
-        self::assertNotFalse($content);
-
-        self::assertStringContainsString('lib.fluidPage = PAGEVIEW', $content);
-        self::assertStringContainsString('contentAs = blogContentAreas', $content);
-        self::assertStringContainsString('paths.10 = EXT:blog/Resources/Private/Templates/ModernTailwind/', $content);
-        self::assertStringNotContainsString('10 = FLUIDTEMPLATE', $content);
-    }
-
-    #[Test]
-    public function modernBootstrapOverridesPageViewPaths(): void
-    {
-        $content = file_get_contents(self::getExtensionPath() . '/Configuration/Sets/ModernBootstrap/setup.typoscript');
+        $content = file_get_contents(self::getExtensionPath() . '/Configuration/Sets/Bootstrap53/setup.typoscript');
         self::assertNotFalse($content);
 
         self::assertStringContainsString(
-            'lib.fluidPage.paths.10 = EXT:blog/Resources/Private/Templates/ModernBootstrap/',
+            'lib.fluidPage.paths.10 = EXT:blog/Resources/Private/Templates/Bootstrap53/',
             $content,
         );
     }

@@ -1,6 +1,0 @@
-name: blog/modern-tailwind
-label: 'Blog: Modern Tailwind'
-dependencies:
-  - typo3/fluid-styled-content
-  - blog/static
-  - blog/shared

@@ -1,4 +1,0 @@
-name: blog/modern-bootstrap
-label: 'Blog: Modern Bootstrap'
-dependencies:
-  - blog/standalone

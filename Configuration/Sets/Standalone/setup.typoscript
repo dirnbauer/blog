@@ -9,6 +9,9 @@ lib.fluidPage {
             levels = 2
             includeSpacer = 1
             as = mainnavigation
+            dataProcessing {
+                10 = record-transformation
+            }
         }
 
         20 = TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor

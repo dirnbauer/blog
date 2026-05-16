@@ -6,9 +6,9 @@
 Setup Wizard
 ============
 
-The Setup Wizard creates a fully configured **standalone** instance of the TYPO3 
+The Setup Wizard creates a fully configured **standalone** instance of the TYPO3
 Blog Extension. If you already have an existing site, you might dislike the result
-of having an additional and unplanned root page. In that case, please read the 
+of having an additional and unplanned root page. In that case, please read the
 :ref:`Manual Setup <SetupManual>` instructions.
 
 .. rst-class:: bignums

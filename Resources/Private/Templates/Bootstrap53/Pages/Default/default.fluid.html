@@ -6,25 +6,40 @@
     <f:translate key="link.skip_to_content" extensionName="Blog" />
 </a>
 
-<header class="mb-5 shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="{f:translate(key: 'navigation.main', extensionName: 'Blog')}">
+<header class="mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="{f:translate(key: 'navigation.main', extensionName: 'Blog')}">
         <div class="container">
-            <f:link.page pageUid="{rootPage}" class="navbar-brand fw-bold fs-4">
+            <f:link.page pageUid="{rootPage}" class="navbar-brand">
                 {siteTitle}
             </f:link.page>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="{f:translate(key: 'navigation.main', extensionName: 'Blog')}">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto" role="list">
+                <ul class="navbar-nav" role="list">
                     <f:for each="{mainnavigation}" as="item">
+                        <f:variable name="navigationTitle">{item.record -> f:render.text(field: 'nav_title')}</f:variable>
                         <li class="nav-item{f:if(condition: item.active, then: ' active')}">
                             <f:if condition="{item.active}">
                                 <f:then>
-                                    <a class="nav-link fs-5" href="{item.link}" aria-current="page"><span>{item.title}</span></a>
+                                    <a class="nav-link" href="{item.link}" aria-current="page">
+                                        <span>
+                                            <f:if condition="{navigationTitle}">
+                                                <f:then>{navigationTitle}</f:then>
+                                                <f:else>{item.record -> f:render.text(field: 'title')}</f:else>
+                                            </f:if>
+                                        </span>
+                                    </a>
                                 </f:then>
                                 <f:else>
-                                    <a class="nav-link fs-5" href="{item.link}"><span>{item.title}</span></a>
+                                    <a class="nav-link" href="{item.link}">
+                                        <span>
+                                            <f:if condition="{navigationTitle}">
+                                                <f:then>{navigationTitle}</f:then>
+                                                <f:else>{item.record -> f:render.text(field: 'title')}</f:else>
+                                            </f:if>
+                                        </span>
+                                    </a>
                                 </f:else>
                             </f:if>
                         </li>
@@ -39,9 +54,9 @@
     <f:render section="Main" />
 </main>
 
-<footer class="bg-dark text-light mt-5 py-5">
+<footer class="bg-light mt-4 py-3">
     <f:if condition="{languagenavigation}">
-        <div class="container mb-3">
+        <div class="container">
             <nav aria-label="{f:translate(key: 'navigation.languages', extensionName: 'Blog')}">
                 <ul class="nav justify-content-center" role="list">
                     <f:for each="{languagenavigation}" as="item">
@@ -50,19 +65,19 @@
                                 <f:then>
                                     <f:if condition="{item.active}">
                                         <f:then>
-                                            <a class="nav-link text-light fw-bold" href="{item.link}" hreflang="{item.hreflang}" title="{item.title}" aria-current="page">
+                                            <a class="nav-link active" href="{item.link}" hreflang="{item.hreflang}" title="{item.title}" aria-current="page">
                                                 <span>{item.navigationTitle}</span>
                                             </a>
                                         </f:then>
                                         <f:else>
-                                            <a class="nav-link text-light" href="{item.link}" hreflang="{item.hreflang}" title="{item.title}">
+                                            <a class="nav-link" href="{item.link}" hreflang="{item.hreflang}" title="{item.title}">
                                                 <span>{item.navigationTitle}</span>
                                             </a>
                                         </f:else>
                                     </f:if>
                                 </f:then>
                                 <f:else>
-                                    <span class="nav-link text-muted">
+                                    <span class="nav-link disabled">
                                         <span>{item.navigationTitle}</span>
                                     </span>
                                 </f:else>
@@ -74,8 +89,8 @@
         </div>
     </f:if>
     <f:if condition="{copyright}">
-        <div class="container text-center text-secondary">
-            <p class="mb-0">
+        <div class="container">
+            <p class="text-center m-0 py-2">
                 {copyright -> f:format.raw()}
             </p>
         </div>

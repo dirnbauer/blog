@@ -17,8 +17,8 @@ Requirements
      - TYPO3
      - PHP
    * - 14.x
-     - 14.x
-     - >= 8.2
+     - 14.2-14.x
+     - 8.2-8.4
 
 Installation via Composer
 =========================
@@ -33,7 +33,8 @@ Local Development Setup
 =======================
 
 The extension repository does not ship a tracked DDEV setup. Use any local
-PHP and MySQL or MariaDB environment that can run Composer and Node.js.
+PHP 8.2-8.4 and MySQL or MariaDB environment that can run Composer and
+Node.js/npm.
 
 Typical project bootstrap:
 
@@ -51,11 +52,10 @@ Activation
 
 .. rst-class:: bignums
 
-1. Add the Blog site set
+1. Add a Blog site set
 
-   Go to your site configuration and add the Blog site set. Choose
-   either **Standalone** (creates its own page tree) or **Integration**
-   (integrates into your existing site).
+   Go to your site configuration and add one of the public Blog site sets:
+   ``blog/standalone``, ``blog/integration`` or ``blog/bootstrap-53``.
 
 2. Configure settings
 
@@ -63,3 +63,4 @@ Activation
    set the page IDs for the blog root, data folder, and list pages.
 
 See :ref:`Setup <Setup>` for detailed instructions.
+See :ref:`ConfigurationSiteSets` for the site set overview.

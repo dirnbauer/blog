@@ -36,18 +36,12 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $base = self::getTemplateBase();
         $pageTemplates = glob($base . '/Page/Blog*.html');
         $pagesTemplates = glob($base . '/Pages/Blog*.html');
-        $modernTailwindPageTemplates = glob($base . '/ModernTailwind/Page/Blog*.html');
-        $modernTailwindPagesTemplates = glob($base . '/ModernTailwind/Pages/Blog*.html');
-        $modernBootstrapPageTemplates = glob($base . '/ModernBootstrap/Page/Blog*.html');
-        $modernBootstrapPagesTemplates = glob($base . '/ModernBootstrap/Pages/Blog*.html');
+        $bootstrap53PagesTemplates = glob($base . '/Bootstrap53/Pages/Blog*.html');
 
         return array_merge(
             $pageTemplates === false ? [] : $pageTemplates,
             $pagesTemplates === false ? [] : $pagesTemplates,
-            $modernTailwindPageTemplates === false ? [] : $modernTailwindPageTemplates,
-            $modernTailwindPagesTemplates === false ? [] : $modernTailwindPagesTemplates,
-            $modernBootstrapPageTemplates === false ? [] : $modernBootstrapPageTemplates,
-            $modernBootstrapPagesTemplates === false ? [] : $modernBootstrapPagesTemplates,
+            $bootstrap53PagesTemplates === false ? [] : $bootstrap53PagesTemplates,
         );
     }
 
@@ -217,10 +211,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $blogPostPaths = [
             $base . '/Page/BlogPost.html',
             $base . '/Pages/BlogPost.fluid.html',
-            $base . '/ModernTailwind/Page/BlogPost.html',
-            $base . '/ModernTailwind/Pages/BlogPost.fluid.html',
-            $base . '/ModernBootstrap/Page/BlogPost.html',
-            $base . '/ModernBootstrap/Pages/BlogPost.fluid.html',
+            $base . '/Bootstrap53/Pages/BlogPost.fluid.html',
         ];
 
         foreach ($blogPostPaths as $path) {
@@ -247,10 +238,7 @@ final class AllTemplatesWorkspaceSafetyTest extends TestCase
         $blogListPaths = [
             $base . '/Page/BlogList.html',
             $base . '/Pages/BlogList.fluid.html',
-            $base . '/ModernTailwind/Page/BlogList.html',
-            $base . '/ModernTailwind/Pages/BlogList.fluid.html',
-            $base . '/ModernBootstrap/Page/BlogList.html',
-            $base . '/ModernBootstrap/Pages/BlogList.fluid.html',
+            $base . '/Bootstrap53/Pages/BlogList.fluid.html',
         ];
 
         foreach ($blogListPaths as $path) {
