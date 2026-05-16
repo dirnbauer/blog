@@ -1,11 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-<path fill="#5BA34F" d="M0,0h64v64H0V0z"/>
-<polygon fill="#FFFFFF" points="18,16 18,44 27,44 32,50 37,44 46,44 46,16 "/>
-<rect x="22" y="20" fill="#333333" width="20" height="4"/>
-<rect x="22" y="26" opacity="0.25" fill="#333333" enable-background="new    " width="20" height="2"/>
-<rect x="22" y="30" opacity="0.25" fill="#333333" enable-background="new    " width="20" height="2"/>
-<rect x="22" y="34" opacity="0.25" fill="#333333" enable-background="new    " width="20" height="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path fill="currentColor" d="M14 12h22a8 8 0 0 1 8 8v2h-4v-2a4 4 0 0 0-4-4H14a4 4 0 0 0-4 4v13a4 4 0 0 0 3.5 4v4.5L18.5 38H22v4H20l-10 7V41a8 8 0 0 1-4-7V20a8 8 0 0 1 8-8Z"/>
+  <path fill="currentColor" d="M27 22h22a9 9 0 0 1 9 9v14a9 9 0 0 1-9 9h-9.5L27 62v-8a9 9 0 0 1-9-9V31a9 9 0 0 1 9-9Zm0 4a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h4v5.5L40 49h9a5 5 0 0 0 5-5V31a5 5 0 0 0-5-5H27Z"/>
+  <path fill="var(--icon-color-accent, #ff8700)" d="M27 32h20v3.5H27Z"/>
+  <path fill="currentColor" d="M27 38h16v2H27Zm0 5h12v2H27Z"/>
 </svg>

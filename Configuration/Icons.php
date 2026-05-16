@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -9,8 +11,10 @@
 
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
-// Provide icon for page tree, list view, ... :
+// Register custom SVG icons for modules, records, plugins, and backend actions.
 return array_map(static fn (string $source) => ['provider' => SvgIconProvider::class, 'source' => $source], [
+    'actions-blog-approve' => 'EXT:blog/Resources/Public/Icons/actions-approve.svg',
+    'actions-blog-decline' => 'EXT:blog/Resources/Public/Icons/actions-decline.svg',
     'module-blog' => 'EXT:blog/Resources/Public/Icons/module-blog.svg',
     'module-blog-posts' => 'EXT:blog/Resources/Public/Icons/module-blog-posts.svg',
     'module-blog-comments' => 'EXT:blog/Resources/Public/Icons/module-blog-comments.svg',

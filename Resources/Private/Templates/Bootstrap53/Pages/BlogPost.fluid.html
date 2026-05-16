@@ -1,0 +1,28 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Pages/Default" />
+
+<f:section name="Main">
+    <div class="container">
+        <div class="row g-4 g-lg-5">
+            <div class="col-lg-8">
+                <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
+                <f:render.contentArea contentArea="{blogContentAreas.content}" />
+                <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
+                <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
+                <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
+                <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
+                <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
+            </div>
+            <aside class="col-lg-4">
+                <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="renderPlugin">
+    <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
+</f:section>
+
+</html>

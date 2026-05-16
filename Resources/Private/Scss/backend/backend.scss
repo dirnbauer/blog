@@ -22,6 +22,37 @@
 }
 
 /**
+ * TYPO3 v14 icons use currentColor — inherit on buttons and button groups (Setup wizard, etc.).
+ */
+.btn .icon,
+.btn-default .icon,
+a.btn .icon,
+.btn-group .icon {
+    color: inherit;
+
+    svg {
+        color: inherit;
+        fill: currentColor;
+    }
+}
+
+.blog-setup-wizard-options {
+    background-color: var(--typo3-component-bg, #f5f5f7);
+    border: 1px solid var(--typo3-component-border-color, rgba(0, 0, 0, .16));
+    border-radius: var(--typo3-component-border-radius, 6px);
+    color: var(--typo3-text-color, inherit);
+    padding: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .blog-setup-wizard-options {
+        background-color: #2a2a2f;
+        border-color: rgba(255, 255, 255, .18);
+        color: rgba(255, 255, 255, .92);
+    }
+}
+
+/**
  * List Filter
  */
 .list-filter {
@@ -88,4 +119,34 @@ table.table-comments .actions {
 .dataTables_filter {
     padding-top: 5px;
     padding-right: 5px;
+}
+
+/**
+ * Theme-aware record icons in DataTables (Posts list, Setup wizard, etc.)
+ */
+table.dataTable td .icon {
+    color: var(--typo3-text-color, inherit);
+
+    svg {
+        color: inherit;
+        fill: currentColor;
+    }
+}
+
+table.dataTable td a .icon {
+    color: inherit;
+
+    svg {
+        color: inherit;
+        fill: currentColor;
+    }
+}
+
+table.dataTable td .btn .icon {
+    color: inherit;
+
+    svg {
+        color: inherit;
+        fill: currentColor;
+    }
 }

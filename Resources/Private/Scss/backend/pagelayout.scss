@@ -1,16 +1,36 @@
 .blog-pageheader {
+    --blog-pageheader-bg: var(--typo3-component-bg, #fff);
+    --blog-pageheader-border-color: var(--typo3-component-border-color, rgba(0, 0, 0, .14));
+    --blog-pageheader-text-color: var(--typo3-text-color, inherit);
+
     position: relative;
-    background-color: var(--typo3-component-bg);
+    color: var(--blog-pageheader-text-color);
+    background-color: var(--blog-pageheader-bg);
+    border: 1px solid var(--blog-pageheader-border-color);
     border-radius: var(--typo3-component-border-radius);
     box-shadow: var(--typo3-component-box-shadow);
     // v12
     :root:not([data-theme]) & {
         background-color: #fff;
+        border-color: rgba(0,0,0,.14);
         border-radius: 2px;
         box-shadow: 0 0 2px 1px rgba(0,0,0,.25);
     }
+    :root[data-theme="dark"] & {
+        border-color: var(--typo3-component-border-color, rgba(255,255,255,.18));
+        color: var(--typo3-text-color, rgba(255,255,255,.92));
+    }
     margin: var(--typo3-spacing, 1em) auto;
     border-left: 1em solid #5BA34F;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .blog-pageheader {
+        background-color: #2a2a2f;
+        border-color: rgba(255,255,255,.18);
+        color: rgba(255,255,255,.92);
+        box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
 }
 .blog-pageheader-content {
     position: relative;
@@ -26,6 +46,17 @@
     position: absolute;
     top: 20px;
     left: 15px;
+    color: inherit;
+
+    // TYPO3 v14: SvgIconProvider uses currentColor
+    .icon {
+        color: inherit;
+
+        svg {
+            color: inherit;
+            fill: currentColor;
+        }
+    }
 }
 .blog-pageheader-section {
     margin-top: 20px;
@@ -68,4 +99,14 @@
 .blog-pageheader-footer {
     padding: 20px;
     padding-top: 0;
+
+    // Match button label color; beats default .icon fill on dark backgrounds
+    .btn .icon {
+        color: inherit;
+
+        svg {
+            color: inherit;
+            fill: currentColor;
+        }
+    }
 }
