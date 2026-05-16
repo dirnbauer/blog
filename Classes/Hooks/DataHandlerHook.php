@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -11,14 +12,13 @@ declare(strict_types = 1);
 namespace T3G\AgencyPack\Blog\Hooks;
 
 use T3G\AgencyPack\Blog\Service\CacheService;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
-/**
- * Class DataHandlerHook
- */
 class DataHandlerHook
 {
     private const TABLE_PAGES = 'pages';
@@ -27,6 +27,25 @@ class DataHandlerHook
     private const TABLE_COMMENTS = 'tx_blog_domain_model_comment';
     private const TABLE_TAGS = 'tx_blog_domain_model_tag';
 
+    private const CACHE_TAG_MAP = [
+        self::TABLE_PAGES => 'tx_blog_post_',
+        self::TABLE_CATEGORIES => 'tx_blog_category_',
+        self::TABLE_AUTHORS => 'tx_blog_author_',
+        self::TABLE_COMMENTS => 'tx_blog_comment_',
+        self::TABLE_TAGS => 'tx_blog_tag_',
+    ];
+
+    private ConnectionPool $connectionPool;
+    private CacheService $cacheService;
+
+    public function __construct(
+        ?ConnectionPool $connectionPool = null,
+        ?CacheService $cacheService = null,
+    ) {
+        $this->connectionPool = $connectionPool ?? GeneralUtility::makeInstance(ConnectionPool::class);
+        $this->cacheService = $cacheService ?? GeneralUtility::makeInstance(CacheService::class);
+    }
+
     /**
      * @param string|int $id
      */
@@ -34,53 +53,61 @@ class DataHandlerHook
     {
         if ($table === self::TABLE_PAGES) {
             if (!MathUtility::canBeInterpretedAsInteger($id)) {
-                $id = $dataHandler->substNEWwithIDs[$id];
+                $id = TypeUtility::toInt($dataHandler->substNEWwithIDs[$id] ?? null);
             }
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+            if ($this->isWorkspacePlaceholder($table, (int)$id)) {
+                return;
+            }
+
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $publishDate = $queryBuilder
                 ->select('publish_date')
                 ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$id, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchOne();
             if ($publishDate !== false) {
-                $timestamp = (int) ($publishDate !== 0 ? $publishDate : time());
+                $timestamp = TypeUtility::toInt($publishDate !== 0 ? $publishDate : time(), time());
                 $queryBuilder
                     ->update($table)
                     ->set('publish_date', $timestamp)
-                    ->set('crdate_month', date('n', (int)$timestamp))
-                    ->set('crdate_year', date('Y', (int)$timestamp))
-                    ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                    ->set('crdate_month', date('n', $timestamp))
+                    ->set('crdate_year', date('Y', $timestamp))
+                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$id, Connection::PARAM_INT)))
                     ->executeStatement();
             }
         }
 
-        // Clear caches if required
-        switch ($table) {
-            case self::TABLE_PAGES:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_post_' . $id);
-                break;
-            case self::TABLE_CATEGORIES:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_category_' . $id);
-                break;
-            case self::TABLE_AUTHORS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_author_' . $id);
-                break;
-            case self::TABLE_COMMENTS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_comment_' . $id);
-                break;
-            case self::TABLE_TAGS:
-                GeneralUtility::makeInstance(CacheService::class)
-                    ->flushCacheByTag('tx_blog_tag_' . $id);
-                break;
-            default:
+        if ($dataHandler->BE_USER->workspace > 0) {
+            return;
         }
+
+        $cacheTagPrefix = self::CACHE_TAG_MAP[$table] ?? null;
+        if ($cacheTagPrefix !== null) {
+            $this->cacheService->flushCacheByTag($cacheTagPrefix . $id);
+        }
+    }
+
+    private function isWorkspacePlaceholder(string $table, int $uid): bool
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $row = $queryBuilder
+            ->select('t3ver_state')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (!is_array($row)) {
+            return false;
+        }
+
+        // TYPO3 v14 workspace placeholder states: 1 = new, 2 = delete, 4 = move.
+        // State 3 (legacy "move placeholder") and state -1 (legacy "new version"
+        // pendant) were removed in v11 with the single-row workspace model.
+        return in_array(TypeUtility::toInt($row['t3ver_state'] ?? null), [1, 2, 4], true);
     }
 }

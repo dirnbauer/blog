@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -18,6 +20,7 @@ return [
     'blog_BlogBlogPosts' => [
         'parent' => 'blog_BlogBlog',
         'access' => 'user',
+        'workspaces' => '*',
         'path' => '/module/blog/posts',
         'iconIdentifier' => 'module-blog-posts',
         'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_posts.xlf',
@@ -31,6 +34,7 @@ return [
     'blog_BlogBlogComments' => [
         'parent' => 'blog_BlogBlog',
         'access' => 'user',
+        'workspaces' => '*',
         'path' => '/module/blog/comments',
         'iconIdentifier' => 'module-blog-comments',
         'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_comments.xlf',
@@ -38,13 +42,14 @@ return [
         'controllerActions' => [
             BackendController::class => [
                 'comments',
-                'updateCommentStatus'
+                'updateCommentStatus',
             ],
         ],
     ],
     'blog_BlogBlogSetup' => [
         'parent' => 'blog_BlogBlog',
         'access' => 'admin',
+        'workspaces' => 'live',
         'path' => '/module/blog/setup',
         'iconIdentifier' => 'module-blog-setup',
         'labels' => 'LLL:EXT:blog/Resources/Private/Language/locallang_mod_blog_setup.xlf',

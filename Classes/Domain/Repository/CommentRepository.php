@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /*
  * This file is part of the package t3g/blog.
@@ -14,7 +15,10 @@ use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -34,7 +38,7 @@ class CommentRepository extends Repository
         $querySettings = GeneralUtility::makeInstance(
             Typo3QuerySettings::class,
             GeneralUtility::makeInstance(Context::class),
-            $configurationManager
+            $configurationManager,
         );
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
@@ -56,41 +60,31 @@ class CommentRepository extends Repository
         return $result;
     }
 
-    public function findAllByFilter(?string $filter = null, ?int $blogSetup = null): QueryResultInterface
+    public function findAllByFilter(?string $filter = null, ?int $blogSetup = null): QueryResultInterface|array
+    {
+        return $this->findAllByFilterAndBlogSetups($filter, $blogSetup !== null ? [$blogSetup] : null);
+    }
+
+    public function findAllByFilterAndBlogSetups(?string $filter = null, ?array $blogSetups = null): QueryResultInterface|array
     {
         $query = $this->createQuery();
         $querySettings = $query->getQuerySettings();
         $querySettings->setRespectStoragePage(false);
         $query->setQuerySettings($querySettings);
 
-        $constraints = [];
-        switch ($filter) {
-            case 'pending':
-                $constraints[] = $query->equals('status', Comment::STATUS_PENDING);
-                break;
-            case 'approved':
-                $constraints[] = $query->equals('status', Comment::STATUS_APPROVED);
-                break;
-            case 'declined':
-                $constraints[] = $query->equals('status', Comment::STATUS_DECLINED);
-                break;
-            case 'deleted':
-                $constraints[] = $query->equals('status', Comment::STATUS_DELETED);
-                break;
-            case null:
-                // null means all, and all means all but not deleted
-                $constraints[] = $query->logicalNot($query->equals('status', Comment::STATUS_DELETED));
-                break;
-            default:
-        }
-        if ($blogSetup !== null) {
-            $constraints[] = $query->in('pid', $this->getPostPidsByRootPid($blogSetup));
+        $constraints = $this->buildFilterConstraints($query, $filter);
+        if (is_array($blogSetups)) {
+            $postPids = $this->getPostPidsByRootPids($blogSetups);
+            if ($postPids === []) {
+                return [];
+            }
+            $constraints[] = $query->in('pid', $postPids);
         }
         if (count($constraints) > 0) {
             return $query->matching($query->logicalAnd(...$constraints))->execute();
         }
 
-        return $this->createQuery()->execute();
+        return $query->execute();
     }
 
     public function findActiveComments(?int $limit = null, ?int $blogSetup = null): QueryResultInterface
@@ -115,21 +109,66 @@ class CommentRepository extends Repository
 
     protected function getPostPidsByRootPid(int $blogRootPid): array
     {
+        return $this->getPostPidsByRootPids([$blogRootPid]);
+    }
+
+    protected function getPostPidsByRootPids(array $blogRootPids): array
+    {
+        $blogRootPids = array_values(array_unique(array_filter(array_map('intval', $blogRootPids), static fn (int $pid): bool => $pid > 0)));
+        if ($blogRootPids === []) {
+            return [];
+        }
+
+        $workspaceId = GeneralUtility::makeInstance(Context::class)
+            ->getPropertyFromAspect('workspace', 'id', 0);
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
+
         $rows = $queryBuilder
             ->select('uid')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('doktype', Constants::DOKTYPE_BLOG_POST))
-            ->andWhere($queryBuilder->expr()->eq('pid', $blogRootPid))
+            ->where($queryBuilder->expr()->eq('doktype', $queryBuilder->createNamedParameter(Constants::DOKTYPE_BLOG_POST, Connection::PARAM_INT)))
+            ->andWhere($queryBuilder->expr()->in('pid', $queryBuilder->createNamedParameter($blogRootPids, Connection::PARAM_INT_ARRAY)))
             ->executeQuery()
             ->fetchAllAssociative();
         $result = [];
         foreach ($rows as $row) {
-            $result[] = $row['uid'];
+            $uid = $row['uid'] ?? 0;
+            $result[] = is_numeric($uid) ? (int) $uid : 0;
         }
 
-        return $result;
+        return array_values(array_unique($result));
+    }
+
+    protected function buildFilterConstraints(QueryInterface $query, ?string $filter): array
+    {
+        $constraints = [];
+        switch ($filter) {
+            case 'pending':
+                $constraints[] = $query->equals('status', Comment::STATUS_PENDING);
+                break;
+            case 'approved':
+                $constraints[] = $query->equals('status', Comment::STATUS_APPROVED);
+                break;
+            case 'declined':
+                $constraints[] = $query->equals('status', Comment::STATUS_DECLINED);
+                break;
+            case 'deleted':
+                $constraints[] = $query->equals('status', Comment::STATUS_DELETED);
+                break;
+            case null:
+                // null means all, and all means all but not deleted
+                $constraints[] = $query->logicalNot($query->equals('status', Comment::STATUS_DELETED));
+                break;
+            default:
+        }
+
+        return $constraints;
     }
 
     public function fillConstraintsBySettings(QueryInterface $query, array $constraints): array
@@ -149,7 +188,7 @@ class CommentRepository extends Repository
         if ($respectPostLanguageId) {
             $constraints[] = $query->logicalOr(
                 $query->equals('postLanguageId', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId()),
-                $query->equals('postLanguageId', -1)
+                $query->equals('postLanguageId', -1),
             );
         }
 
@@ -157,16 +196,16 @@ class CommentRepository extends Repository
         $constraints[] = $query->logicalAnd(
             $query->logicalOr(
                 $query->equals('post.starttime', 0),
-                $query->lessThanOrEqual('post.starttime', $tstamp)
+                $query->lessThanOrEqual('post.starttime', $tstamp),
             ),
             $query->logicalOr(
                 $query->equals('post.endtime', 0),
-                $query->greaterThanOrEqual('post.endtime', $tstamp)
-            )
+                $query->greaterThanOrEqual('post.endtime', $tstamp),
+            ),
         );
         $constraints[] = $query->logicalAnd(
             $query->equals('post.hidden', 0),
-            $query->equals('post.deleted', 0)
+            $query->equals('post.deleted', 0),
         );
 
         return $constraints;

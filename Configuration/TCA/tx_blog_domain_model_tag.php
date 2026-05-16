@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -27,13 +29,14 @@ return [
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
+        'versioningWS' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'record-blog-tag'
+            'default' => 'record-blog-tag',
         ],
-        'searchFields' => 'uid,title',
+        'searchFields' => 'title',
     ],
     'columns' => [
         'pid' => [
@@ -68,6 +71,7 @@ return [
                 'size' => 30,
                 'required' => true,
                 'eval' => 'trim',
+                'searchable' => true,
             ],
         ],
         'slug' => [
@@ -77,13 +81,13 @@ return [
                 'generatorOptions' => [
                     'fields' => ['title'],
                     'replacements' => [
-                        '/' => ''
+                        '/' => '',
                     ],
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
-            ]
+                'default' => '',
+            ],
         ],
         'description' => [
             'label' => $ll . 'tx_blog_domain_model_tag.description',
@@ -163,7 +167,6 @@ return [
     'palettes' => [
         'paletteCore' => [
             'showitem' => 'hidden,sys_language_uid,l18n_parent,l18n_diffsource',
-            'canNotCollapse' => true,
         ],
     ],
 ];

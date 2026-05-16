@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -22,26 +24,27 @@ return [
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY title',
         'delete' => 'deleted',
+        'versioningWS' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'record-blog-author'
+            'default' => 'record-blog-author',
         ],
-        'searchFields' => 'uid,name,title',
+        'searchFields' => 'name,title',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l18n_parent',
         'transOrigDiffSourceField' => 'l18n_diffsource',
     ],
     'palettes' => [
         'palette_access' => [
-            'showitem' => 'hidden'
+            'showitem' => 'hidden',
         ],
         'palette_personal' => [
-            'showitem' => 'name, title'
+            'showitem' => 'name, title',
         ],
         'palette_contact' => [
-            'showitem' => 'website, email'
+            'showitem' => 'website, email',
         ],
     ],
     'columns' => [
@@ -76,6 +79,7 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'required' => true,
+                'searchable' => true,
             ],
             'l10n_display' => 'defaultAsReadonly',
             'l10n_mode' => 'exclude',
@@ -87,12 +91,12 @@ return [
                 'generatorOptions' => [
                     'fields' => ['name'],
                     'replacements' => [
-                        '/' => ''
+                        '/' => '',
                     ],
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
-                'default' => ''
+                'default' => '',
             ],
             'l10n_display' => 'defaultAsReadonly',
             'l10n_mode' => 'exclude',
@@ -117,7 +121,7 @@ return [
             'config' => [
                 'type' => 'file',
                 'appearance' => [
-                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],
                 'overrideChildTca' => [
                     'types' => [
@@ -125,7 +129,7 @@ return [
                             'showitem' => '
                                 crop,
                                 --palette--;;filePalette
-                            '
+                            ',
                         ],
                     ],
                 ],
@@ -140,15 +144,15 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'website' => [
             'label' => $ll . 'tx_blog_domain_model_author.website',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => 'domainname',
+                'allowedTypes' => ['url'],
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -166,7 +170,6 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -175,43 +178,42 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
             ],
             'l10n_mode' => 'exclude',
         ],
         'linkedin' => [
             'label' => $ll . 'tx_blog_domain_model_author.linkedin',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => '',
+                'allowedTypes' => ['url'],
             ],
             'l10n_mode' => 'exclude',
         ],
         'xing' => [
             'label' => $ll . 'tx_blog_domain_model_author.xing',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => '',
+                'allowedTypes' => ['url'],
             ],
             'l10n_mode' => 'exclude',
         ],
         'instagram' => [
             'label' => $ll . 'tx_blog_domain_model_author.instagram',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => '',
+                'allowedTypes' => ['url'],
             ],
             'l10n_mode' => 'exclude',
         ],
         'profile' => [
             'label' => $ll . 'tx_blog_domain_model_author.profile',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => '',
+                'allowedTypes' => ['url'],
             ],
             'l10n_mode' => 'exclude',
         ],
@@ -219,7 +221,6 @@ return [
             'label' => $ll . 'tx_blog_domain_model_author.bio',
             'config' => [
                 'type' => 'text',
-                'eval' => '',
             ],
         ],
         'posts' => [
@@ -245,10 +246,10 @@ return [
                 'size' => 1,
                 'maxitems' => 1,
                 'minitems' => 0,
-                'default' => 0
+                'default' => 0,
             ],
             'l10n_mode' => 'exclude',
-        ]
+        ],
     ],
     'sys_language_uid' => [
         'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',

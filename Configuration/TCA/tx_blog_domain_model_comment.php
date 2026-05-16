@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package t3g/blog.
  *
@@ -23,13 +25,17 @@ return [
         'crdate' => 'crdate',
         'default_sortby' => 'ORDER BY crdate DESC',
         'delete' => 'deleted',
+        // Comments are submitted by the frontend public and moderated live;
+        // intentionally not workspace-versioned. `versioningWS_alwaysAllowLiveEdit`
+        // documents the intent + keeps edits in LIVE when a workspace is active.
+        'versioningWS_alwaysAllowLiveEdit' => true,
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
         'typeicon_classes' => [
-            'default' => 'record-blog-comment'
+            'default' => 'record-blog-comment',
         ],
-        'searchFields' => 'uid,comment,name,email',
+        'searchFields' => 'comment,name,email',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
@@ -65,15 +71,15 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'url' => [
             'label' => $ll . 'tx_blog_domain_model_comment.url',
             'config' => [
-                'type' => 'input',
+                'type' => 'link',
                 'size' => 30,
-                'eval' => 'www',
+                'allowedTypes' => ['url'],
             ],
         ],
         'email' => [
@@ -81,6 +87,7 @@ return [
             'config' => [
                 'type' => 'email',
                 'size' => 30,
+                'searchable' => true,
             ],
         ],
         'comment' => [
@@ -88,7 +95,7 @@ return [
             'config' => [
                 'type' => 'text',
                 'size' => 30,
-                'eval' => '',
+                'searchable' => true,
             ],
         ],
         'post_language_id' => [
@@ -140,7 +147,6 @@ return [
     'palettes' => [
         'paletteCore' => [
             'showitem' => 'hidden,',
-            'canNotCollapse' => true,
         ],
     ],
 ];
