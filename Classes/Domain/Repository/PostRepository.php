@@ -44,15 +44,6 @@ class PostRepository extends Repository
     public function initializeObject(): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
-
-        $querySettings = GeneralUtility::makeInstance(
-            Typo3QuerySettings::class,
-            GeneralUtility::makeInstance(Context::class),
-            $configurationManager,
-        );
-        $querySettings->setRespectStoragePage(false);
-        $this->setDefaultQuerySettings($querySettings);
 
         // createQuery() internally resolves TypoScript through
         // BackendConfigurationManager which requires a valid rootline.
@@ -62,6 +53,16 @@ class PostRepository extends Repository
         // default constraints — the repository stays instantiable so the
         // DI container does not crash on the Page Layout view.
         try {
+            $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
+
+            $querySettings = GeneralUtility::makeInstance(
+                Typo3QuerySettings::class,
+                GeneralUtility::makeInstance(Context::class),
+                $configurationManager,
+            );
+            $querySettings->setRespectStoragePage(false);
+            $this->setDefaultQuerySettings($querySettings);
+
             $context = GeneralUtility::makeInstance(Context::class);
             $query = $this->createQuery();
             $this->defaultConstraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
