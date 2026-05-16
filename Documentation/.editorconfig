@@ -1,0 +1,21 @@
+# EditorConfig: https://editorconfig.org
+#
+# Pinned for the TYPO3 documentation renderer:
+#   - UTF-8, LF line endings, final newline, no trailing whitespace.
+#   - RST / YAML / XML use 4-space indent; 80-char soft wrap for RST.
+
+root = false
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.rst]
+max_line_length = 80
+
+[*.{yml,yaml,xml}]
+indent_size = 4

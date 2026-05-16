@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org/guides https://docs.typo3.org/render-guides/guides.xsd"
+        input-format="rst"
+>
+    <project title="TYPO3 Blog Extension" version="14.3.0" />
+    <extension
+        class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+        name="blog"
+        edit-on-github="TYPO3GmbH/blog"
+        edit-on-github-branch="master"
+        interlink-shortcode="t3g/blog"
+        project-home="https://github.com/TYPO3GmbH/blog"
+        project-repository="https://github.com/TYPO3GmbH/blog"
+        typo3-core-preferred="stable"
+    />
+    <inventory id="t3coreapi" url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/" />
+</guides>

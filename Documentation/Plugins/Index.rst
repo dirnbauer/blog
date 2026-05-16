@@ -8,7 +8,9 @@ Plugins
 
 .. figure:: plugins-teaser.png
 
-The following plugins are available after installing the extension.
+The extension configures 20 Extbase plugins. The 14 plugins registered in
+the content element wizard can be selected by editors. The 6 widget/feed
+plugins are used by the shipped sidebar and RSS rendering.
 
 .. contents::
    :local:
@@ -21,34 +23,36 @@ Blog Page Plugins
 
 Blog page plugins are usually used in conjunction with a sidebar,
 it is recommended to provide a separate template for these pages.
+TYPO3 v14 and later should use `PAGEVIEW` with
+``<f:render.contentArea ... />`` and direct ``tt_content.{listType}.20``
+plugin rendering.
 
 Example:
 
 .. code-block:: html
 
-   <f:layout name="Default" />
-   <f:section name="Main">
+   <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+   <f:layout name="Pages/Default" />
+
+   <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-               <main class="blogcontainer-main" role="main">
-                  <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{
-                           colPos: '0'
-                     }" />
-               </main>
-               <aside class="blogcontainer-sidebar">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
-               </aside>
+            <div class="blogcontainer-main">
+               <f:render.contentArea contentArea="{blogContentAreas.content}" />
+            </div>
+            <aside class="blogcontainer-sidebar">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
          </div>
       </div>
-
    </f:section>
+
    <f:section name="renderPlugin">
-
-      {blogvh:data.contentListOptions(listType: listType)}
-      <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
-
+      <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
    </f:section>
+
+   </html>
 
 
 List of posts
@@ -62,6 +66,13 @@ Latest posts
 ------------
 
 Displays a number of latest posts. You can specify the amount of items yourself.
+
+
+Demanded posts
+--------------
+
+Displays posts selected by a demand configuration. The plugin provides a
+FlexForm for explicit posts, categories, tags, sort order and limit.
 
 
 List by category
@@ -102,33 +113,39 @@ Example:
 
 .. code-block:: html
 
-   <f:layout name="Default" />
-   <f:section name="Main">
+   <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+   <f:layout name="Pages/Default" />
+
+   <f:section name="Main">
       <div class="container">
          <div class="blogcontainer">
-               <main class="blogcontainer-main" role="main">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
-                  <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{colPos: '0'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
-               </main>
-               <aside class="blogcontainer-sidebar">
-                  <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
-               </aside>
+            <div class="blogcontainer-main">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_header'}" />
+               <f:render.contentArea contentArea="{blogContentAreas.content}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_footer'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_authors'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_comments'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_commentform'}" />
+               <f:render section="renderPlugin" arguments="{listType: 'blog_relatedposts'}" />
+            </div>
+            <aside class="blogcontainer-sidebar">
+               <f:render section="renderPlugin" arguments="{listType: 'blog_sidebar'}" />
+            </aside>
          </div>
       </div>
-
    </f:section>
+
    <f:section name="renderPlugin">
-
-      {blogvh:data.contentListOptions(listType: listType)}
-      <f:cObject typoscriptObjectPath="tt_content" data="{contentObjectData}" table="tt_content"/>
-
+      <f:cObject typoscriptObjectPath="tt_content.{listType}.20" />
    </f:section>
+
+   </html>
+
+.. note::
+
+   The shared page layout provides the single ``<main>`` landmark. Page
+   templates should only render the content containers and sidebar.
 
 
 Header
@@ -180,3 +197,16 @@ links.
 
 - :ref:`Usage on Blog Pages <BlogPagePlugins>`
 - :ref:`Usage on Blog Posts <BlogPostPlugins>`
+
+
+Widget and Feed Renderers
+=========================
+
+The sidebar and feed templates use these internal renderers:
+
+- ``blog_recentpostswidget``
+- ``blog_categorywidget``
+- ``blog_tagwidget``
+- ``blog_commentswidget``
+- ``blog_archivewidget``
+- ``blog_feedwidget``

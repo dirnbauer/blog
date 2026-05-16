@@ -7,7 +7,7 @@ Posts
 =====
 
 Create a new post
------------------
+=================
 
 .. rst-class:: bignums
 
@@ -40,7 +40,7 @@ Create a new post
       .. figure:: create-post-4.png
 
       1. Click the "Blog" tab
-      2. Adjust the publish date if nessesary
+      2. Adjust the publish date if necessary
       3. Upload a new image for your blog post or select an existing one
 
       .. note::
@@ -74,9 +74,11 @@ Create a new post
 
       .. tip::
 
-         You can add all kinds of content elements that you are using on the rest of your web site, too. The blog itself doesn't
-         provide any special elements for the content of your blog entry as sticking close to the rest of your website ensures a
-         consistent look and feel for your visitors.
+         You can add all kinds of content elements that you are using on
+         the rest of your web site, too. The blog itself does not provide
+         any special elements for the content of your blog entry as
+         sticking close to the rest of your website ensures a consistent
+         look and feel for your visitors.
 
    7. Enable your blog post
 
@@ -89,8 +91,5 @@ Create a new post
 
       .. figure:: create-post-8-1.png
 
-         Click on the "View" Button in the document header
-
-      .. figure:: create-post-8-1.png
-
-      Congratulations you published your blog post
+         Click on the "View" Button in the document header.
+         Congratulations — you published your blog post!

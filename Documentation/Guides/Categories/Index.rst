@@ -7,7 +7,7 @@ Categories
 ==========
 
 Create a new Category
----------------------
+=====================
 
 .. rst-class:: bignums
 

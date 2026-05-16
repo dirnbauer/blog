@@ -13,11 +13,11 @@ site, please go with the :ref:`Setup Wizard <SetupWizard>` instructions.
 Prerequisites:
 
 1. Ensure the TYPO3 Blog Extension is :ref:`installed and activated <Installation>`
-2. Ensure your logged in as **Administrator**
+2. Ensure you are logged in as **Administrator**
 
 .. rst-class:: bignums
 
-   1. Edit your existing site your existing site configuration
+   1. Edit your existing site configuration
 
       .. figure:: manual-1.png
 
@@ -37,6 +37,12 @@ Prerequisites:
 
          - `BlogList <https://github.com/TYPO3GmbH/blog/blob/master/Resources/Private/Templates/Page/BlogList.html>`__
          - `BlogPost <https://github.com/TYPO3GmbH/blog/blob/master/Resources/Private/Templates/Page/BlogPost.html>`__
+
+      .. note::
+
+         TYPO3 v14 standalone rendering uses the `PAGEVIEW` templates in
+         `Resources/Private/Templates/Pages/*.fluid.html`. The links above refer to
+         the legacy integration templates used by the "Blog: Integration" set.
 
    3. Create Blog Pages
 
@@ -88,8 +94,8 @@ Prerequisites:
                settings:
                   blogUid:       ID_of_Page_Blog
                   categoryUid:   ID_of_Page_Categories
-                  tagUid:        ID_of_Page_Authors
-                  authorUid:     ID_of_Page_Tags
+                  tagUid:        ID_of_Page_Tags
+                  authorUid:     ID_of_Page_Authors
                   archiveUid:    ID_of_Page_Archive
                   storagePid:    ID_of_Page_Data
 
@@ -144,6 +150,7 @@ Prerequisites:
 
    8. Congratulations
 
-      Your blog is now ready, please read on in the capters about "how to add a blog post" and learn more about configuration options.
+      Your blog is now ready. Continue with the guides about adding a blog
+      post and configuring the extension.
 
       .. figure:: manual-13.png

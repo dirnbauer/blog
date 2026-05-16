@@ -7,7 +7,7 @@ Tags
 ====
 
 Create a new Tag
-----------------
+================
 
 .. rst-class:: bignums
 
