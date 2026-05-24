@@ -1,534 +1,640 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="EXT:blog/Resources/Private/Language/locallang_db.xlf">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1" original="Resources/Private/Language/locallang_db.xlf">
     <unit id="blog-folder">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="wizard.group.blog">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="plugin.blog_posts.title">
       <segment>
         <source>Blog: List of posts</source>
+        <target>Blog: Beitragsliste</target>
       </segment>
     </unit>
     <unit id="plugin.blog_posts.description">
       <segment>
         <source>Displays a list of blog posts ordered by date. All non-hidden, non-deleted and non-archived posts are shown in the list.</source>
+        <target>Zeigt eine nach Datum sortierte Liste der Blogbeiträge. Alle nicht verborgenen, nicht gelöschten und nicht archivierten Beiträge werden angezeigt.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_demandedposts.title">
       <segment>
         <source>Blog: List of posts by demand configuration</source>
+        <target>Blog: Beitragsliste nach Bedarfskonfiguration</target>
       </segment>
     </unit>
     <unit id="plugin.blog_demandedposts.description">
       <segment>
         <source>Displays a list of blog posts depending on your demand configuration.</source>
+        <target>Zeigt eine Liste von Blogbeiträgen entsprechend Ihrer Bedarfskonfiguration.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_latestposts.title">
       <segment>
         <source>Blog: Latest posts</source>
+        <target>Blog: Neueste Beiträge</target>
       </segment>
     </unit>
     <unit id="plugin.blog_latestposts.description">
       <segment>
         <source>Displays a number of latest posts. You can specify the amount of items yourself.</source>
+        <target>Zeigt eine Anzahl der neuesten Beiträge. Die Anzahl der Einträge können Sie selbst festlegen.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_category.title">
       <segment>
         <source>Blog: List by category</source>
+        <target>Blog: Liste nach Kategorie</target>
       </segment>
     </unit>
     <unit id="plugin.blog_category.description">
       <segment>
         <source>If you add this element and you have selected a category on the categories tab, it will show an overview of posts for that category. If you have no categories selected, it will show an overview of categories.</source>
+        <target>Wenn Sie dieses Element hinzufügen und im Tab Kategorien eine Kategorie ausgewählt haben, zeigt es eine Übersicht der Beiträge für diese Kategorie. Ohne ausgewählte Kategorie wird eine Kategorienübersicht angezeigt.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_authorposts.title">
       <segment>
         <source>Blog: List by author</source>
+        <target>Blog: Liste nach Autor</target>
       </segment>
     </unit>
     <unit id="plugin.blog_authorposts.description">
       <segment>
         <source>Displays all posts belonging to the chosen author.</source>
+        <target>Zeigt alle Beiträge des ausgewählten Autors.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_tag.title">
       <segment>
         <source>Blog: List by tags</source>
+        <target>Blog: Liste nach Schlagwörtern</target>
       </segment>
     </unit>
     <unit id="plugin.blog_tag.description">
       <segment>
         <source>Allows the users to show all posts tagged with a specific keyword.</source>
+        <target>Ermöglicht Benutzern, alle Beiträge mit einem bestimmten Schlagwort anzuzeigen.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_archive.title">
       <segment>
         <source>Blog: Archive</source>
+        <target>Blog: Archiv</target>
       </segment>
     </unit>
     <unit id="plugin.blog_archive.description">
       <segment>
         <source>The archive plugin displays all posts categorized by year and month.</source>
+        <target>Das Archiv-Plugin zeigt alle Beiträge nach Jahr und Monat gruppiert.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_sidebar.title">
       <segment>
         <source>Blog: Sidebar</source>
+        <target>Blog: Seitenleiste</target>
       </segment>
     </unit>
     <unit id="plugin.blog_sidebar.description">
       <segment>
         <source>The sidebar contains links enabling the user to quickly navigate your blog. It shows an overview of recent posts and comments, categories, tags and archive links.</source>
+        <target>Die Seitenleiste enthält Links zur schnellen Navigation im Blog. Sie zeigt neueste Beiträge und Kommentare, Kategorien, Schlagwörter und Archivlinks.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_header.title">
       <segment>
         <source>Blog: Header</source>
+        <target>Blog: Kopfbereich</target>
       </segment>
     </unit>
     <unit id="plugin.blog_header.description">
       <segment>
         <source>Displays post header</source>
+        <target>Zeigt den Beitragskopfbereich.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_footer.title">
       <segment>
         <source>Blog: Footer</source>
+        <target>Blog: Fußbereich</target>
       </segment>
     </unit>
     <unit id="plugin.blog_footer.description">
       <segment>
         <source>Displays post footer</source>
+        <target>Zeigt den Beitragsfußbereich.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_commentform.title">
       <segment>
         <source>Blog: Comment Form</source>
+        <target>Blog: Kommentarformular</target>
       </segment>
     </unit>
     <unit id="plugin.blog_commentform.description">
       <segment>
         <source>Displays the comment form for a post.</source>
+        <target>Zeigt das Kommentarformular für einen Beitrag.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_comments.title">
       <segment>
         <source>Blog: Comments</source>
+        <target>Blog: Kommentare</target>
       </segment>
     </unit>
     <unit id="plugin.blog_comments.description">
       <segment>
         <source>Displays the comments for a post.</source>
+        <target>Zeigt die Kommentare eines Beitrags.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_authors.title">
       <segment>
         <source>Blog: Authors</source>
+        <target>Blog: Autoren</target>
       </segment>
     </unit>
     <unit id="plugin.blog_authors.description">
       <segment>
         <source>Displays post authors, like name, title, avatar, social links...</source>
+        <target>Zeigt Beitragsautoren mit Name, Titel, Avatar und Social Links.</target>
       </segment>
     </unit>
     <unit id="plugin.blog_relatedposts.title">
       <segment>
         <source>Blog: Related Posts</source>
+        <target>Blog: Ähnliche Beiträge</target>
       </segment>
     </unit>
     <unit id="plugin.blog_relatedposts.description">
       <segment>
         <source>Based on the categories and tags of the current post, it will show a list of related posts. This overview should only be placed on a Blog detail page.</source>
+        <target>Basierend auf Kategorien und Schlagwörtern des aktuellen Beitrags wird eine Liste ahnlicher Beiträge angezeigt. Diese Übersicht sollte nur auf einer Blog-Detailseite platziert werden.</target>
       </segment>
     </unit>
     <unit id="pages.featured_image">
       <segment>
         <source>Featured Image</source>
+        <target>Beitragsbild</target>
       </segment>
     </unit>
     <unit id="pages.comments_active">
       <segment>
         <source>Comments enabled</source>
+        <target>Kommentare aktiviert</target>
       </segment>
     </unit>
     <unit id="pages.comments">
       <segment>
         <source>Comments</source>
+        <target>Kommentare</target>
       </segment>
     </unit>
     <unit id="pages.crdate">
       <segment>
         <source>Creation date</source>
+        <target>Erstellungsdatum</target>
       </segment>
     </unit>
     <unit id="pages.palettes.publish_date">
       <segment>
         <source>Publish date</source>
+        <target>Veröffentlichungsdatum</target>
       </segment>
     </unit>
     <unit id="pages.crdate_month">
       <segment>
         <source>Publish date month</source>
+        <target>Monat des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="pages.crdate_year">
       <segment>
         <source>Publish date year</source>
+        <target>Jahr des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="pages.publish_date">
       <segment>
         <source>Publish date</source>
+        <target>Veröffentlichungsdatum</target>
       </segment>
     </unit>
     <unit id="pages.archive_date">
       <segment>
         <source>Archive date</source>
+        <target>Archivdatum</target>
       </segment>
     </unit>
     <unit id="pages.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="pages.authors">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="pages.tabs.blog">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment">
       <segment>
         <source>Blog: Comment</source>
+        <target>Blog: Kommentar</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.name">
       <segment>
         <source>Name</source>
+        <target>Name</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.url">
       <segment>
         <source>URL</source>
+        <target>URL</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.email">
       <segment>
         <source>E-Mail</source>
+        <target>E-Mail</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.comment">
       <segment>
         <source>Comment</source>
+        <target>Kommentar</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.status">
       <segment>
         <source>Status</source>
+        <target>Status</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.status.pending">
       <segment>
         <source>Pending</source>
+        <target>Ausstehend</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.status.approved">
       <segment>
         <source>Approved</source>
+        <target>Freigegeben</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.status.declined">
       <segment>
         <source>Declined</source>
+        <target>Abgelehnt</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_comment.status.deleted">
       <segment>
         <source>Deleted</source>
+        <target>Gelöscht</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag">
       <segment>
         <source>Blog: Tag</source>
+        <target>Blog: Schlagwort</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.title">
       <segment>
         <source>Title</source>
+        <target>Titel</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.slug">
       <segment>
         <source>Path Segment</source>
+        <target>Pfadsegment</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.description">
       <segment>
         <source>Description (meta description)</source>
+        <target>Beschreibung (Meta-Beschreibung)</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.tabs.general">
       <segment>
         <source>General</source>
+        <target>Allgemein</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.tabs.seo">
       <segment>
         <source>SEO</source>
+        <target>SEO</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_tag.content">
       <segment>
         <source>Content</source>
+        <target>Inhalt</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author">
       <segment>
         <source>Blog: Author</source>
+        <target>Blog: Autor</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.name">
       <segment>
         <source>Name</source>
+        <target>Name</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.slug">
       <segment>
         <source>Path Segment</source>
+        <target>Pfadsegment</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.avatar_provider">
       <segment>
         <source>Avatar Provider</source>
+        <target>Avatar-Anbieter</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.image">
       <segment>
         <source>Image</source>
+        <target>Bild</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.title">
       <segment>
         <source>Title</source>
+        <target>Titel</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.website">
       <segment>
         <source>Website</source>
+        <target>Website</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.email">
       <segment>
         <source>Email</source>
+        <target>E-Mail</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.location">
       <segment>
         <source>Location</source>
+        <target>Ort</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.twitter">
       <segment>
         <source>Twitter username</source>
+        <target>Twitter-Benutzername</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.linkedin">
       <segment>
         <source>LinkedIn profile URL</source>
+        <target>LinkedIn-Profil-URL</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.xing">
       <segment>
         <source>XING profile URL</source>
+        <target>XING-Profil-URL</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.instagram">
       <segment>
         <source>Instagram profile URL</source>
+        <target>Instagram-Profil-URL</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.profile">
       <segment>
         <source>Author profile URL (used for schema.org markup)</source>
+        <target>Autorenprofil-URL (für schema.org-Markup verwendet)</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.bio">
       <segment>
         <source>Bio</source>
+        <target>Biografie</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.posts">
       <segment>
         <source>Blog posts</source>
+        <target>Blogbeiträge</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.details_page">
       <segment>
         <source>Details page</source>
+        <target>Detailseite</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.palette_personal">
       <segment>
         <source>Personal data</source>
+        <target>Persönliche Daten</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.palette_contact">
       <segment>
         <source>Contact data</source>
+        <target>Kontaktdaten</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.tab_profile">
       <segment>
         <source>Profile</source>
+        <target>Profil</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.tab_social_media">
       <segment>
         <source>Social Media</source>
+        <target>Social Media</target>
       </segment>
     </unit>
     <unit id="tx_blog_domain_model_author.tab_blog">
       <segment>
         <source>Blog data</source>
+        <target>Blogdaten</target>
       </segment>
     </unit>
     <unit id="sys_category.record_type">
       <segment>
         <source>Record Type</source>
+        <target>Datensatztyp</target>
       </segment>
     </unit>
     <unit id="sys_category.content">
       <segment>
         <source>Content</source>
+        <target>Inhalt</target>
       </segment>
     </unit>
     <unit id="sys_category.slug">
       <segment>
         <source>Path Segment</source>
+        <target>Pfadsegment</target>
       </segment>
     </unit>
     <unit id="sys_category.tabs.seo">
       <segment>
         <source>SEO</source>
+        <target>SEO</target>
       </segment>
     </unit>
     <unit id="sys_category.tabs.blog">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="sys_category.posts">
       <segment>
         <source>Posts</source>
+        <target>Beiträge</target>
       </segment>
     </unit>
     <unit id="flexform.sheet_general">
       <segment>
         <source>General</source>
+        <target>Allgemein</target>
       </segment>
     </unit>
     <unit id="flexform.latestPosts.limit">
       <segment>
         <source>Amount of items to show in overview of latest posts</source>
+        <target>Anzahl der Einträge in der Übersicht neuester Beiträge</target>
       </segment>
     </unit>
     <unit id="settings.demand.posts">
       <segment>
         <source>Blog posts</source>
+        <target>Blogbeiträge</target>
       </segment>
     </unit>
     <unit id="settings.demand.posts.description">
       <segment>
         <source>Blog posts are mutually exclusive to categories and tags. If blog posts are selected, any set categories, tags and sorting settings are ignored!</source>
+        <target>Blogbeiträge schließen Kategorien und Schlagwörter gegenseitig aus. Wenn Blogbeiträge ausgewählt sind, werden gesetzte Kategorien, Schlagwörter und Sortiereinstellungen ignoriert.</target>
       </segment>
     </unit>
     <unit id="settings.demand.categories">
       <segment>
         <source>Categories</source>
+        <target>Kategorien</target>
       </segment>
     </unit>
     <unit id="settings.demand.categoriesConjunction">
       <segment>
         <source>Category conjunction</source>
+        <target>Kategorien-Verknupfung</target>
       </segment>
     </unit>
     <unit id="settings.demand.categoriesConjunction.AND">
       <segment>
         <source>Require all categories set (AND)</source>
+        <target>Alle gesetzten Kategorien verlangen (UND)</target>
       </segment>
     </unit>
     <unit id="settings.demand.categoriesConjunction.OR">
       <segment>
         <source>Require any category set (OR)</source>
+        <target>Eine beliebige gesetzte Kategorie verlangen (ODER)</target>
       </segment>
     </unit>
     <unit id="settings.demand.sortBy">
       <segment>
         <source>Sort blog posts by</source>
+        <target>Blogbeiträge sortieren nach</target>
       </segment>
     </unit>
     <unit id="settings.demand.sortDirection">
       <segment>
         <source>Sorting direction</source>
+        <target>Sortierrichtung</target>
       </segment>
     </unit>
     <unit id="settings.demand.sortDirection.ASC">
       <segment>
         <source>Ascending</source>
+        <target>Aufsteigend</target>
       </segment>
     </unit>
     <unit id="settings.demand.sortDirection.DESC">
       <segment>
         <source>Descending</source>
+        <target>Absteigend</target>
       </segment>
     </unit>
     <unit id="settings.demand.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="settings.demand.tagsConjunction">
       <segment>
         <source>Tag conjunction</source>
+        <target>Schlagwort-Verknupfung</target>
       </segment>
     </unit>
     <unit id="settings.demand.tagsConjunction.AND">
       <segment>
         <source>Require all tags set (AND)</source>
+        <target>Alle gesetzten Schlagwörter verlangen (UND)</target>
       </segment>
     </unit>
     <unit id="settings.demand.tagsConjunction.OR">
       <segment>
         <source>Require any tags set (OR)</source>
+        <target>Ein beliebiges gesetztes Schlagwort verlangen (ODER)</target>
       </segment>
     </unit>
     <unit id="settings.demand.limit">
       <segment>
         <source>Limit of posts</source>
+        <target>Beitragslimit</target>
       </segment>
     </unit>
     <unit id="settings.noTranslationHintMessage.title">
       <segment>
         <source>No settings here</source>
+        <target>Hier keine Einstellungen</target>
       </segment>
     </unit>
     <unit id="settings.noTranslationHintMessage.description">
       <segment>
         <source>This configuration cannot be changed in a translated record.</source>
+        <target>Diese Konfiguration kann in einem übersetzten Datensatz nicht geändert werden.</target>
       </segment>
     </unit>
   </file>

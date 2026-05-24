@@ -20,7 +20,8 @@
 
 - [TASK] Adopt `saschaegerer/phpstan-typo3` on PHPStan level 9 and remove redundant `assertInstanceOf` calls
 - [TASK] Fix `DataHandlerHook` to use the TYPO3 v14 valid `t3ver_state` values (`1, 2, 4`)
-- [TASK] Migrate default Fluid templates to Bootstrap 5 (`data-bs-*`) and drop `declare(strict_types=1)` from `ext_emconf.php`
+- [TASK] Migrate default Fluid templates to Bootstrap 5 (`data-bs-*`)
+- [TASK] Move TYPO3 v14 release metadata from `ext_emconf.php` into Composer metadata
 - [TASK] Delete the legacy `Configuration/TypoScript/` tree and `ext_typoscript_setup.txt` now that Site Sets ship the same content
 - [TASK] Mark leaf services, listeners, validators, finishers, factories, view helpers, updates, hooks and notification processors `final`
 - [TASK] Type `Post::$authors` as `ObjectStorage` and tighten TCA `eval` migrations (`domainname`/`www`/`num` → `type: link|number`)

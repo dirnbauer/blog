@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class BackendController extends ActionController
 {
@@ -138,15 +139,15 @@ class BackendController extends ActionController
         }
         if ($permissionDenied) {
             $this->addFlashMessage(
-                'One or more comments were skipped because you do not have permission to moderate them.',
-                'Permission denied',
+                $this->translate('flash.comment.permission_denied.message'),
+                $this->translate('flash.permission_denied.title'),
                 ContextualFeedbackSeverity::ERROR,
             );
         }
         if (!$updatedComment && !in_array($status, ['approve', 'decline', 'delete'], true)) {
             $this->addFlashMessage(
-                'The requested comment status change is not supported.',
-                'Invalid action',
+                $this->translate('flash.comment.invalid_status.message'),
+                $this->translate('flash.invalid_action.title'),
                 ContextualFeedbackSeverity::ERROR,
             );
         }
@@ -158,8 +159,8 @@ class BackendController extends ActionController
     {
         if ($this->backendAccessService->getBackendUser()?->isAdmin() !== true) {
             $this->addFlashMessage(
-                'Only administrators may create a blog setup.',
-                'Permission denied',
+                $this->translate('flash.setup.permission_denied.message'),
+                $this->translate('flash.permission_denied.title'),
                 ContextualFeedbackSeverity::ERROR,
             );
 
@@ -168,9 +169,16 @@ class BackendController extends ActionController
 
         if ($data !== null) {
             $this->setupService->createBlogSetup($data);
-            $this->addFlashMessage('Your blog setup has been created.', 'Congratulation');
+            $this->addFlashMessage(
+                $this->translate('flash.setup.created.message'),
+                $this->translate('flash.setup.created.title'),
+            );
         } else {
-            $this->addFlashMessage('Sorry, your blog setup could not be created.', 'An error occurred', ContextualFeedbackSeverity::ERROR);
+            $this->addFlashMessage(
+                $this->translate('flash.setup.create_failed.message'),
+                $this->translate('flash.error.title'),
+                ContextualFeedbackSeverity::ERROR,
+            );
         }
 
         return new RedirectResponse($this->uriBuilder->reset()->uriFor('setupWizard'));
@@ -255,5 +263,10 @@ class BackendController extends ActionController
             default:
                 return false;
         }
+    }
+
+    protected function translate(string $key): string
+    {
+        return LocalizationUtility::translate($key, 'Blog') ?? $key;
     }
 }

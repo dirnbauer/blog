@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class AbstractUpdate
 {
@@ -43,12 +44,12 @@ abstract class AbstractUpdate
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->translate($this->title);
     }
 
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->description === '' ? '' : $this->translate($this->description);
     }
 
     public function getPrerequisites(): array
@@ -156,5 +157,10 @@ abstract class AbstractUpdate
             $this->createEqualStringCriteria($pageQueryBuilder, 'module', 'blog'),
         ];
         return $this->getRecordsByCriteria($pageQueryBuilder, 'pages', $pageCriteria);
+    }
+
+    protected function translate(string $key): string
+    {
+        return LocalizationUtility::translate($key, 'Blog') ?? $key;
     }
 }

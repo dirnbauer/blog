@@ -10,81 +10,81 @@
     </div>
     <div class="row" id="basePanel" data-source-filter="{dataSourceFilter}" data-source-skin="{dataSourceSkin}" data-table="{postData.table}" data-uid="{postData.uid}">
         <div class="col-xs-12">
-            <textarea class="watch form-control" id="title" placeholder="Type here...">{postData.title}</textarea>
+            <textarea class="watch form-control" id="title" placeholder="{f:translate(key: 'backend.social_image.placeholder.title')}">{postData.title}</textarea>
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="t3js-canvas-container" data-identifier="facebook">
-                <h3>Facebook / Twitter / Google Plus</h3>
+                <h3><f:translate key="backend.social_image.channel.facebook" /></h3>
                 <div class="preview">
                     <canvas id="preview-facebook" class="canvas" width="512" height="256"></canvas>
                 </div>
                 <hr>
                 <div class="adjustment-sliders form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-3">Font Size</label>
+                        <label class="col-sm-3"><f:translate key="backend.social_image.font_size" /></label>
                         <div class="col-sm-7">
                             <input class="form-control t3js-font-size" type="range" value="40" min="20" max="40" step="1">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3">Image Scale</label>
+                        <label class="col-sm-3"><f:translate key="backend.social_image.image_scale" /></label>
                         <div class="col-sm-7">
                             <input class="form-control t3js-image-scale" type="range" value="0.5" min="0.1" max="1.5" step="0.01">
                         </div>
                     </div>
                 </div>
-                <a href="#" class="btn btn-default js-download-link"><core:icon identifier="actions-download" alternativeMarkupIdentifier="inline" /> Download</a>
-                <a href="#" class="btn btn-primary js-save-link"><core:icon identifier="actions-save" alternativeMarkupIdentifier="inline" /> Save in record</a>
+                <a href="#" class="btn btn-default js-download-link"><core:icon identifier="actions-download" alternativeMarkupIdentifier="inline" /> <f:translate key="backend.social_image.download" /></a>
+                <a href="#" class="btn btn-primary js-save-link"><core:icon identifier="actions-save" alternativeMarkupIdentifier="inline" /> <f:translate key="backend.social_image.save_in_record" /></a>
             </div>
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="t3js-canvas-container" data-identifier="linkedin">
-                <h3>LinkedIn</h3>
+                <h3><f:translate key="backend.social_image.channel.linkedin" /></h3>
                 <div class="preview">
                     <canvas id="preview-linkedin" class="canvas" width="358" height="256"></canvas>
                 </div>
                 <hr>
                 <div class="adjustment-sliders form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-3">Font Size</label>
+                        <label class="col-sm-3"><f:translate key="backend.social_image.font_size" /></label>
                         <div class="col-sm-7">
                             <input class="form-control t3js-font-size" type="range" value="40" min="20" max="40" step="1">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3">Image Scale</label>
+                        <label class="col-sm-3"><f:translate key="backend.social_image.image_scale" /></label>
                         <div class="col-sm-7">
                             <input class="form-control t3js-image-scale" type="range" value="0.5" min="0.1" max="1.5" step="0.01">
                         </div>
                     </div>
                 </div>
-                <a href="#" class="btn btn-default js-download-link"><core:icon identifier="actions-download" alternativeMarkupIdentifier="inline" /> Download</a>
-                <a href="#" class="btn btn-primary js-save-link"><core:icon identifier="actions-save" alternativeMarkupIdentifier="inline" /> Save in record</a>
+                <a href="#" class="btn btn-default js-download-link"><core:icon identifier="actions-download" alternativeMarkupIdentifier="inline" /> <f:translate key="backend.social_image.download" /></a>
+                <a href="#" class="btn btn-primary js-save-link"><core:icon identifier="actions-save" alternativeMarkupIdentifier="inline" /> <f:translate key="backend.social_image.save_in_record" /></a>
             </div>
         </div>
     </div>
     <div class="row" id="savePanelStep1" style="display: none;">
         <div class="col-xs-12">
-            <h2>Image has been saved</h2>
+            <h2><f:translate key="backend.social_image.saved" /></h2>
             <p><a href="#" target="_blank" rel="noopener" class="t3js-file-link"><span class="t3js-filepath"></span></a></p>
-            <h3>Should we connect the image to a field in this record?</h3>
-            <p class="lead">Choose one of the following fields.</p>
+            <h3><f:translate key="backend.social_image.connect_question" /></h3>
+            <p class="lead"><f:translate key="backend.social_image.choose_field" /></p>
             <ul class="t3js-list-of-fields"></ul>
-            <a href="#" class="btn btn-primary js-go-back">Back</a>
+            <a href="#" class="btn btn-primary js-go-back"><f:translate key="action.back" /></a>
         </div>
     </div>
     <div class="row" id="savePanelStep2" style="display: none;">
         <div class="col-xs-12">
-            <h2>The selected fields contains images</h2>
-            <p class="lead">Please choose one option</p>
+            <h2><f:translate key="backend.social_image.field_has_images" /></h2>
+            <p class="lead"><f:translate key="backend.social_image.choose_option" /></p>
             <table class="t3js-list-of-relations table table-striped table-hover"><tbody></tbody></table>
-            <a href="#" class="btn btn-primary js-go-back">Back</a>
+            <a href="#" class="btn btn-primary js-go-back"><f:translate key="action.back" /></a>
         </div>
     </div>
     <div class="row" id="savePanelStep3" style="display: none;">
         <div class="col-xs-12">
-            <h2>Image has been connected</h2>
-            <a href="#" class="btn btn-primary js-go-back">Back</a>
+            <h2><f:translate key="backend.social_image.connected" /></h2>
+            <a href="#" class="btn btn-primary js-go-back"><f:translate key="action.back" /></a>
         </div>
     </div>
 </div>

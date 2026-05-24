@@ -1,54 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="EXT:blog/Configuration/Sets/Standalone/labels.xlf">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1" original="Configuration/Sets/Standalone/labels.xlf">
     <unit id="categories.blog_standalone">
       <segment>
         <source>TYPO3 Blog: Standalone</source>
+        <target>TYPO3 Blog: Standalone</target>
       </segment>
     </unit>
     <unit id="categories.blog_standalone.templates">
       <segment>
         <source>Templates</source>
+        <target>Templates</target>
       </segment>
     </unit>
     <unit id="categories.blog_standalone.copyright">
       <segment>
         <source>Copyright</source>
+        <target>Copyright</target>
       </segment>
     </unit>
     <unit id="settings.page.fluidtemplate.templateRootPath">
       <segment>
         <source>Template Root Path</source>
+        <target>Template-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.page.fluidtemplate.templateRootPath">
       <segment>
         <source>Path to template folder</source>
+        <target>Pfad zum Template-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.page.fluidtemplate.partialRootPath">
       <segment>
         <source>Partial Root Path</source>
+        <target>Partial-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.page.fluidtemplate.partialRootPath">
       <segment>
         <source>Path to partial folder</source>
+        <target>Pfad zum Partial-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.page.fluidtemplate.layoutRootPath">
       <segment>
         <source>Layout Root Path</source>
+        <target>Layout-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.page.fluidtemplate.layoutRootPath">
       <segment>
         <source>Path to layout folder</source>
+        <target>Pfad zum Layout-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.page.theme.copyright.text">
       <segment>
         <source>Copyright Text</source>
+        <target>Copyright-Text</target>
       </segment>
     </unit>
   </file>

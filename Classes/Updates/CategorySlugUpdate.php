@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[UpgradeWizard(CategorySlugUpdate::class)]
 final class CategorySlugUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Generate Path-Segments for Categories';
+    protected string $title = 'updates.category_slug.title';
     protected string $table = 'sys_category';
 
     public function updateNecessary(): bool

@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="EXT:blog/Resources/Private/Language/locallang_tca.xlf">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1" original="Resources/Private/Language/locallang_tca.xlf">
     <unit id="pages.doktype.blog-post">
       <segment>
         <source>Blog Post</source>
+        <target>Blogbeitrag</target>
       </segment>
     </unit>
     <unit id="pages.doktype.blog-page">
       <segment>
         <source>Blog Page</source>
+        <target>Blogseite</target>
       </segment>
     </unit>
     <unit id="sys_category.record_type.default">
       <segment>
         <source>Default</source>
+        <target>Standard</target>
       </segment>
     </unit>
     <unit id="sys_category.record_type.blog">
       <segment>
         <source>Blog Category</source>
+        <target>Blogkategorie</target>
       </segment>
     </unit>
   </file>

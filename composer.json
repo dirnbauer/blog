@@ -46,7 +46,11 @@
         },
         "typo3/cms": {
             "extension-key": "blog",
-            "web-dir": ".build/public"
+            "version": "14.3.0",
+            "web-dir": ".build/public",
+            "Package": {
+                "providesPackages": {}
+            }
         }
     },
     "scripts": {
@@ -98,11 +102,9 @@
         "typo3/cms-backend": "^14.3",
         "typo3/cms-core": "^14.3",
         "typo3/cms-extbase": "^14.3",
-        "typo3/cms-extensionmanager": "^14.3",
         "typo3/cms-fluid": "^14.3",
         "typo3/cms-form": "^14.3",
-        "typo3/cms-frontend": "^14.3",
-        "typo3/cms-install": "^14.3"
+        "typo3/cms-frontend": "^14.3"
     },
     "require-dev": {
         "bk2k/bootstrap-package": "^15.0 || 16.*.*@dev",

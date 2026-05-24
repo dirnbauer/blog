@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 #[UpgradeWizard(DatabaseMonthYearUpdate::class)]
 final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Set new month and year fields for existing blog posts';
+    protected string $title = 'updates.database_month_year.title';
     protected string $table = 'pages';
 
     public function updateNecessary(): bool

@@ -33,10 +33,10 @@
                             <td data-order="{blog.articleCount}">{blog.articleCount}</td>
                             <td class="col-control nowrap">
                                 <a class="btn btn-sm btn-default" href="{be:moduleLink(route: 'blog_BlogBlogPosts', arguments: '{tx_blog_blog_blogblogposts: {blogSetup: blog.uid}}')}">
-                                    <core:icon identifier="record-blog-post" /> Posts
+                                    <core:icon identifier="record-blog-post" /> <f:translate key="backend.headline.posts" />
                                 </a>
                                 <a class="btn btn-sm btn-default" href="{be:moduleLink(route: 'blog_BlogBlogComments', arguments: '{tx_blog_blog_blogblogcomments: {blogSetup: blog.uid}}')}">
-                                    <core:icon identifier="record-blog-comment" /> Comments
+                                    <core:icon identifier="record-blog-comment" /> <f:translate key="backend.headline.comments" />
                                 </a>
                             </td>
                         </tr>

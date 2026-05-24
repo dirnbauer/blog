@@ -28,7 +28,7 @@ $typeIconClasses['contains-blog'] = 'record-folder-contains-blog';
 
 // Add doctype group label
 $itemGroups = \T3G\AgencyPack\Blog\Utility\TcaUtility::getNestedArray($pagesTca, ['columns', 'doktype', 'config', 'itemGroups']);
-$itemGroups['blog'] = 'Blog';
+$itemGroups['blog'] = $ll . 'blog-folder';
 \T3G\AgencyPack\Blog\Utility\TcaUtility::setNestedValue($pagesTca, ['columns', 'doktype', 'config', 'itemGroups'], $itemGroups);
 
 // Add icon for new page types:

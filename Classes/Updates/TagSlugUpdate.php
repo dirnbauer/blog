@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[UpgradeWizard(TagSlugUpdate::class)]
 final class TagSlugUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Generate Path-Segments for Tags';
+    protected string $title = 'updates.tag_slug.title';
     protected string $table = 'tx_blog_domain_model_tag';
 
     public function updateNecessary(): bool

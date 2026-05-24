@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 #[UpgradeWizard(CommentStatusUpdate::class)]
 final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Migrate Comment Status';
+    protected string $title = 'updates.comment_status.title';
     protected string $table = 'tx_blog_domain_model_comment';
 
     public function updateNecessary(): bool

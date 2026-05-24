@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 #[UpgradeWizard(AvatarProviderUpdate::class)]
 final class AvatarProviderUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Migrate AvatarProvider';
+    protected string $title = 'updates.avatar_provider.title';
     protected string $table = 'tx_blog_domain_model_author';
 
     public function updateNecessary(): bool

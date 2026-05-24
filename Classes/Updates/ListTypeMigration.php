@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\Updates;
 
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 #[UpgradeWizard(ListTypeMigration::class)]
 final class ListTypeMigration extends AbstractListTypeToCTypeUpdate
@@ -40,11 +41,11 @@ final class ListTypeMigration extends AbstractListTypeToCTypeUpdate
 
     public function getTitle(): string
     {
-        return 'Migrate "t3g/blog" plugins to content elements.';
+        return LocalizationUtility::translate('updates.list_type.title', 'Blog') ?? 'updates.list_type.title';
     }
 
     public function getDescription(): string
     {
-        return 'The "blog" plugins will be registered as content elements. The update migrates existing records and backend user permissions.';
+        return LocalizationUtility::translate('updates.list_type.description', 'Blog') ?? 'updates.list_type.description';
     }
 }

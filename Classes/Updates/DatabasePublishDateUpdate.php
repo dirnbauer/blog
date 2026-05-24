@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 #[UpgradeWizard(DatabasePublishDateUpdate::class)]
 final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Set publish date fields to crdate for existing blog posts';
+    protected string $title = 'updates.database_publish_date.title';
     protected string $table = 'pages';
 
     public function updateNecessary(): bool

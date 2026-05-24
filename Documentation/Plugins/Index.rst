@@ -7,6 +7,9 @@ Plugins
 =======
 
 .. figure:: plugins-teaser.png
+   :alt: Blog content elements in the TYPO3 content element wizard
+   :zoom: lightbox
+   :class: with-border with-shadow
 
 The extension configures 20 Extbase plugins. The 14 plugins registered in
 the content element wizard can be selected by editors. The 6 widget/feed

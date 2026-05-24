@@ -14,6 +14,7 @@
 /coverage/
 /playwright-report/
 /test-results/
+/Documentation-GENERATED-temp/
 
 # Generated reports and audits
 /*.REPORT.md

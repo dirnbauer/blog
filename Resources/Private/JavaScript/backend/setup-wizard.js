@@ -11,13 +11,17 @@ const SetupWizard = {
 
 SetupWizard.initialize = function() {
     const triggerSelector = document.querySelector(SetupWizard.triggerSelector);
+    if (triggerSelector === null) {
+        return;
+    }
+
     triggerSelector.addEventListener('click', (event) => {
         event.preventDefault();
-        const element = event.target;
-        var content = document.querySelector(SetupWizard.modalContentSelector).cloneNode(true);
-        var buttons = [
+        const element = event.currentTarget;
+        const content = document.querySelector(SetupWizard.modalContentSelector).cloneNode(true);
+        const buttons = [
             {
-                text: element.dataset.buttonCloseText || 'Close',
+                text: element.dataset.buttonCloseText || '',
                 active: true,
                 btnClass: 'btn-default',
                 trigger: (event, modal) => {
@@ -29,14 +33,14 @@ SetupWizard.initialize = function() {
                 }
             },
             {
-                text: element.dataset.buttonOkText || 'OK',
+                text: element.dataset.buttonOkText || '',
                 btnClass: 'btn-primary',
                 trigger: (event, modal) => {
                     if (modal !== undefined) {
                         self.location.href = element.getAttribute('href')
                             .replace('@title', modal.querySelector('input[name="title"]').value)
                             .replace('@template', modal.querySelectorAll('input[name="template"]:checked').length)
-                            .replace('@install', modal.querySelectorAll('input[name="install"]:checked').length)
+                            .replace('@install', modal.querySelectorAll('input[name="install"]:checked').length);
                         modal.hideModal();
                     } else {
                         self.location.href = element.getAttribute('href')
@@ -48,7 +52,7 @@ SetupWizard.initialize = function() {
                 }
             }
         ];
-        Modal.show('Blog Setup Wizard', content, Severity.notice, buttons);
+        Modal.show(element.dataset.modalTitle || '', content, Severity.notice, buttons);
     });
 };
 

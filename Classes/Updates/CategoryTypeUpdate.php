@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 #[UpgradeWizard(CategoryTypeUpdate::class)]
 final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Use Blog-Type for Categories';
+    protected string $title = 'updates.category_type.title';
     protected string $table = 'sys_category';
 
     public function updateNecessary(): bool

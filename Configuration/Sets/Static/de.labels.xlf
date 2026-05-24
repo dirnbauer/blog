@@ -1,994 +1,1192 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="EXT:blog/Configuration/Sets/Static/labels.xlf">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1" original="Configuration/Sets/Static/labels.xlf">
     <unit id="categories.blog">
       <segment>
         <source>TYPO3 Blog</source>
+        <target>TYPO3 Blog</target>
       </segment>
     </unit>
     <unit id="categories.blog.uids">
       <segment>
         <source>Page ID settings</source>
+        <target>Seiten-ID-Einstellungen</target>
       </segment>
     </unit>
     <unit id="categories.blog.templates">
       <segment>
         <source>Templates</source>
+        <target>Templates</target>
       </segment>
     </unit>
     <unit id="categories.blog.templates.frontend">
       <segment>
         <source>Frontend</source>
+        <target>Frontend</target>
       </segment>
     </unit>
     <unit id="categories.blog.templates.email">
       <segment>
         <source>Email</source>
+        <target>E-Mail</target>
       </segment>
     </unit>
     <unit id="categories.blog.lists">
       <segment>
         <source>Listings</source>
+        <target>Listen</target>
       </segment>
     </unit>
     <unit id="categories.blog.lists.pagination">
       <segment>
         <source>Pagination</source>
+        <target>Seitennummerierung</target>
       </segment>
     </unit>
     <unit id="categories.blog.lists.archive">
       <segment>
         <source>Archive</source>
+        <target>Archiv</target>
       </segment>
     </unit>
     <unit id="categories.blog.lists.relatedPosts">
       <segment>
         <source>Related Posts</source>
+        <target>Ähnliche Beiträge</target>
       </segment>
     </unit>
     <unit id="categories.blog.lists.latestPosts">
       <segment>
         <source>Latest Posts</source>
+        <target>Neueste Beiträge</target>
       </segment>
     </unit>
     <unit id="categories.blog.widgets">
       <segment>
         <source>Widgets</source>
+        <target>Widgets</target>
       </segment>
     </unit>
     <unit id="categories.blog.widgets.comments">
       <segment>
         <source>Comment</source>
+        <target>Kommentar</target>
       </segment>
     </unit>
     <unit id="categories.blog.widgets.recent_posts">
       <segment>
         <source>Recent posts</source>
+        <target>Neueste Beiträge</target>
       </segment>
     </unit>
     <unit id="categories.blog.widgets.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="categories.blog.widgets.archive">
       <segment>
         <source>Archive</source>
+        <target>Archiv</target>
       </segment>
     </unit>
     <unit id="categories.blog.comments">
       <segment>
         <source>Comments</source>
+        <target>Kommentare</target>
       </segment>
     </unit>
     <unit id="categories.blog.comments.disqus">
       <segment>
         <source>Disqus</source>
+        <target>Disqus</target>
       </segment>
     </unit>
     <unit id="categories.blog.comments.googleRecaptcha">
       <segment>
         <source>Google Recaptcha</source>
+        <target>Google reCAPTCHA</target>
       </segment>
     </unit>
     <unit id="categories.blog.authors">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="categories.blog.notifications">
       <segment>
         <source>Notifications</source>
+        <target>Benachrichtigungen</target>
       </segment>
     </unit>
     <unit id="categories.blog_post">
       <segment>
         <source>TYPO3 Blog: Post</source>
+        <target>TYPO3 Blog: Beitrag</target>
       </segment>
     </unit>
     <unit id="categories.blog_post.featuredimage">
       <segment>
         <source>Featured Image</source>
+        <target>Beitragsbild</target>
       </segment>
     </unit>
     <unit id="categories.blog_post.header">
       <segment>
         <source>Post Header</source>
+        <target>Beitragskopfbereich</target>
       </segment>
     </unit>
     <unit id="categories.blog_post.footer">
       <segment>
         <source>Post Footer</source>
+        <target>Beitragsfußbereich</target>
       </segment>
     </unit>
     <unit id="categories.blog_list">
       <segment>
         <source>TYPO3 Blog: List</source>
+        <target>TYPO3 Blog: Liste</target>
       </segment>
     </unit>
     <unit id="categories.blog_list.featuredimage">
       <segment>
         <source>Featured Image</source>
+        <target>Beitragsbild</target>
       </segment>
     </unit>
     <unit id="categories.blog_list.elementHeader">
       <segment>
         <source>Element Header</source>
+        <target>Elementkopfbereich</target>
       </segment>
     </unit>
     <unit id="categories.blog_list.elementFooter">
       <segment>
         <source>Element Footer</source>
+        <target>Elementfußbereich</target>
       </segment>
     </unit>
     <unit id="categories.blog_teaser">
       <segment>
         <source>TYPO3 Blog: Teaser</source>
+        <target>TYPO3 Blog: Teaser</target>
       </segment>
     </unit>
     <unit id="categories.blog_teaser.element.header">
       <segment>
         <source>Element Header</source>
+        <target>Elementkopfbereich</target>
       </segment>
     </unit>
     <unit id="categories.blog_teaser.element.footer">
       <segment>
         <source>Element Footer</source>
+        <target>Elementfußbereich</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.templateRootPath">
       <segment>
         <source>Template Root Path</source>
+        <target>Template-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.templateRootPath">
       <segment>
         <source>Path to template folder</source>
+        <target>Pfad zum Template-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.partialRootPath">
       <segment>
         <source>Partial Root Path</source>
+        <target>Partial-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.partialRootPath">
       <segment>
         <source>Path to partial folder</source>
+        <target>Pfad zum Partial-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.layoutRootPath">
       <segment>
         <source>Layout Root Path</source>
+        <target>Layout-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.layoutRootPath">
       <segment>
         <source>Path to layout folder</source>
+        <target>Pfad zum Layout-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.emails.templateRootPath">
       <segment>
         <source>Email-Template Root Path</source>
+        <target>E-Mail-Template-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.emails.templateRootPath">
       <segment>
         <source>Path to template folder</source>
+        <target>Pfad zum Template-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.emails.partialRootPath">
       <segment>
         <source>Email-Partial Root Path</source>
+        <target>E-Mail-Partial-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.emails.partialRootPath">
       <segment>
         <source>Path to partial folder</source>
+        <target>Pfad zum Partial-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.view.emails.layoutRootPath">
       <segment>
         <source>Email-Layout Root Path</source>
+        <target>E-Mail-Layout-Root-Pfad</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.view.emails.layoutRootPath">
       <segment>
         <source>Path to layout folder</source>
+        <target>Pfad zum Layout-Ordner</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.blogUid">
       <segment>
         <source>List posts UID</source>
+        <target>UID der Beitragsliste</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.blogUid">
       <segment>
         <source>Location of the "Blog: List of posts" plugin. This page UID is the root page for the blog. All blog post pages are located below this page.</source>
+        <target>Position des Plugins "Blog: Beitragsliste". Diese Seiten-UID ist die Root-Seite des Blogs. Alle Blogbeitragsseiten liegen darunter.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.authorUid">
       <segment>
         <source>Author UID</source>
+        <target>Autoren-UID</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.authorUid">
       <segment>
         <source>Location of the "Blog: Author" plugin. Shows posts by author.</source>
+        <target>Position des Plugins "Blog: Autor". Zeigt Beiträge nach Autor.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.categoryUid">
       <segment>
         <source>List by category UID</source>
+        <target>UID der Kategorienliste</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.categoryUid">
       <segment>
         <source>Location of the "Blog: List by category" plugin. Shows all posts from one category.</source>
+        <target>Position des Plugins "Blog: Liste nach Kategorie". Zeigt alle Beiträge einer Kategorie.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.tagUid">
       <segment>
         <source>List by tags UID</source>
+        <target>UID der Schlagwortliste</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.tagUid">
       <segment>
         <source>Location of the "Blog: List by tags" plugin. Shows all posts from one tag.</source>
+        <target>Position des Plugins "Blog: Liste nach Schlagwörtern". Zeigt alle Beiträge eines Schlagworts.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.archiveUid">
       <segment>
         <source>Archive UID</source>
+        <target>Archiv-UID</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.archiveUid">
       <segment>
         <source>Location of the "Blog: Archive" plugin. Shows archived posts.</source>
+        <target>Position des Plugins "Blog: Archiv". Zeigt archivierte Beiträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.storagePid">
       <segment>
         <source>Storage folder</source>
+        <target>Ablageordner</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.storagePid">
       <segment>
         <source>Storage folder of all categories and tags for this blog.</source>
+        <target>Ablageordner für alle Kategorien und Schlagwörter dieses Blogs.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.post.featuredImage.width">
       <segment>
         <source>Width</source>
+        <target>Breite</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.post.featuredImage.height">
       <segment>
         <source>Height</source>
+        <target>Höhe</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.enable">
       <segment>
         <source>Display meta information in the header</source>
+        <target>Metainformationen im Kopfbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.postheader.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.published.format">
       <segment>
         <source>Published date format.</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postheader.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.enable">
       <segment>
         <source>Display meta information in the footer</source>
+        <target>Metainformationen im Fußbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.postfooter.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.published.format">
       <segment>
         <source>Published date format.</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.postfooter.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.featuredImage.width">
       <segment>
         <source>Width</source>
+        <target>Breite</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.featuredImage.height">
       <segment>
         <source>Height</source>
+        <target>Höhe</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.enable">
       <segment>
         <source>Display meta information in the header</source>
+        <target>Metainformationen im Kopfbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.listheader.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.published.format">
       <segment>
         <source>Published date format.</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listheader.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.enable">
       <segment>
         <source>Display meta information in the footer</source>
+        <target>Metainformationen im Fußbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.listfooter.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.published.format">
       <segment>
         <source>Published date format.</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.listfooter.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.enable">
       <segment>
         <source>Display meta information in the header</source>
+        <target>Metainformationen im Kopfbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.teaserheader.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.published.format">
       <segment>
         <source>Published date format</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserheader.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.enable">
       <segment>
         <source>Display meta information in the header</source>
+        <target>Metainformationen im Kopfbereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.modifier">
       <segment>
         <source>Meta information display style</source>
+        <target>Darstellungsstil der Metainformationen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.modifier.condensed">
       <segment>
         <source>Condensed</source>
+        <target>Kompakt</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.modifier.extended">
       <segment>
         <source>Extended</source>
+        <target>Erweitert</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.modifier.simple">
       <segment>
         <source>Simple</source>
+        <target>Einfach</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.modifier.modern">
       <segment>
         <source>Modern</source>
+        <target>Modern</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.authors.enable">
       <segment>
         <source>Show authors in the meta section</source>
+        <target>Autoren im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.authors.avatar.enable">
       <segment>
         <source>Enable author avatars in the meta section</source>
+        <target>Autoren-Avatare im Metabereich aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.authors.avatar.size">
       <segment>
         <source>Size of the author avatars</source>
+        <target>Größe der Autoren-Avatare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.meta.teaserfooter.elements.authors.avatar.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.categories.enable">
       <segment>
         <source>Show categories in the meta section</source>
+        <target>Kategorien im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.tags.enable">
       <segment>
         <source>Show tags in the meta section</source>
+        <target>Schlagwörter im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.published.enable">
       <segment>
         <source>Show the publish date in the meta section</source>
+        <target>Veröffentlichungsdatum im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.published.format">
       <segment>
         <source>Published date format.</source>
+        <target>Format des Veröffentlichungsdatums</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.meta.teaserfooter.elements.comments.enable">
       <segment>
         <source>Show comments in the meta section</source>
+        <target>Kommentare im Metabereich anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.posts.maximumDisplayedItems">
       <segment>
         <source>Maximum displayed items</source>
+        <target>Maximal angezeigte Einträge</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.lists.posts.maximumDisplayedItems">
       <segment>
         <source>Maximum number of posts to be displayed (0 = no limit).</source>
+        <target>Maximale Anzahl anzuzeigender Beiträge (0 = kein Limit).</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.posts.dateFormat">
       <segment>
         <source>Date format</source>
+        <target>Datumsformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.lists.posts.dateFormat">
       <segment>
         <source>The format for the list items.</source>
+        <target>Das Format für Listeneinträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.pagination.itemsPerPage">
       <segment>
         <source>Number of post that should be displayed per page</source>
+        <target>Anzahl der Beiträge pro Seite</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.pagination.insertAbove">
       <segment>
         <source>Show the pagination above the posts</source>
+        <target>Seitennummerierung über den Beiträgen anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.pagination.insertBelow">
       <segment>
         <source>Show the pagination below the posts</source>
+        <target>Seitennummerierung unter den Beiträgen anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.lists.pagination.maximumNumberOfLinks">
       <segment>
         <source>Maximum number of links in the pagination</source>
+        <target>Maximale Anzahl der Links in der Seitennummerierung</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.teaser.featuredImage.width">
       <segment>
         <source>Width</source>
+        <target>Breite</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.teaser.featuredImage.height">
       <segment>
         <source>Height</source>
+        <target>Höhe</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.archive.showCounter">
       <segment>
         <source>Show counter</source>
+        <target>Zähler anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.archive.showCounter">
       <segment>
         <source>If enabled, the count of posts is visible.</source>
+        <target>Wenn aktiviert, ist die Anzahl der Beiträge sichtbar.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.archive.yearDateFormat">
       <segment>
         <source>Year format</source>
+        <target>Jahresformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.archive.yearDateFormat">
       <segment>
         <source>The format of the year.</source>
+        <target>Das Format des Jahres.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.archive.monthDateFormat">
       <segment>
         <source>Month format</source>
+        <target>Monatsformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.archive.monthDateFormat">
       <segment>
         <source>The format of the month.</source>
+        <target>Das Format des Monats.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.relatedPosts.limit">
       <segment>
         <source>Limit</source>
+        <target>Limit</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.relatedPosts.limit">
       <segment>
         <source>The limit of displayed items.</source>
+        <target>Das Limit der angezeigten Einträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.relatedPosts.categoryMultiplier">
       <segment>
         <source>Category Multiplier</source>
+        <target>Kategorien-Multiplikator</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.relatedPosts.categoryMultiplier">
       <segment>
         <source>The multiplier for categories.</source>
+        <target>Der Multiplikator für Kategorien.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.relatedPosts.tagMultiplier">
       <segment>
         <source>Tag Multiplier</source>
+        <target>Schlagwort-Multiplikator</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.relatedPosts.tagMultiplier">
       <segment>
         <source>The multiplier for tags.</source>
+        <target>Der Multiplikator für Schlagwörter.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.latestPosts.limit">
       <segment>
         <source>Limit</source>
+        <target>Limit</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.latestPosts.limit">
       <segment>
         <source>The limit of displayed items.</source>
+        <target>Das Limit der angezeigten Einträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.comments.limit">
       <segment>
         <source>Limit</source>
+        <target>Limit</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.comments.limit">
       <segment>
         <source>The limit of displayed items.</source>
+        <target>Das Limit der angezeigten Einträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.recentposts.limit">
       <segment>
         <source>Limit</source>
+        <target>Limit</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.recentposts.limit">
       <segment>
         <source>The limit of displayed items.</source>
+        <target>Das Limit der angezeigten Einträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.tags.limit">
       <segment>
         <source>Limit</source>
+        <target>Limit</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.tags.limit">
       <segment>
         <source>The limit of displayed items.</source>
+        <target>Das Limit der angezeigten Einträge.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.minSize.limit">
       <segment>
         <source>Minimum size</source>
+        <target>Minimale Größe</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.minSize.limit">
       <segment>
         <source>The minimum size of the font.</source>
+        <target>Die minimale Schriftgröße.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.maxSize.limit">
       <segment>
         <source>Maximum size</source>
+        <target>Maximale Größe</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.maxSize.limit">
       <segment>
         <source>The maximum size of the font.</source>
+        <target>Die maximale Schriftgröße.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.archive.showCounter">
       <segment>
         <source>Show counter</source>
+        <target>Zähler anzeigen</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.archive.showCounter">
       <segment>
         <source>If enabled, the count of posts is visible.</source>
+        <target>Wenn aktiviert, ist die Anzahl der Beiträge sichtbar.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.archive.groupByYear">
       <segment>
         <source>Group by year</source>
+        <target>Nach Jahr gruppieren</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.archive.groupByYear">
       <segment>
         <source>If enabled, the posts are grouped by year.</source>
+        <target>Wenn aktiviert, werden Beiträge nach Jahr gruppiert.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.archive.groupByMonth">
       <segment>
         <source>Group by month</source>
+        <target>Nach Monat gruppieren</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.archive.groupByMonth">
       <segment>
         <source>If enabled, the posts are grouped by year and month.</source>
+        <target>Wenn aktiviert, werden Beiträge nach Jahr und Monat gruppiert.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.archive.yearDateFormat">
       <segment>
         <source>Year format</source>
+        <target>Jahresformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.archive.yearDateFormat">
       <segment>
         <source>The format of the year.</source>
+        <target>Das Format des Jahres.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.widgets.archive.monthDateFormat">
       <segment>
         <source>Month format</source>
+        <target>Monatsformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.widgets.archive.monthDateFormat">
       <segment>
         <source>The format of the month.</source>
+        <target>Das Format des Monats.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.active">
       <segment>
         <source>Enable Comments</source>
+        <target>Kommentare aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.active">
       <segment>
         <source>Activate comments as a general feature</source>
+        <target>Kommentare als allgemeine Funktion aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.features.urls">
       <segment>
         <source>Enable Urls</source>
+        <target>URLs aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.features.urls">
       <segment>
         <source>Activate the url field in the comment form and output the submitted url</source>
+        <target>Aktiviert das URL-Feld im Kommentarformular und gibt die übermittelte URL aus</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.moderation">
       <segment>
         <source>Comments moderation mode</source>
+        <target>Moderationsmodus für Kommentare</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.moderation">
@@ -998,11 +1196,17 @@
 - 1: moderation active
 - 2: reserved legacy mode, currently handled like moderation active
                 </source>
+        <target>
+- 0: keine Moderation
+- 1: Moderation aktiv
+- 2: reservierter Legacy-Modus, aktuell wie aktive Moderation behandelt
+                </target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.respectPostLanguageId">
       <segment>
         <source>Respect post_language_id</source>
+        <target>post_language_id berücksichtigen</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.respectPostLanguageId">
@@ -1011,81 +1215,100 @@
 - 0: show all comments also on translated posts
 - 1: show only comments written in current language or language all (-1)
                 </source>
+        <target>
+- 0: alle Kommentare auch bei übersetzten Beiträgen anzeigen
+- 1: nur Kommentare der aktuellen Sprache oder Sprache Alle (-1) anzeigen
+                </target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.date.format">
       <segment>
         <source>Date format</source>
+        <target>Datumsformat</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.date.format">
       <segment>
         <source>The format for the comments.</source>
+        <target>Das Format für Kommentare.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.disqus.enable">
       <segment>
         <source>Enable Disqus</source>
+        <target>Disqus aktivieren</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.disqus.enable">
       <segment>
         <source>Use disqus instead of internal comments?</source>
+        <target>Disqus statt interner Kommentare verwenden?</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.disqus.shortname">
       <segment>
         <source>Disqus shortname</source>
+        <target>Disqus-Shortname</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.disqus.shortname">
       <segment>
         <source>The shortname / forum id of your disqus setup.</source>
+        <target>Der Shortname / die Forum-ID Ihres Disqus-Setups.</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.google_recaptcha.enable">
       <segment>
         <source>Google Recaptcha v2</source>
+        <target>Google Recaptcha v2</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.comments.google_recaptcha.enable">
       <segment>
         <source>Enable google recaptcha for comments?</source>
+        <target>Google reCAPTCHA für Kommentare aktivieren?</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.google_recaptcha.website_key">
       <segment>
         <source>Google Recaptcha Website-Key</source>
+        <target>Google reCAPTCHA Website-Key</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.comments.google_recaptcha.secret_key">
       <segment>
         <source>Google Recaptcha Secret-Key</source>
+        <target>Google reCAPTCHA Secret-Key</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.authors.avatar.provider.size">
       <segment>
         <source>Author Avatar Size</source>
+        <target>Autoren-Avatar-Größe</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.authors.avatar.provider.size">
       <segment>
         <source>The size in px for the author avatar</source>
+        <target>Größe des Autoren-Avatars in px</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.authors.avatar.provider.default">
       <segment>
         <source>Author Avatar Default</source>
+        <target>Standard-Autoren-Avatar</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.authors.avatar.provider.default">
       <segment>
         <source>The default image for an author avatar</source>
+        <target>Das Standardbild für einen Autoren-Avatar</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.authors.avatar.provider.rating">
       <segment>
         <source>Define the gravatar rating for images</source>
+        <target>Legt die Gravatar-Altersfreigabe für Bilder fest</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.authors.avatar.provider.rating">
@@ -1096,56 +1319,72 @@
 - r: contain such things as harsh profanity, intense violence, nudity, or hard drug use
 - x: may contain hardcore sexual imagery or extremely disturbing violence.The default image for an author avatar
                 </source>
+        <target>
+- g: geeignet für Websites mit jedem Publikum
+- pg: kann unhofliche Gesten, provokativ gekleidete Personen, mildere Schimpfworter oder leichte Gewalt enthälten
+- r: kann harte Schimpfworter, intensive Gewalt, Nacktheit oder Drogenkonsum enthälten
+- x: kann explizite sexuelle Bilder oder extrem verstorende Gewalt enthälten.
+                </target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.notifications.email.senderName">
       <segment>
         <source>Sender name</source>
+        <target>Absendername</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.notifications.email.senderName">
       <segment>
         <source>Global sender name for notifications</source>
+        <target>Globaler Absendername für Benachrichtigungen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.notifications.email.senderMail">
       <segment>
         <source>Sender mail</source>
+        <target>Absender-E-Mail</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.notifications.email.senderMail">
       <segment>
         <source>Global sender email address for notifications</source>
+        <target>Globale Absender-E-Mail-Adresse für Benachrichtigungen</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable">
       <segment>
         <source>Author notifications</source>
+        <target>Autorenbenachrichtigungen</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.notifications.CommentAddedNotification.author.enable">
       <segment>
         <source>Send notification to author of a blog post</source>
+        <target>Benachrichtigung an den Autor eines Blogbeitrags senden</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.enable">
       <segment>
         <source>Admin notifications</source>
+        <target>Administratorbenachrichtigungen</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.enable">
       <segment>
         <source>Send notification to admin of the blog</source>
+        <target>Benachrichtigung an den Administrator des Blogs senden</target>
       </segment>
     </unit>
     <unit id="settings.plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email">
       <segment>
         <source>Admin mail</source>
+        <target>Administrator-E-Mail</target>
       </segment>
     </unit>
     <unit id="settings.description.plugin.tx_blog.settings.notifications.CommentAddedNotification.admin.email">
       <segment>
         <source>Global admin (receiver) email address for notifications</source>
+        <target>Globale Administrator-E-Mail-Adresse (Empfänger) für Benachrichtigungen</target>
       </segment>
     </unit>
   </file>

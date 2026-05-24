@@ -1,959 +1,1150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="EXT:blog/Resources/Private/Language/locallang.xlf">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="de">
+  <file id="f1" original="Resources/Private/Language/locallang.xlf">
     <unit id="general.message.configuration_error.title">
       <segment>
         <source>A possible configuration error was detected.</source>
+        <target>Ein möglicher Konfigurationsfehler wurde erkannt.</target>
       </segment>
     </unit>
     <unit id="general.message.configuration_error.single_no_post">
       <segment>
         <source>No matching post could be obtained. Make sure that this plugin is only used on a post.</source>
+        <target>Es konnte kein passender Beitrag ermittelt werden. Stellen Sie sicher, dass dieses Plugin nur auf einer Beitragsseite verwendet wird.</target>
       </segment>
     </unit>
     <unit id="headline.commentform">
       <segment>
         <source>Write comment</source>
+        <target>Kommentar schreiben</target>
       </segment>
     </unit>
     <unit id="headline.comments">
       <segment>
         <source>Comments</source>
+        <target>Kommentare</target>
       </segment>
     </unit>
     <unit id="headline.category">
       <segment>
         <source>Posts of category: %s</source>
+        <target>Beiträge der Kategorie: %s</target>
       </segment>
     </unit>
     <unit id="headline.category.simple">
       <segment>
         <source>Category</source>
+        <target>Kategorie</target>
       </segment>
     </unit>
     <unit id="headline.categories">
       <segment>
         <source>Categories</source>
+        <target>Kategorien</target>
       </segment>
     </unit>
     <unit id="headline.archive">
       <segment>
         <source>Archive</source>
+        <target>Archiv</target>
       </segment>
     </unit>
     <unit id="headline.recentcomments">
       <segment>
         <source>Recent comments</source>
+        <target>Neueste Kommentare</target>
       </segment>
     </unit>
     <unit id="headline.recentposts">
       <segment>
         <source>Recent posts</source>
+        <target>Neueste Beiträge</target>
       </segment>
     </unit>
     <unit id="headline.author">
       <segment>
         <source>Posts by %s</source>
+        <target>Beiträge von %s</target>
       </segment>
     </unit>
     <unit id="headline.author.simple">
       <segment>
         <source>Author</source>
+        <target>Autor</target>
       </segment>
     </unit>
     <unit id="headline.authors">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="headline.tag">
       <segment>
         <source>Posts tagged with %s</source>
+        <target>Beiträge mit dem Schlagwort %s</target>
       </segment>
     </unit>
     <unit id="headline.tag.simple">
       <segment>
         <source>Tag</source>
+        <target>Schlagwort</target>
       </segment>
     </unit>
     <unit id="headline.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="headline.rssfeed">
       <segment>
         <source>RSS-Feeds</source>
+        <target>RSS-Feeds</target>
       </segment>
     </unit>
     <unit id="form.comment.name">
       <segment>
         <source>Name</source>
+        <target>Name</target>
       </segment>
     </unit>
     <unit id="form.comment.email">
       <segment>
         <source>E-Mail</source>
+        <target>E-Mail</target>
       </segment>
     </unit>
     <unit id="form.comment.url">
       <segment>
         <source>URL</source>
+        <target>URL</target>
       </segment>
     </unit>
     <unit id="form.comment.comment">
       <segment>
         <source>Comment</source>
+        <target>Kommentar</target>
       </segment>
     </unit>
     <unit id="form.comment.submit">
       <segment>
         <source>Submit</source>
+        <target>Absenden</target>
       </segment>
     </unit>
     <unit id="message.no_comments">
       <segment>
         <source>No Comments</source>
+        <target>Keine Kommentare</target>
       </segment>
     </unit>
     <unit id="message.comment">
       <segment>
         <source>%s Comment</source>
+        <target>%s Kommentar</target>
       </segment>
     </unit>
     <unit id="message.comments">
       <segment>
         <source>%s Comments</source>
+        <target>%s Kommentare</target>
       </segment>
     </unit>
     <unit id="message.comments_closed">
       <segment>
         <source>Comments closed</source>
+        <target>Kommentare geschlossen</target>
       </segment>
     </unit>
     <unit id="comments.disqus.noscript.prefix">
       <segment>
         <source>Please enable JavaScript to view the</source>
+        <target>Bitte aktivieren Sie JavaScript, um die</target>
       </segment>
     </unit>
     <unit id="comments.disqus.noscript.link">
       <segment>
         <source>comments powered by Disqus.</source>
+        <target>von Disqus bereitgestellten Kommentare anzuzeigen.</target>
       </segment>
     </unit>
     <unit id="message.addComment.error.title">
       <segment>
         <source>Comments not active</source>
+        <target>Kommentare sind nicht aktiv</target>
       </segment>
     </unit>
     <unit id="message.addComment.error.text">
       <segment>
         <source>The comment function is disabled.</source>
+        <target>Die Kommentarfunktion ist deaktiviert.</target>
       </segment>
     </unit>
     <unit id="message.addComment.success.title">
       <segment>
         <source>Comment added</source>
+        <target>Kommentar hinzugefügt</target>
       </segment>
     </unit>
     <unit id="message.addComment.success.text">
       <segment>
         <source>Your comment was added successfully.</source>
+        <target>Ihr Kommentar wurde erfolgreich hinzugefügt.</target>
       </segment>
     </unit>
     <unit id="message.addComment.moderation.title">
       <segment>
         <source>Comment added</source>
+        <target>Kommentar hinzugefügt</target>
       </segment>
     </unit>
     <unit id="message.addComment.moderation.text">
       <segment>
         <source>Your comment was added successfully and is now waiting for approval.</source>
+        <target>Ihr Kommentar wurde erfolgreich hinzugefügt und wartet jetzt auf Freigabe.</target>
       </segment>
     </unit>
     <unit id="link.skip_to_content">
       <segment>
         <source>Skip to content</source>
+        <target>Zum Inhalt springen</target>
       </segment>
     </unit>
     <unit id="navigation.main">
       <segment>
         <source>Main navigation</source>
+        <target>Hauptnavigation</target>
       </segment>
     </unit>
     <unit id="navigation.languages">
       <segment>
         <source>Language navigation</source>
+        <target>Sprachnavigation</target>
       </segment>
     </unit>
     <unit id="navigation.toggle">
       <segment>
         <source>Toggle navigation</source>
+        <target>Navigation umschalten</target>
       </segment>
     </unit>
     <unit id="meta.authors.author">
       <segment>
         <source>Author</source>
+        <target>Autor</target>
       </segment>
     </unit>
     <unit id="meta.authors.authors">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="meta.categories.category">
       <segment>
         <source>Category</source>
+        <target>Kategorie</target>
       </segment>
     </unit>
     <unit id="meta.categories.categories">
       <segment>
         <source>Categories</source>
+        <target>Kategorien</target>
       </segment>
     </unit>
     <unit id="meta.tags.tag">
       <segment>
         <source>Tag</source>
+        <target>Schlagwort</target>
       </segment>
     </unit>
     <unit id="meta.tags.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="meta.published.published">
       <segment>
         <source>Published</source>
+        <target>Veröffentlicht</target>
       </segment>
     </unit>
     <unit id="meta.comments.comments">
       <segment>
         <source>Comments</source>
+        <target>Kommentare</target>
       </segment>
     </unit>
     <unit id="meta.comments.has_comment">
       <segment>
         <source>%s Comment</source>
+        <target>%s Kommentar</target>
       </segment>
     </unit>
     <unit id="meta.comments.has_comments">
       <segment>
         <source>%s Comments</source>
+        <target>%s Kommentare</target>
       </segment>
     </unit>
     <unit id="meta.comments.start_conversation">
       <segment>
         <source>Start the Conversation</source>
+        <target>Diskussion starten</target>
       </segment>
     </unit>
     <unit id="meta.comments.join_conversation">
       <segment>
         <source>Join the Conversation</source>
+        <target>An der Diskussion teilnehmen</target>
       </segment>
     </unit>
     <unit id="meta.comments.view_conversation">
       <segment>
         <source>View the Conversation</source>
+        <target>Diskussion ansehen</target>
       </segment>
     </unit>
     <unit id="meta.title.listPostsByDate">
       <segment>
         <source>All blog posts in ###MONTH_NAME### ###YEAR###</source>
+        <target>Alle Blogbeiträge im ###MONTH_NAME### ###YEAR###</target>
       </segment>
     </unit>
     <unit id="meta.description.listPostsByDate">
       <segment>
         <source>All blog posts ordered by date</source>
+        <target>Alle Blogbeiträge nach Datum sortiert</target>
       </segment>
     </unit>
     <unit id="author.aboutTheAuthor">
       <segment>
         <source>About the Author</source>
+        <target>Über den Autor</target>
       </segment>
     </unit>
     <unit id="author.social.website">
       <segment>
         <source>Website</source>
+        <target>Website</target>
       </segment>
     </unit>
     <unit id="author.social.twitter">
       <segment>
         <source>Twitter</source>
+        <target>Twitter</target>
       </segment>
     </unit>
     <unit id="author.social.instagram">
       <segment>
         <source>Instagram</source>
+        <target>Instagram</target>
       </segment>
     </unit>
     <unit id="author.social.linkedin">
       <segment>
         <source>LinkedIn</source>
+        <target>LinkedIn</target>
       </segment>
     </unit>
     <unit id="author.social.xing">
       <segment>
         <source>Xing</source>
+        <target>Xing</target>
       </segment>
     </unit>
     <unit id="author.more.posts">
       <segment>
         <source>More posts by this author</source>
+        <target>Weitere Beiträge dieses Autors</target>
       </segment>
     </unit>
     <unit id="list.no_posts.title">
       <segment>
         <source>No blog posts</source>
+        <target>Keine Blogbeiträge</target>
       </segment>
     </unit>
     <unit id="list.no_posts.message">
       <segment>
         <source>This list contains no blog posts.</source>
+        <target>Diese Liste enthält keine Blogbeiträge.</target>
       </segment>
     </unit>
     <unit id="list.backlink.authors">
       <segment>
         <source>Back to Authors</source>
+        <target>Zurück zu den Autoren</target>
       </segment>
     </unit>
     <unit id="list.show.author">
       <segment>
         <source>Show Author</source>
+        <target>Autor anzeigen</target>
       </segment>
     </unit>
     <unit id="list.backlink.categories">
       <segment>
         <source>Back to Categories</source>
+        <target>Zurück zu den Kategorien</target>
       </segment>
     </unit>
     <unit id="list.show.category">
       <segment>
         <source>Show Category</source>
+        <target>Kategorie anzeigen</target>
       </segment>
     </unit>
     <unit id="list.backlink.tags">
       <segment>
         <source>Back to Tags</source>
+        <target>Zurück zu den Schlagwörtern</target>
       </segment>
     </unit>
     <unit id="list.show.tag">
       <segment>
         <source>Show Tag</source>
+        <target>Schlagwort anzeigen</target>
       </segment>
     </unit>
     <unit id="list.backlink.archive">
       <segment>
         <source>Back to Archive</source>
+        <target>Zurück zum Archiv</target>
       </segment>
     </unit>
     <unit id="list.show.archive">
       <segment>
         <source>Show Archive</source>
+        <target>Archiv anzeigen</target>
       </segment>
     </unit>
     <unit id="backend.headline.setup_wizard">
       <segment>
         <source>Setup wizard</source>
+        <target>Einrichtungsassistent</target>
       </segment>
     </unit>
     <unit id="backend.headline.posts">
       <segment>
         <source>Posts</source>
+        <target>Beiträge</target>
       </segment>
     </unit>
     <unit id="backend.headline.comments">
       <segment>
         <source>Comments</source>
+        <target>Kommentare</target>
       </segment>
     </unit>
     <unit id="backend.lead.blogs">
       <segment>
         <source>It looks like you have the following blog setups</source>
+        <target>Die folgenden Blog-Setups sind vorhanden</target>
       </segment>
     </unit>
     <unit id="backend.message.noblogs">
       <segment>
         <source>It looks like no blog setup exists in this instance.</source>
+        <target>In dieser Instanz ist kein Blog-Setup vorhanden.</target>
       </segment>
     </unit>
     <unit id="backend.lead.posts">
       <segment>
         <source>The following table shows all the blog posts available in this installation. Use the filters and search to refine the results.</source>
+        <target>Die folgende Tabelle zeigt alle Blogbeiträge dieser Installation. Verwenden Sie Filter und Suche, um die Ergebnisse einzugrenzen.</target>
       </segment>
     </unit>
     <unit id="backend.message.noposts">
       <segment>
         <source>No blog posts are available in this installation.</source>
+        <target>In dieser Installation sind keine Blogbeiträge vorhanden.</target>
       </segment>
     </unit>
     <unit id="backend.message.nopost">
       <segment>
         <source>Post not available</source>
+        <target>Beitrag nicht verfügbar</target>
       </segment>
     </unit>
     <unit id="backend.lead.comments">
       <segment>
         <source>The following table shows blog comments available in this installation. Use the filters and search to refine the results.</source>
+        <target>Die folgende Tabelle zeigt die Blogkommentare dieser Installation. Verwenden Sie Filter und Suche, um die Ergebnisse einzugrenzen.</target>
       </segment>
     </unit>
     <unit id="backend.message.nocomments">
       <segment>
         <source>No blog comments are available in this view.</source>
+        <target>In dieser Ansicht sind keine Blogkommentare vorhanden.</target>
       </segment>
     </unit>
     <unit id="backend.warning">
       <segment>
         <source>Warning</source>
+        <target>Warnung</target>
       </segment>
     </unit>
     <unit id="backend.social_image.preview">
       <segment>
         <source>Social image preview</source>
+        <target>Vorschau für Social-Media-Bild</target>
       </segment>
     </unit>
     <unit id="backend.url_setup.title">
       <segment>
         <source>URL setup</source>
+        <target>URL-Einrichtung</target>
       </segment>
     </unit>
     <unit id="backend.url_setup.description">
       <segment>
         <source>The extension provides a frontend route enhancer configuration that you can include in your site configuration.</source>
+        <target>Die Extension stellt eine Frontend-Route-Enhancer-Konfiguration bereit, die Sie in Ihre Site-Konfiguration einbinden können.</target>
       </segment>
     </unit>
     <unit id="backend.social_image.placeholder.title">
       <segment>
         <source>Type here...</source>
+        <target>Hier eingeben...</target>
       </segment>
     </unit>
     <unit id="backend.social_image.channel.facebook">
       <segment>
         <source>Facebook / X</source>
+        <target>Facebook / X</target>
       </segment>
     </unit>
     <unit id="backend.social_image.channel.linkedin">
       <segment>
         <source>LinkedIn</source>
+        <target>LinkedIn</target>
       </segment>
     </unit>
     <unit id="backend.social_image.font_size">
       <segment>
         <source>Font size</source>
+        <target>Schriftgröße</target>
       </segment>
     </unit>
     <unit id="backend.social_image.image_scale">
       <segment>
         <source>Image scale</source>
+        <target>Bildskalierung</target>
       </segment>
     </unit>
     <unit id="backend.social_image.download">
       <segment>
         <source>Download</source>
+        <target>Herunterladen</target>
       </segment>
     </unit>
     <unit id="backend.social_image.save_in_record">
       <segment>
         <source>Save in record</source>
+        <target>Im Datensatz speichern</target>
       </segment>
     </unit>
     <unit id="backend.social_image.saved">
       <segment>
         <source>Image has been saved</source>
+        <target>Bild wurde gespeichert</target>
       </segment>
     </unit>
     <unit id="backend.social_image.connect_question">
       <segment>
         <source>Should the image be connected to a field in this record?</source>
+        <target>Soll das Bild mit einem Feld in diesem Datensatz verbunden werden?</target>
       </segment>
     </unit>
     <unit id="backend.social_image.choose_field">
       <segment>
         <source>Choose one of the following fields.</source>
+        <target>Wählen Sie eines der folgenden Felder.</target>
       </segment>
     </unit>
     <unit id="backend.social_image.field_has_images">
       <segment>
         <source>The selected field already contains images</source>
+        <target>Das ausgewählte Feld enthält Bilder</target>
       </segment>
     </unit>
     <unit id="backend.social_image.choose_option">
       <segment>
         <source>Choose one option.</source>
+        <target>Bitte wählen Sie eine Option</target>
       </segment>
     </unit>
     <unit id="backend.social_image.connected">
       <segment>
         <source>Image has been connected</source>
+        <target>Bild wurde verbunden</target>
       </segment>
     </unit>
     <unit id="flash.comment.permission_denied.message">
       <segment>
         <source>One or more comments were skipped because you do not have permission to moderate them.</source>
+        <target>Ein oder mehrere Kommentare wurden übersprungen, weil Sie keine Berechtigung zur Moderation haben.</target>
       </segment>
     </unit>
     <unit id="flash.permission_denied.title">
       <segment>
         <source>Permission denied</source>
+        <target>Zugriff verweigert</target>
       </segment>
     </unit>
     <unit id="flash.comment.invalid_status.message">
       <segment>
         <source>The requested comment status change is not supported.</source>
+        <target>Die angeforderte Änderung des Kommentarstatus wird nicht unterstützt.</target>
       </segment>
     </unit>
     <unit id="flash.invalid_action.title">
       <segment>
         <source>Invalid action</source>
+        <target>Ungültige Aktion</target>
       </segment>
     </unit>
     <unit id="flash.setup.permission_denied.message">
       <segment>
         <source>Only administrators may create a blog setup.</source>
+        <target>Nur Administratoren dürfen ein Blog-Setup erstellen.</target>
       </segment>
     </unit>
     <unit id="flash.setup.created.message">
       <segment>
         <source>Your blog setup has been created.</source>
+        <target>Ihr Blog-Setup wurde erstellt.</target>
       </segment>
     </unit>
     <unit id="flash.setup.created.title">
       <segment>
         <source>Blog setup created</source>
+        <target>Blog-Setup erstellt</target>
       </segment>
     </unit>
     <unit id="flash.setup.create_failed.message">
       <segment>
         <source>Your blog setup could not be created.</source>
+        <target>Ihr Blog-Setup konnte nicht erstellt werden.</target>
       </segment>
     </unit>
     <unit id="flash.error.title">
       <segment>
         <source>An error occurred</source>
+        <target>Ein Fehler ist aufgetreten</target>
       </segment>
     </unit>
     <unit id="backend.table.blog">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="backend.table.articles">
       <segment>
         <source>Articles</source>
+        <target>Artikel</target>
       </segment>
     </unit>
     <unit id="backend.table.actions">
       <segment>
         <source>Actions</source>
+        <target>Aktionen</target>
       </segment>
     </unit>
     <unit id="backend.table.title">
       <segment>
         <source>Title</source>
+        <target>Titel</target>
       </segment>
     </unit>
     <unit id="backend.table.author">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="backend.table.categories">
       <segment>
         <source>Categories</source>
+        <target>Kategorien</target>
       </segment>
     </unit>
     <unit id="backend.table.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="backend.table.comment">
       <segment>
         <source>Comment</source>
+        <target>Kommentar</target>
       </segment>
     </unit>
     <unit id="backend.table.post">
       <segment>
         <source>Reply to post</source>
+        <target>Antwort auf Beitrag</target>
       </segment>
     </unit>
     <unit id="backend.table.date">
       <segment>
         <source>Date</source>
+        <target>Datum</target>
       </segment>
     </unit>
     <unit id="backend.table.hidden">
       <segment>
         <source>Hidden</source>
+        <target>Verborgen</target>
       </segment>
     </unit>
     <unit id="backend.table.hidden.yes">
       <segment>
         <source>Yes</source>
+        <target>Ja</target>
       </segment>
     </unit>
     <unit id="backend.table.hidden.no">
       <segment>
         <source>No</source>
+        <target>Nein</target>
       </segment>
     </unit>
     <unit id="backend.comments.filter.all">
       <segment>
         <source>All</source>
+        <target>Alle</target>
       </segment>
     </unit>
     <unit id="backend.comments.filter.pending">
       <segment>
         <source>Pending</source>
+        <target>Ausstehend</target>
       </segment>
     </unit>
     <unit id="backend.comments.filter.approved">
       <segment>
         <source>Approved</source>
+        <target>Freigegeben</target>
       </segment>
     </unit>
     <unit id="backend.comments.filter.declined">
       <segment>
         <source>Declined</source>
+        <target>Abgelehnt</target>
       </segment>
     </unit>
     <unit id="backend.comments.filter.deleted">
       <segment>
         <source>Deleted</source>
+        <target>Gelöscht</target>
       </segment>
     </unit>
     <unit id="wizard.button.trigger">
       <segment>
         <source>Setup a new blog</source>
+        <target>Neues Blog einrichten</target>
       </segment>
     </unit>
     <unit id="wizard.button.cancel">
       <segment>
         <source>Cancel</source>
+        <target>Abbrechen</target>
       </segment>
     </unit>
     <unit id="wizard.button.setup">
       <segment>
         <source>Setup</source>
+        <target>Einrichten</target>
       </segment>
     </unit>
     <unit id="wizard.modal.title">
       <segment>
         <source>Blog setup wizard</source>
+        <target>Blog-Einrichtungsassistent</target>
       </segment>
     </unit>
     <unit id="wizard.lead">
       <segment>
         <source>This wizard will create a blog setup in your page tree.</source>
+        <target>Dieser Assistent erstellt ein Blog-Setup in Ihrem Seitenbaum.</target>
       </segment>
     </unit>
     <unit id="wizard.description">
       <segment>
         <source>After you click the button below, the page tree is created. When the success message appears, reload the page tree if needed.</source>
+        <target>Nachdem Sie auf die Schaltfläche unten geklickt haben, wird der Seitenbaum erstellt. Wenn die Erfolgsmeldung angezeigt wird, laden Sie den Seitenbaum bei Bedarf neu.</target>
       </segment>
     </unit>
     <unit id="wizard.headline.settings">
       <segment>
         <source>Settings</source>
+        <target>Einstellungen</target>
       </segment>
     </unit>
     <unit id="wizard.label.title">
       <segment>
         <source>Title of the blog</source>
+        <target>Titel des Blogs</target>
       </segment>
     </unit>
     <unit id="wizard.placeholder.title">
       <segment>
         <source>The title of your blog</source>
+        <target>Der Titel Ihres Blogs</target>
       </segment>
     </unit>
     <unit id="pagelayout.section.authors">
       <segment>
         <source>Authors</source>
+        <target>Autoren</target>
       </segment>
     </unit>
     <unit id="pagelayout.section.published">
       <segment>
         <source>Published</source>
+        <target>Veröffentlicht</target>
       </segment>
     </unit>
     <unit id="pagelayout.section.categories">
       <segment>
         <source>Categories</source>
+        <target>Kategorien</target>
       </segment>
     </unit>
     <unit id="pagelayout.section.tags">
       <segment>
         <source>Tags</source>
+        <target>Schlagwörter</target>
       </segment>
     </unit>
     <unit id="pagelayout.section.featuredimage">
       <segment>
         <source>Featured Image</source>
+        <target>Beitragsbild</target>
       </segment>
     </unit>
     <unit id="pagelayout.message.noauthor">
       <segment>
         <source>No author assigned.</source>
+        <target>Kein Autor zugewiesen.</target>
       </segment>
     </unit>
     <unit id="pagelayout.message.nofeaturedimage">
       <segment>
         <source>No featured image assigned.</source>
+        <target>Kein Beitragsbild zugewiesen.</target>
       </segment>
     </unit>
     <unit id="pagelayout.message.notabstractordescription">
       <segment>
         <source>No abstract or description is added for this post.</source>
+        <target>Für diesen Beitrag ist kein Abstract oder keine Beschreibung hinterlegt.</target>
       </segment>
     </unit>
     <unit id="pagelayout.button.post.edit">
       <segment>
         <source>Edit post metadata</source>
+        <target>Beitragsmetadaten bearbeiten</target>
       </segment>
     </unit>
     <unit id="extensionconfiguration.disablePageLayoutHeader">
       <segment>
         <source>Disable the page layout header: The page layout header shows additional information about blog posts in the TYPO3 page and list module.</source>
+        <target>Deaktiviert die Kopfzeile im Seitenlayout: Sie zeigt zusätzliche Informationen zu Blogbeiträgen im TYPO3 Seiten- und Listenmodul.</target>
       </segment>
     </unit>
     <unit id="extensionconfiguration.enableGravatarProxy">
       <segment>
         <source>Enables the proxying of gravatar images which means that calls to gravatar.com will be done server side instead of client side.</source>
+        <target>Aktiviert das Proxying von Gravatar-Bildern, sodass Aufrufe an gravatar.com serverseitig statt clientseitig erfolgen.</target>
       </segment>
     </unit>
     <unit id="feed.title.listPostsByCategory">
       <segment>
         <source>Category RSS Feed</source>
+        <target>Kategorie-RSS-Feed</target>
       </segment>
     </unit>
     <unit id="feed.description.listPostsByCategory">
       <segment>
         <source>Posts by category %s</source>
+        <target>Beiträge der Kategorie %s</target>
       </segment>
     </unit>
     <unit id="feed.title.listPostsByAuthor">
       <segment>
         <source>Author RSS Feed</source>
+        <target>Autoren-RSS-Feed</target>
       </segment>
     </unit>
     <unit id="feed.description.listPostsByAuthor">
       <segment>
         <source>Posts by author %s</source>
+        <target>Beiträge von Autor %s</target>
       </segment>
     </unit>
     <unit id="feed.title.listPostsByDate">
       <segment>
         <source>Archive RSS Feed</source>
+        <target>Archiv-RSS-Feed</target>
       </segment>
     </unit>
     <unit id="feed.description.listPostsByDate">
       <segment>
         <source>Posts by date: %s / %s</source>
+        <target>Beiträge nach Datum: %s / %s</target>
       </segment>
     </unit>
     <unit id="feed.title.listPostsByTag">
       <segment>
         <source>Tag RSS Feed</source>
+        <target>Schlagwort-RSS-Feed</target>
       </segment>
     </unit>
     <unit id="feed.description.listPostsByTag">
       <segment>
         <source>Posts by tag: %s</source>
+        <target>Beiträge mit Schlagwort %s</target>
       </segment>
     </unit>
     <unit id="feed.title.listRecentPosts">
       <segment>
         <source>RSS Feed</source>
+        <target>RSS-Feed</target>
       </segment>
     </unit>
     <unit id="feed.description.listRecentPosts">
       <segment>
         <source>Recent posts</source>
+        <target>Neueste Beiträge</target>
       </segment>
     </unit>
     <unit id="label.blog">
       <segment>
         <source>Blog</source>
+        <target>Blog</target>
       </segment>
     </unit>
     <unit id="label.all">
       <segment>
         <source>All</source>
+        <target>Alle</target>
       </segment>
     </unit>
     <unit id="label.choose_blog">
       <segment>
         <source>Choose blog</source>
+        <target>Blog auswählen</target>
       </segment>
     </unit>
     <unit id="label.required.field">
       <segment>
         <source>*</source>
+        <target>*</target>
       </segment>
     </unit>
     <unit id="label.required.field.explanation">
       <segment>
         <source>These fields are required</source>
+        <target>Diese Felder sind Pflichtfelder</target>
       </segment>
     </unit>
     <unit id="action.approve">
       <segment>
         <source>Approve comment</source>
+        <target>Kommentar freigeben</target>
       </segment>
     </unit>
     <unit id="action.decline">
       <segment>
         <source>Decline comment</source>
+        <target>Kommentar ablehnen</target>
       </segment>
     </unit>
     <unit id="action.delete">
       <segment>
         <source>Delete comment</source>
+        <target>Kommentar löschen</target>
       </segment>
     </unit>
     <unit id="action.editComment">
       <segment>
         <source>Edit comment</source>
+        <target>Kommentar bearbeiten</target>
       </segment>
     </unit>
     <unit id="action.back">
       <segment>
         <source>Back</source>
+        <target>Zurück</target>
       </segment>
     </unit>
     <unit id="action.multiple.approve">
       <segment>
         <source>Approve</source>
+        <target>Freigeben</target>
       </segment>
     </unit>
     <unit id="action.multiple.decline">
       <segment>
         <source>Decline</source>
+        <target>Ablehnen</target>
       </segment>
     </unit>
     <unit id="action.multiple.delete">
       <segment>
         <source>Delete</source>
+        <target>Löschen</target>
       </segment>
     </unit>
     <unit id="emails.CommentAddedNotification.subject">
       <segment>
         <source>A new comment was added to the post: %s</source>
+        <target>Ein neuer Kommentar wurde zum Beitrag hinzugefügt: %s</target>
       </segment>
     </unit>
     <unit id="email.label.post">
       <segment>
         <source>Post</source>
+        <target>Beitrag</target>
       </segment>
     </unit>
     <unit id="email.label.date">
       <segment>
         <source>Date</source>
+        <target>Datum</target>
       </segment>
     </unit>
     <unit id="email.label.author">
       <segment>
         <source>Author</source>
+        <target>Autor</target>
       </segment>
     </unit>
     <unit id="email.label.comment">
       <segment>
         <source>Comment</source>
+        <target>Kommentar</target>
       </segment>
     </unit>
     <unit id="widget.recentcomments.on">
       <segment>
         <source>on</source>
+        <target>auf</target>
       </segment>
     </unit>
     <unit id="pagination.aria.label">
       <segment>
         <source>Page navigation</source>
+        <target>Seitennavigation</target>
       </segment>
     </unit>
     <unit id="pagination.next">
       <segment>
         <source>Next</source>
+        <target>Weiter</target>
       </segment>
     </unit>
     <unit id="pagination.previous">
       <segment>
         <source>Previous</source>
+        <target>Zurück</target>
       </segment>
     </unit>
     <unit id="pagination.aria.current.page">
       <segment>
         <source>Current page, page %s</source>
+        <target>Aktuelle Seite, Seite %s</target>
       </segment>
     </unit>
     <unit id="pagination.aria.goto.page">
       <segment>
         <source>Go to page %s</source>
+        <target>Zu Seite %s gehen</target>
       </segment>
     </unit>
     <unit id="pagination.aria.goto.next">
       <segment>
         <source>Go to next page</source>
+        <target>Zur nächsten Seite gehen</target>
       </segment>
     </unit>
     <unit id="pagination.aria.goto.previous">
       <segment>
         <source>Go to previous page</source>
+        <target>Zur vorherigen Seite gehen</target>
       </segment>
     </unit>
     <unit id="updates.author_slug.title">
       <segment>
         <source>EXT:blog: Generate path segments for authors</source>
+        <target>EXT:blog: Pfadsegmente für Autoren erzeugen</target>
       </segment>
     </unit>
     <unit id="updates.avatar_provider.title">
       <segment>
         <source>EXT:blog: Migrate avatar provider</source>
+        <target>EXT:blog: Avatar-Anbieter migrieren</target>
       </segment>
     </unit>
     <unit id="updates.category_slug.title">
       <segment>
         <source>EXT:blog: Generate path segments for categories</source>
+        <target>EXT:blog: Pfadsegmente für Kategorien erzeugen</target>
       </segment>
     </unit>
     <unit id="updates.category_type.title">
       <segment>
         <source>EXT:blog: Use blog type for categories</source>
+        <target>EXT:blog: Blog-Typ für Kategorien verwenden</target>
       </segment>
     </unit>
     <unit id="updates.comment_status.title">
       <segment>
         <source>EXT:blog: Migrate comment status</source>
+        <target>EXT:blog: Kommentarstatus migrieren</target>
       </segment>
     </unit>
     <unit id="updates.database_month_year.title">
       <segment>
         <source>EXT:blog: Set month and year fields for existing blog posts</source>
+        <target>EXT:blog: Monats- und Jahresfelder für bestehende Blogbeiträge setzen</target>
       </segment>
     </unit>
     <unit id="updates.database_publish_date.title">
       <segment>
         <source>EXT:blog: Set publish date fields to creation date for existing blog posts</source>
+        <target>EXT:blog: Veröffentlichungsdatum aus dem Erstellungsdatum setzen</target>
       </segment>
     </unit>
     <unit id="updates.featured_image.title">
       <segment>
         <source>EXT:blog: Migrate featured image references</source>
+        <target>EXT:blog: Beitragsbild-Referenzen migrieren</target>
       </segment>
     </unit>
     <unit id="updates.tag_slug.title">
       <segment>
         <source>EXT:blog: Generate path segments for tags</source>
+        <target>EXT:blog: Pfadsegmente für Schlagwörter erzeugen</target>
       </segment>
     </unit>
     <unit id="updates.list_type.title">
       <segment>
         <source>Migrate "t3g/blog" plugins to content elements.</source>
+        <target>"t3g/blog"-Plugins zu Inhaltselementen migrieren.</target>
       </segment>
     </unit>
     <unit id="updates.list_type.description">
       <segment>
         <source>The "blog" plugins will be registered as content elements. The update migrates existing records and backend user permissions.</source>
+        <target>Die "blog"-Plugins werden als Inhaltselemente registriert. Der Upgrade Wizard migriert bestehende Datensätze und Backend-Benutzerberechtigungen.</target>
       </segment>
     </unit>
   </file>

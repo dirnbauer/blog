@@ -27,6 +27,9 @@ Post information in backend page header
 =======================================
 
 .. figure:: feature-post-information.png
+   :alt: Blog post information bar in the TYPO3 backend page header
+   :zoom: lightbox
+   :class: with-border with-shadow
 
 The TYPO3 page and the list module show additional information for blog
 posts. Information that is normally hidden in the page settings is now
@@ -72,7 +75,7 @@ Integration and Standalone Mode
 ===============================
 
 The blog ships public site sets for standalone blogs, integration into an
-existing site, and modern Bootstrap or Tailwind template variants. See
+existing site, and the Bootstrap 5.3 template variant. See
 :ref:`ConfigurationSiteSets`.
 
 

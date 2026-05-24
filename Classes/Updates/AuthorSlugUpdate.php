@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[UpgradeWizard(AuthorSlugUpdate::class)]
 final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInterface
 {
-    protected string $title = 'EXT:blog: Generate Path-Segments for Authors';
+    protected string $title = 'updates.author_slug.title';
     protected string $table = 'tx_blog_domain_model_author';
 
     public function updateNecessary(): bool

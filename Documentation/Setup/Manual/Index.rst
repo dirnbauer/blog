@@ -20,10 +20,16 @@ Prerequisites:
    1. Edit your existing site configuration
 
       .. figure:: manual-1.png
+         :alt: Open the site configuration for manual blog setup
+         :zoom: lightbox
+         :class: with-border with-shadow
 
    2. Add the "Blog: Integration" set to your site.
 
       .. figure:: manual-2.png
+         :alt: Add the Blog Integration site set to an existing site
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       .. tip::
 
@@ -47,12 +53,18 @@ Prerequisites:
    3. Create Blog Pages
 
       .. figure:: manual-3.png
+         :alt: Create multiple pages below the selected page
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       1. Right click the page you want the Blog to list below
       2. Select "More options"
       3. Select "Create multiple pages"
 
       .. figure:: manual-4.png
+         :alt: Enter the blog pages and data folder for manual setup
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       Create the following Pages, make sure they have the correct **Type**
 
@@ -73,6 +85,9 @@ Prerequisites:
       +-------------+-------------+
 
       .. figure:: manual-5.png
+         :alt: Configure the data folder to contain blog records
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       Edit the newly generated Data folder to contain the "Blog"
 
@@ -81,6 +96,9 @@ Prerequisites:
       6. Save the Page
 
       .. figure:: manual-6.png
+         :alt: Sort the manually created blog pages
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       Sort the pages like the following screenshot
 
@@ -100,11 +118,26 @@ Prerequisites:
                   storagePid:    ID_of_Page_Data
 
       .. figure:: manual-7.png
-      .. figure:: manual-8.png
-      .. figure:: manual-9.png
-      .. figure:: manual-10.png
+         :alt: Open the site settings for blog page IDs
+         :zoom: lightbox
+         :class: with-border with-shadow
 
-   6. Frontend Routing
+      .. figure:: manual-8.png
+         :alt: Configure the blog page ID settings
+         :zoom: lightbox
+         :class: with-border with-shadow
+
+      .. figure:: manual-9.png
+         :alt: Save the blog page ID settings
+         :zoom: lightbox
+         :class: with-border with-shadow
+
+      .. figure:: manual-10.png
+         :alt: Confirm the saved blog page ID settings
+         :zoom: lightbox
+         :class: with-border with-shadow
+
+   5. Frontend Routing
 
       The extension provides a frontend route enhancer configuration that
       you can include it in your site configuration.
@@ -119,7 +152,7 @@ Prerequisites:
 
          You can find your site configuration in **./config/sites/<identifier>/config.yaml**
 
-   7. Add Plugins to Blog Pages
+   6. Add Plugins to Blog Pages
 
       Example: Blog Listing
 
@@ -128,11 +161,17 @@ Prerequisites:
       3. Click the Button to add content
 
       .. figure:: manual-11.png
+         :alt: Add a content element to the blog list page
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       4. Select the "Blog" tab
       5. Add plugin "Blog: List of posts"
 
       .. figure:: manual-12.png
+         :alt: Select the Blog List of posts plugin
+         :zoom: lightbox
+         :class: with-border with-shadow
 
       +------------+------------------------+
       | Page       | Plugin                 |
@@ -148,9 +187,12 @@ Prerequisites:
       | Archive    | Blog: Archive          |
       +------------+------------------------+
 
-   8. Congratulations
+   7. Congratulations
 
       Your blog is now ready. Continue with the guides about adding a blog
       post and configuring the extension.
 
       .. figure:: manual-13.png
+         :alt: View the manually configured blog in the frontend
+         :zoom: lightbox
+         :class: with-border with-shadow
