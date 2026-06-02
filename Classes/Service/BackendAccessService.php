@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Service;
 
+use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -90,20 +91,21 @@ final class BackendAccessService
         return $this->hasPagePermission((int)$comment->getPid(), Permission::CONTENT_EDIT);
     }
 
+    /**
+     * @param list<BlogSetupSummary> $blogSetups
+     *
+     * @return list<BlogSetupSummary>
+     */
     public function filterAccessibleBlogSetups(array $blogSetups): array
     {
         if (!$this->getBackendUser() instanceof BackendUserAuthentication) {
             return $blogSetups;
         }
 
-        foreach ($blogSetups as $key => $blogSetup) {
-            $pageUid = (int)($blogSetup['uid'] ?? 0);
-            if (!$this->canViewBlogRoot($pageUid)) {
-                unset($blogSetups[$key]);
-            }
-        }
-
-        return $blogSetups;
+        return array_values(array_filter(
+            $blogSetups,
+            fn (BlogSetupSummary $setup): bool => $this->canViewBlogRoot($setup->uid),
+        ));
     }
 
     protected function hasPagePermission(int $pageUid, int $permission): bool

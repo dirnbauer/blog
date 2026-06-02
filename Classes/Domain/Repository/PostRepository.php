@@ -47,8 +47,8 @@ class PostRepository extends Repository
 
         // createQuery() internally resolves TypoScript through
         // BackendConfigurationManager which requires a valid rootline.
-        // Workspace-only pages (t3ver_wsid>0, t3ver_oid=0) have no live
-        // counterpart, so rootline resolution throws PageNotFoundException
+        // Workspace-only pages without a live counterpart break rootline
+        // resolution, which throws PageNotFoundException
         // when the editor is in LIVE context.  In that case we skip the
         // default constraints — the repository stays instantiable so the
         // DI container does not crash on the Page Layout view.
@@ -64,30 +64,9 @@ class PostRepository extends Repository
             $this->setDefaultQuerySettings($querySettings);
 
             $context = GeneralUtility::makeInstance(Context::class);
+            $constraintBuilder = GeneralUtility::makeInstance(PostRepositoryConstraintBuilder::class, $context);
             $query = $this->createQuery();
-            $this->defaultConstraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
-            if ($context->getAspect('language')->getId() === 0) {
-                $this->defaultConstraints[] = $query->logicalOr(
-                    $query->equals('l18n_cfg', 0),
-                    $query->equals('l18n_cfg', 2),
-                );
-            } else {
-                $this->defaultConstraints[] = $query->lessThan('l18n_cfg', 2);
-            }
-
-            if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-                && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-            ) {
-                $workspaceId = TypeUtility::toInt($context->getPropertyFromAspect('workspace', 'id', 0));
-                if ($workspaceId === 0) {
-                    $this->defaultConstraints[] = $query->equals('t3ver_wsid', 0);
-                } else {
-                    $this->defaultConstraints[] = $query->logicalOr(
-                        $query->equals('t3ver_wsid', 0),
-                        $query->equals('t3ver_wsid', $workspaceId),
-                    );
-                }
-            }
+            $this->defaultConstraints = $constraintBuilder->buildDefaultConstraints($query);
         } catch (PageNotFoundException) {
             // Constraint setup failed — see comment above.
         }
@@ -97,14 +76,14 @@ class PostRepository extends Repository
         ];
     }
 
-    public function findByUidRespectQuerySettings(int $uid): ?Post
+    public function findByUidForBackend(int $uid): ?Post
     {
-        $query = $this->createQuery();
+        $query = $this->createBackendQuery();
         $query->matching($query->equals('uid', $uid));
-        /** @var null|Post */
+
         $result = $query->execute()->getFirst();
 
-        return $result;
+        return $result instanceof Post ? $result : null;
     }
 
     /**
@@ -113,10 +92,7 @@ class PostRepository extends Repository
     public function findByRepositoryDemand(PostRepositoryDemand $repositoryDemand): array
     {
         $query = $this->createQuery();
-
-        $constraints = [
-            $query->equals('doktype', Constants::DOKTYPE_BLOG_POST),
-        ];
+        $constraints = $this->baseConstraints($query);
 
         if ($repositoryDemand->getPosts() !== []) {
             $constraints[] = $query->in('uid', $repositoryDemand->getPosts());
@@ -163,7 +139,7 @@ class PostRepository extends Repository
             foreach ($result as $post) {
                 $sortedPosts[$post->getUid()] = $post;
             }
-            $result = array_values(array_filter($sortedPosts, function ($value) {
+            $result = array_values(array_filter($sortedPosts, static function ($value): bool {
                 return $value instanceof Post;
             }));
         }
@@ -176,9 +152,7 @@ class PostRepository extends Repository
      */
     public function findAll(): QueryResultInterface
     {
-        $result = $this->getFindAllQuery()->execute();
-
-        return $result;
+        return $this->getFindAllQuery()->execute();
     }
 
     public function findAllByPid(?int $blogSetup = null): QueryResultInterface
@@ -193,6 +167,27 @@ class PostRepository extends Repository
             $constraints[] = $query->equals('pid', $blogSetup);
             $query->matching($query->logicalAnd(...$constraints));
         }
+
+        return $query->execute();
+    }
+
+    /**
+     * @return QueryResultInterface<int, Post>
+     */
+    public function findAllForBackend(): QueryResultInterface
+    {
+        return $this->getFindAllQuery(forBackend: true)->execute();
+    }
+
+    public function findAllByPidForBackend(int $blogSetup): QueryResultInterface
+    {
+        $query = $this->getFindAllQuery(forBackend: true);
+        $constraints = [];
+        if ($query->getConstraint() !== null) {
+            $constraints[] = $query->getConstraint();
+        }
+        $constraints[] = $query->equals('pid', $blogSetup);
+        $query->matching($query->logicalAnd(...$constraints));
 
         return $query->execute();
     }
@@ -218,6 +213,27 @@ class PostRepository extends Repository
         return $query->execute();
     }
 
+    /**
+     * @return QueryResultInterface<int, Post>|array<int, Post>
+     */
+    public function findAllByPidsForBackend(array $blogSetups): QueryResultInterface|array
+    {
+        $blogSetups = array_values(array_unique(array_filter(array_map('intval', $blogSetups), static fn (int $pid): bool => $pid > 0)));
+        if ($blogSetups === []) {
+            return [];
+        }
+
+        $query = $this->getFindAllQuery(forBackend: true);
+        $constraints = [];
+        if ($query->getConstraint() !== null) {
+            $constraints[] = $query->getConstraint();
+        }
+        $constraints[] = $query->in('pid', $blogSetups);
+        $query->matching($query->logicalAnd(...$constraints));
+
+        return $query->execute();
+    }
+
     public function findAllWithLimit(int $limit): QueryResultInterface
     {
         $query = $this->getFindAllQuery();
@@ -229,15 +245,10 @@ class PostRepository extends Repository
     /**
      * @return QueryInterface<Post>
      */
-    protected function getFindAllQuery(): QueryInterface
+    protected function getFindAllQuery(bool $forBackend = false): QueryInterface
     {
-        /** @var QueryInterface<Post> $query */
-        $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
+        $query = $forBackend ? $this->createBackendQuery() : $this->createQuery();
+        $constraints = $this->baseConstraints($query);
         $constraints[] = $query->logicalOr(
             $query->equals('archiveDate', 0),
             $query->greaterThanOrEqual('archiveDate', time()),
@@ -251,11 +262,7 @@ class PostRepository extends Repository
     public function findAllByAuthor(Author $author): QueryResultInterface
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
+        $constraints = $this->baseConstraints($query);
         $constraints[] = $query->contains('authors', $author);
 
         return $query->matching($query->logicalAnd(...$constraints))->execute();
@@ -264,12 +271,8 @@ class PostRepository extends Repository
     public function findAllByCategory(Category $category): QueryResultInterface
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
+        $constraints = $this->baseConstraints($query);
         $constraints[] = $query->contains('categories', $category);
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
 
         return $query->matching($query->logicalAnd(...$constraints))->execute();
     }
@@ -277,12 +280,8 @@ class PostRepository extends Repository
     public function findAllByTag(Tag $tag): QueryResultInterface
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
+        $constraints = $this->baseConstraints($query);
         $constraints[] = $query->contains('tags', $tag);
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
 
         return $query->matching($query->logicalAnd(...$constraints))->execute();
     }
@@ -290,11 +289,7 @@ class PostRepository extends Repository
     public function findByMonthAndYear(int $year, ?int $month = null): QueryResultInterface
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
+        $constraints = $this->baseConstraints($query);
 
         if ($month !== null) {
             $startDate = new \DateTimeImmutable(sprintf('%d-%d-1 00:00:00', $year, $month));
@@ -333,7 +328,7 @@ class PostRepository extends Repository
     protected function getPostWithLanguage(int $pageId, int $languageId): ?Post
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
+        $constraints = $this->baseConstraints($query);
 
         if ($languageId > 0) {
             $constraints[] = $query->equals('l10n_parent', $pageId);
@@ -342,13 +337,12 @@ class PostRepository extends Repository
             $constraints[] = $query->equals('uid', $pageId);
         }
 
-        /** @var null|Post */
         $result = $query
             ->matching($query->logicalAnd(...$constraints))
             ->execute()
             ->getFirst();
 
-        return $result;
+        return $result instanceof Post ? $result : null;
     }
 
     protected function applyLanguageFallback(int $pageId, int $currentLanguageId): ?Post
@@ -379,11 +373,7 @@ class PostRepository extends Repository
     public function findMonthsAndYearsWithPosts(): array
     {
         $query = $this->createQuery();
-        $constraints = $this->defaultConstraints;
-        $storagePidConstraint = $this->getStoragePidConstraint();
-        if ($storagePidConstraint instanceof ComparisonInterface) {
-            $constraints[] = $storagePidConstraint;
-        }
+        $constraints = $this->baseConstraints($query);
         $constraints[] = $query->greaterThan('crdateMonth', 0);
         $constraints[] = $query->greaterThan('crdateYear', 0);
         $query->matching($query->logicalAnd(...$constraints));
@@ -413,20 +403,51 @@ class PostRepository extends Repository
         return $result;
     }
 
+    /**
+     * @return list<ComparisonInterface|object>
+     */
+    protected function baseConstraints(QueryInterface $query, bool $withStoragePid = true): array
+    {
+        $constraints = $this->defaultConstraints;
+        if ($constraints === []) {
+            $constraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);
+        }
+        if ($withStoragePid) {
+            $storagePidConstraint = $this->getStoragePidConstraint($query);
+            if ($storagePidConstraint instanceof ComparisonInterface) {
+                $constraints[] = $storagePidConstraint;
+            }
+        }
+
+        return $constraints;
+    }
+
+    /**
+     * @return QueryInterface<Post>
+     */
+    protected function createBackendQuery(): QueryInterface
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setIgnoreEnableFields(true);
+        $query->setQuerySettings($querySettings);
+
+        return $query;
+    }
+
     protected function getStoragePidsFromTypoScript(): array
     {
         return GeneralUtility::intExplode(',', TypeUtility::toString($this->settings['persistence']['storagePid'] ?? ''));
     }
 
-    /**
-     */
-    protected function getStoragePidConstraint(): ?ComparisonInterface
+    protected function getStoragePidConstraint(QueryInterface $query): ?ComparisonInterface
     {
         if (ApplicationType::fromRequest($this->getRequest())->isFrontend()) {
             $pids = $this->getPidsForConstraints();
-            $query = $this->createQuery();
+
             return $query->in('pid', $pids);
         }
+
         return null;
     }
 

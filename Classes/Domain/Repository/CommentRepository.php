@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Domain\Repository;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Domain\Enum\CommentListFilter;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use TYPO3\CMS\Core\Context\Context;
@@ -87,6 +88,45 @@ class CommentRepository extends Repository
         return $query->execute();
     }
 
+    /**
+     * @return array{all: int, pending: int, approved: int, declined: int, deleted: int}
+     */
+    public function countByFilterForBlogSetups(?int $blogSetup, array $blogSetupIds): array
+    {
+        $counts = [];
+        $blogSetups = $blogSetup !== null ? [$blogSetup] : $blogSetupIds;
+        foreach (CommentListFilter::countableCases() as $filter) {
+            $counts[$filter->value] = $this->countAllByFilterAndBlogSetups(
+                $filter->toRepositoryFilter(),
+                $blogSetups,
+            );
+        }
+
+        return $counts;
+    }
+
+    public function countAllByFilterAndBlogSetups(?string $filter = null, ?array $blogSetups = null): int
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $query->setQuerySettings($querySettings);
+
+        $constraints = $this->buildFilterConstraints($query, $filter);
+        if (is_array($blogSetups)) {
+            $postPids = $this->getPostPidsByRootPids($blogSetups);
+            if ($postPids === []) {
+                return 0;
+            }
+            $constraints[] = $query->in('pid', $postPids);
+        }
+        if ($constraints !== []) {
+            $query->matching($query->logicalAnd(...$constraints));
+        }
+
+        return $query->count();
+    }
+
     public function findActiveComments(?int $limit = null, ?int $blogSetup = null): QueryResultInterface
     {
         $query = $this->createQuery();
@@ -147,28 +187,15 @@ class CommentRepository extends Repository
 
     protected function buildFilterConstraints(QueryInterface $query, ?string $filter): array
     {
-        $constraints = [];
-        switch ($filter) {
-            case 'pending':
-                $constraints[] = $query->equals('status', Comment::STATUS_PENDING);
-                break;
-            case 'approved':
-                $constraints[] = $query->equals('status', Comment::STATUS_APPROVED);
-                break;
-            case 'declined':
-                $constraints[] = $query->equals('status', Comment::STATUS_DECLINED);
-                break;
-            case 'deleted':
-                $constraints[] = $query->equals('status', Comment::STATUS_DELETED);
-                break;
-            case null:
-                // null means all, and all means all but not deleted
-                $constraints[] = $query->logicalNot($query->equals('status', Comment::STATUS_DELETED));
-                break;
-            default:
-        }
-
-        return $constraints;
+        return match (CommentListFilter::tryFromRequest($filter)) {
+            CommentListFilter::Pending => [$query->equals('status', Comment::STATUS_PENDING)],
+            CommentListFilter::Approved => [$query->equals('status', Comment::STATUS_APPROVED)],
+            CommentListFilter::Declined => [$query->equals('status', Comment::STATUS_DECLINED)],
+            CommentListFilter::Deleted => [$query->equals('status', Comment::STATUS_DELETED)],
+            CommentListFilter::All => [
+                $query->logicalNot($query->equals('status', Comment::STATUS_DELETED)),
+            ],
+        };
     }
 
     public function fillConstraintsBySettings(QueryInterface $query, array $constraints): array

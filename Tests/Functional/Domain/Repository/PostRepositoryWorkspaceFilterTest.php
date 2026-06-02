@@ -75,21 +75,9 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $GLOBALS['TYPO3_REQUEST'] = $request;
     }
 
-    /**
-     * Obtain a fresh PostRepository whose initializeObject() runs with the
-     * current workspace context. DI returns a shared instance, so we
-     * instantiate manually for isolation between test methods.
-     */
     private function createPostRepository(): PostRepository
     {
-        $repository = $this->get(PostRepository::class);
-
-        $query = $repository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setIgnoreEnableFields(true);
-        $repository->setDefaultQuerySettings($querySettings);
-
-        return $repository;
+        return $this->get(PostRepository::class);
     }
 
     #[Test]
@@ -99,7 +87,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $this->setUpBackendRequest();
 
         $repository = $this->createPostRepository();
-        $posts = $repository->findAllByPid();
+        $posts = $repository->findAllForBackend();
         $postArray = $posts->toArray();
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
@@ -129,7 +117,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $this->setUpBackendRequest();
 
         $repository = $this->createPostRepository();
-        $posts = $repository->findAllByPid();
+        $posts = $repository->findAllForBackend();
         $postArray = $posts->toArray();
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 
@@ -154,7 +142,7 @@ final class PostRepositoryWorkspaceFilterTest extends FunctionalTestCase
         $this->setUpBackendRequest();
 
         $repository = $this->createPostRepository();
-        $posts = $repository->findAllByPid();
+        $posts = $repository->findAllForBackend();
         $postArray = $posts->toArray();
         self::assertContainsOnlyInstancesOf(Post::class, $postArray);
 

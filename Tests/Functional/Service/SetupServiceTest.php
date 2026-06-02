@@ -112,9 +112,9 @@ final class SetupServiceTest extends FunctionalTestCase
         $blogSetups = $setupService->determineBlogSetups();
 
         $blogSetup1 = array_shift($blogSetups);
-        self::assertEquals($blogSetup1['path'], 'TEST 1 / Data');
+        self::assertEquals('TEST 1 / Data', $blogSetup1->path);
         $blogSetup2 = array_shift($blogSetups);
-        self::assertEquals($blogSetup2['path'], 'TEST 2 / Data');
+        self::assertEquals('TEST 2 / Data', $blogSetup2->path);
     }
 
     #[Test]
@@ -126,13 +126,13 @@ final class SetupServiceTest extends FunctionalTestCase
 
         $blogSetups = array_values($setupService->determineBlogSetups());
         $firstSetup = $blogSetups[0];
-        $this->createRestrictedBackendUser(2, (int)$firstSetup['uid']);
+        $this->createRestrictedBackendUser(2, $firstSetup->uid);
         $this->setUpLanguageForBackendUser(2);
 
         $restrictedBlogSetups = array_values($setupService->determineBlogSetups());
 
         self::assertCount(1, $restrictedBlogSetups);
-        self::assertSame((int)$firstSetup['uid'], (int)$restrictedBlogSetups[0]['uid']);
-        self::assertSame($firstSetup['path'], $restrictedBlogSetups[0]['path']);
+        self::assertSame($firstSetup->uid, $restrictedBlogSetups[0]->uid);
+        self::assertSame($firstSetup->path, $restrictedBlogSetups[0]->path);
     }
 }

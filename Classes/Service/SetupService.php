@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Service;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
+use T3G\AgencyPack\Blog\Utility\DataHandlerUidReplacer;
 use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
@@ -30,9 +32,13 @@ class SetupService
         private readonly SiteFinder $siteFinder,
         private readonly SiteWriter $siteWriter,
         private readonly BackendAccessService $backendAccessService,
+        private readonly DataHandlerUidReplacer $dataHandlerUidReplacer,
     ) {
     }
 
+    /**
+     * @return list<BlogSetupSummary>
+     */
     public function determineBlogSetups(): array
     {
         $setups = [];
@@ -66,25 +72,24 @@ class SetupService
                     ->executeQuery()
                     ->fetchOne();
 
-                $setups[$blogUid] = [
-                    'uid' => $blogUid,
-                    'title' => $blogTitle,
-                    'path' => implode(' / ', array_map(static function (array $page): string {
+                $setups[$blogUid] = new BlogSetupSummary(
+                    uid: $blogUid,
+                    title: $blogTitle,
+                    path: implode(' / ', array_map(static function (array $page): string {
                         return TypeUtility::toString($page['title'] ?? null);
                     }, $rootline)),
-                    'rootline' => $rootline,
-                    'articleCount' => TypeUtility::toInt($articleCount),
-                ];
+                    articleCount: TypeUtility::toInt($articleCount),
+                    rootline: $rootline,
+                );
             }
         }
 
-        return $this->backendAccessService->filterAccessibleBlogSetups($setups);
+        return $this->backendAccessService->filterAccessibleBlogSetups(array_values($setups));
     }
 
     public function createBlogSetup(array $data = []): void
     {
         $title = array_key_exists('title', $data) ? (string)$data['title'] : null;
-        $recordUidArray = [];
 
         $blogSetup = require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRecords.php');
         if ($title !== null) {
@@ -93,13 +98,10 @@ class SetupService
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($blogSetup, []);
         $dataHandler->process_datamap();
-        $recordUidArray = array_merge_recursive($recordUidArray, $dataHandler->substNEWwithIDs);
+        $recordUidArray = $dataHandler->substNEWwithIDs;
 
-        // Update page id in PageTSConfig
         $blogRootUid = TypeUtility::toInt($recordUidArray['NEW_blogRoot'] ?? null);
-        $blogFolderUid = TypeUtility::toInt($recordUidArray['NEW_blogFolder'] ?? null);
 
-        // Site Modifications
         $site = $this->siteFinder->getSiteByRootPageId($blogRootUid);
         $siteIdentifier = $site->getIdentifier();
         $siteConfiguration = $site->getConfiguration();
@@ -135,36 +137,13 @@ class SetupService
             ],
         );
 
-        // Relations
         $blogSetupRelations = require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRelations.php');
-        $blogSetupRelations = $this->replaceNewUids($blogSetupRelations, $recordUidArray);
+        $blogSetupRelations = $this->dataHandlerUidReplacer->replace($blogSetupRelations, $recordUidArray);
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($blogSetupRelations, []);
         $dataHandler->process_datamap();
-        $recordUidArray = array_merge_recursive($recordUidArray, $dataHandler->substNEWwithIDs);
 
         BackendUtility::setUpdateSignal('updatePageTree');
-    }
-
-    protected function replaceNewUids(array $setup, array $recordUidArray): array
-    {
-        $newSetup = [];
-        foreach ($setup as $key => &$value) {
-            if (strpos($key, 'NEW') !== false) {
-                foreach ($recordUidArray as $newId => $uid) {
-                    $key = str_replace($newId, (string)$uid, $key);
-                }
-            }
-            if (\is_array($value)) {
-                $value = $this->replaceNewUids($value, $recordUidArray);
-            } elseif (strpos($value, 'NEW') !== false) {
-                foreach ($recordUidArray as $newId => $uid) {
-                    $value = str_replace($newId, (string)$uid, $value);
-                }
-            }
-            $newSetup[$key] = $value;
-        }
-        return $newSetup;
     }
 
     protected function getQueryBuilderForTable(string $table): QueryBuilder

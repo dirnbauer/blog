@@ -23,14 +23,14 @@ use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
 use T3G\AgencyPack\Blog\Factory\PostRepositoryDemandFactory;
 use T3G\AgencyPack\Blog\Pagination\BlogPagination;
-use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\MetaTagService;
+use T3G\AgencyPack\Blog\Service\PostPageContextService;
 use T3G\AgencyPack\Blog\Service\RelatedPostsService;
+use T3G\AgencyPack\Blog\Service\RssFeedMetadataFactory;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
-use TYPO3\CMS\Core\Http\NormalizedParams;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -44,10 +44,11 @@ class PostController extends ActionController
         protected readonly AuthorRepository $authorRepository,
         protected readonly CategoryRepository $categoryRepository,
         protected readonly TagRepository $tagRepository,
-        protected readonly CacheService $blogCacheService,
         protected readonly PostRepositoryDemandFactory $postRepositoryDemandFactory,
         protected readonly MetaTagService $metaTagService,
         protected readonly RelatedPostsService $relatedPostsService,
+        protected readonly RssFeedMetadataFactory $rssFeedMetadataFactory,
+        protected readonly PostPageContextService $postPageContextService,
     ) {
     }
 
@@ -56,57 +57,12 @@ class PostController extends ActionController
      */
     protected function initializeView($view): void
     {
-        if ($this->request->getFormat() === 'rss') {
-            $action = '.' . $this->request->getControllerActionName();
-            $arguments = [];
-            switch ($action) {
-                case '.listPostsByCategory':
-                    if (isset($this->arguments['category'])) {
-                        $category = $this->arguments['category']->getValue();
-                        if ($category instanceof Category) {
-                            $arguments[] = $category->getTitle();
-                        }
-                    }
-                    break;
-                case '.listPostsByDate':
-                    $year = $this->arguments['year']->getValue();
-                    if (is_numeric($year)) {
-                        $arguments[] = (int)$year;
-                    }
-                    if (isset($this->arguments['month'])) {
-                        $month = $this->arguments['month']->getValue();
-                        if (is_numeric($month)) {
-                            $arguments[] = (int)$month;
-                        }
-                    }
-                    break;
-                case '.listPostsByTag':
-                    if (isset($this->arguments['tag'])) {
-                        $tag = $this->arguments['tag']->getValue();
-                        if ($tag instanceof Tag) {
-                            $arguments[] = $tag->getTitle();
-                        }
-                    }
-                    break;
-                case '.listPostsByAuthor':
-                    if (isset($this->arguments['author'])) {
-                        $author = $this->arguments['author']->getValue();
-                        if ($author instanceof Author) {
-                            $arguments[] = $author->getName();
-                        }
-                    }
-                    break;
-                default:
-            }
-
-            $feedData = [
-                'title' => LocalizationUtility::translate('feed.title' . $action, 'blog', $arguments),
-                'description' => LocalizationUtility::translate('feed.description' . $action, 'blog', $arguments),
-                'language' => $this->getSiteLanguage()->getLocale()->getLanguageCode(),
-                'link' => $this->getRequestUrl(),
-                'date' => date('r'),
-            ];
-            $this->view->assign('feed', $feedData);
+        if ($this->request->getFormat() === 'rss' && $this->request instanceof Request) {
+            $this->view->assign('feed', $this->rssFeedMetadataFactory->build(
+                $this->request,
+                RequestUtility::getSiteLanguage($this->getRequest()),
+                RequestUtility::getRequestUri($this->getRequest()),
+            ));
         }
 
         $contentObject = RequestUtility::getCurrentContentObject($this->getRequest());
@@ -198,7 +154,6 @@ class PostController extends ActionController
             if ($referenceUid !== null) {
                 $categories = $this->categoryRepository->getByReference('tt_content', $referenceUid);
                 if ($categories !== null && $categories->count() > 0) {
-                    /** @var ?Category $category */
                     $category = $categories->getFirst();
                 }
             }
@@ -267,42 +222,24 @@ class PostController extends ActionController
         return $this->htmlResponse();
     }
 
-    /**
-     * Header action: output the header of blog post.
-     */
     public function headerAction(): ResponseInterface
     {
-        $post = $this->postRepository->findCurrentPost();
-        $this->view->assign('post', $post);
-        if ($post instanceof Post) {
-            $this->blogCacheService->addTagsForPost($this->request, $post);
-        }
+        $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
+
         return $this->htmlResponse();
     }
 
-    /**
-     * Footer action: output the footer of blog post.
-     */
     public function footerAction(): ResponseInterface
     {
-        $post = $this->postRepository->findCurrentPost();
-        $this->view->assign('post', $post);
-        if ($post instanceof Post) {
-            $this->blogCacheService->addTagsForPost($this->request, $post);
-        }
+        $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
+
         return $this->htmlResponse();
     }
 
-    /**
-     * Authors action: output author information of blog post.
-     */
     public function authorsAction(): ResponseInterface
     {
-        $post = $this->postRepository->findCurrentPost();
-        $this->view->assign('post', $post);
-        if ($post instanceof Post) {
-            $this->blogCacheService->addTagsForPost($this->request, $post);
-        }
+        $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
+
         return $this->htmlResponse();
     }
 
@@ -311,7 +248,7 @@ class PostController extends ActionController
      */
     public function relatedPostsAction(): ResponseInterface
     {
-        $post = $this->postRepository->findCurrentPost();
+        $post = $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
         $posts = $this->relatedPostsService->findRelatedPosts(
             (int)$this->settings['relatedPosts']['categoryMultiplier'],
             (int)$this->settings['relatedPosts']['tagMultiplier'],
@@ -320,24 +257,13 @@ class PostController extends ActionController
         $this->view->assign('type', 'related');
         $this->view->assign('post', $post);
         $this->view->assign('posts', $posts);
+
         return $this->htmlResponse();
     }
 
     private function getRequest(): ServerRequestInterface
     {
         return RequestUtility::getGlobalRequest();
-    }
-
-    private function getSiteLanguage(): SiteLanguage
-    {
-        return RequestUtility::getSiteLanguage($this->getRequest());
-    }
-
-    private function getRequestUrl(): string
-    {
-        /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = RequestUtility::getNormalizedParams($this->getRequest());
-        return $normalizedParams->getRequestUrl();
     }
 
     private function getContentObjectUid(?ContentObjectRenderer $contentObject): ?int
@@ -360,6 +286,7 @@ class PostController extends ActionController
         }
 
         $paginator = new QueryResultPaginator($objects, $currentPage, $itemsPerPage);
+
         return new BlogPagination($paginator, $maximumNumberOfLinks);
     }
 }

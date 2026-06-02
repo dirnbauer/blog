@@ -58,11 +58,7 @@ class BlogPostHeaderContentRenderer implements SingletonInterface
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addCssFile('EXT:blog/Resources/Public/Css/pagelayout.min.css', 'stylesheet', 'all', '', false);
 
-        $query = $this->postRepository->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setIgnoreEnableFields(true);
-        $this->postRepository->setDefaultQuerySettings($querySettings);
-        $post = $this->postRepository->findByUidRespectQuerySettings($pageUid);
+        $post = $this->postRepository->findByUidForBackend($pageUid);
 
         // Template
         $view = $this->getTemplateObject($request);
