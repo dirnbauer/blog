@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 use T3G\AgencyPack\Blog\Service\BackendBlogContextService;
-use T3G\AgencyPack\Blog\Service\SetupService;
 
 final class BackendBlogContextServiceTest extends TestCase
 {
@@ -26,7 +25,7 @@ final class BackendBlogContextServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->subject = new BackendBlogContextService($this->createMock(SetupService::class));
+        $this->subject = new BackendBlogContextService();
         $this->setups = [
             new BlogSetupSummary(10, 'Blog A', 'Site / Blog A', 3),
             new BlogSetupSummary(20, 'Blog B', 'Site / Blog B', 5),
