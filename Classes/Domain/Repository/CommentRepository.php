@@ -68,21 +68,9 @@ class CommentRepository extends Repository
 
     public function findAllByFilterAndBlogSetups(?string $filter = null, ?array $blogSetups = null): QueryResultInterface|array
     {
-        $query = $this->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setRespectStoragePage(false);
-        $query->setQuerySettings($querySettings);
-
-        $constraints = $this->buildFilterConstraints($query, $filter);
-        if (is_array($blogSetups)) {
-            $postPids = $this->getPostPidsByRootPids($blogSetups);
-            if ($postPids === []) {
-                return [];
-            }
-            $constraints[] = $query->in('pid', $postPids);
-        }
-        if (count($constraints) > 0) {
-            return $query->matching($query->logicalAnd(...$constraints))->execute();
+        $query = $this->createBlogFilterQuery($filter, $blogSetups);
+        if ($query === null) {
+            return [];
         }
 
         return $query->execute();
@@ -107,21 +95,9 @@ class CommentRepository extends Repository
 
     public function countAllByFilterAndBlogSetups(?string $filter = null, ?array $blogSetups = null): int
     {
-        $query = $this->createQuery();
-        $querySettings = $query->getQuerySettings();
-        $querySettings->setRespectStoragePage(false);
-        $query->setQuerySettings($querySettings);
-
-        $constraints = $this->buildFilterConstraints($query, $filter);
-        if (is_array($blogSetups)) {
-            $postPids = $this->getPostPidsByRootPids($blogSetups);
-            if ($postPids === []) {
-                return 0;
-            }
-            $constraints[] = $query->in('pid', $postPids);
-        }
-        if ($constraints !== []) {
-            $query->matching($query->logicalAnd(...$constraints));
+        $query = $this->createBlogFilterQuery($filter, $blogSetups);
+        if ($query === null) {
+            return 0;
         }
 
         return $query->count();
@@ -183,6 +159,28 @@ class CommentRepository extends Repository
         }
 
         return array_values(array_unique($result));
+    }
+
+    protected function createBlogFilterQuery(?string $filter, ?array $blogSetups): ?QueryInterface
+    {
+        $query = $this->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $query->setQuerySettings($querySettings);
+
+        $constraints = $this->buildFilterConstraints($query, $filter);
+        if (is_array($blogSetups)) {
+            $postPids = $this->getPostPidsByRootPids($blogSetups);
+            if ($postPids === []) {
+                return null;
+            }
+            $constraints[] = $query->in('pid', $postPids);
+        }
+        if ($constraints !== []) {
+            $query->matching($query->logicalAnd(...$constraints));
+        }
+
+        return $query;
     }
 
     protected function buildFilterConstraints(QueryInterface $query, ?string $filter): array

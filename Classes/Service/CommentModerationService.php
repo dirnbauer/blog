@@ -11,15 +11,14 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Service;
 
+use T3G\AgencyPack\Blog\Domain\Enum\CommentModerationAction;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 
 final class CommentModerationService
 {
-    private const VALID_ACTIONS = ['approve', 'decline', 'delete'];
-
     public function isValidAction(string $action): bool
     {
-        return in_array($action, self::VALID_ACTIONS, true);
+        return CommentModerationAction::tryFromAction($action) instanceof CommentModerationAction;
     }
 
     /**
@@ -42,17 +41,12 @@ final class CommentModerationService
 
     public function applyAction(Comment $comment, string $action): bool
     {
-        return match ($action) {
-            'approve' => $this->setStatus($comment, Comment::STATUS_APPROVED),
-            'decline' => $this->setStatus($comment, Comment::STATUS_DECLINED),
-            'delete' => $this->setStatus($comment, Comment::STATUS_DELETED),
-            default => false,
-        };
-    }
+        $moderationAction = CommentModerationAction::tryFromAction($action);
+        if (!$moderationAction instanceof CommentModerationAction) {
+            return false;
+        }
 
-    private function setStatus(Comment $comment, int $status): bool
-    {
-        $comment->setStatus($status);
+        $comment->setStatus($moderationAction->targetStatus());
 
         return true;
     }

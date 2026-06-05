@@ -14,9 +14,9 @@ namespace T3G\AgencyPack\Blog\Controller;
 use Psr\Http\Message\ResponseInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
-use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Service\BackendAccessService;
 use T3G\AgencyPack\Blog\Service\BackendBlogContextService;
+use T3G\AgencyPack\Blog\Service\BackendBlogListingService;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\CommentModerationService;
 use T3G\AgencyPack\Blog\Service\SetupService;
@@ -30,7 +30,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class BackendController extends ActionController
 {
     public function __construct(
-        protected readonly PostRepository $postRepository,
         protected readonly CommentRepository $commentRepository,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly PageRenderer $pageRenderer,
@@ -39,6 +38,7 @@ class BackendController extends ActionController
         protected readonly BackendAccessService $backendAccessService,
         protected readonly CommentModerationService $commentModerationService,
         protected readonly BackendBlogContextService $backendBlogContextService,
+        protected readonly BackendBlogListingService $backendBlogListingService,
     ) {
     }
 
@@ -89,7 +89,7 @@ class BackendController extends ActionController
         $view->assignMultiple([
             'blogSetups' => $blogSetups,
             'activeBlogSetup' => $activeBlogSetup,
-            'posts' => $this->getPostsForBlogSelection($activeBlogSetup, $blogSetups),
+            'posts' => $this->backendBlogListingService->findPostsForSelection($activeBlogSetup, $blogSetups),
         ]);
 
         return $view->renderResponse('Backend/Posts');
@@ -105,9 +105,9 @@ class BackendController extends ActionController
         $view->assignMultiple([
             'activeFilter' => $filter,
             'activeBlogSetup' => $activeBlogSetup,
-            'commentCounts' => $this->getCommentCountsForBlogSelection($activeBlogSetup, $accessibleIds),
+            'commentCounts' => $this->backendBlogListingService->countCommentsForSelection($activeBlogSetup, $accessibleIds),
             'blogSetups' => $blogSetups,
-            'comments' => $this->getCommentsForBlogSelection($filter, $activeBlogSetup, $accessibleIds),
+            'comments' => $this->backendBlogListingService->findCommentsForSelection($filter, $activeBlogSetup, $accessibleIds),
         ]);
 
         return $view->renderResponse('Backend/Comments');
@@ -178,53 +178,6 @@ class BackendController extends ActionController
         }
 
         return new RedirectResponse($this->uriBuilder->reset()->uriFor('setupWizard'));
-    }
-
-    /**
-     * @param list<\T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary> $blogSetups
-     */
-    protected function getPostsForBlogSelection(?int $blogSetup, array $blogSetups): iterable
-    {
-        if (!$this->backendAccessService->canReadTable('pages')) {
-            return [];
-        }
-        if ($blogSetup !== null) {
-            return $this->postRepository->findAllByPidForBackend($blogSetup);
-        }
-
-        return $this->postRepository->findAllByPidsForBackend(
-            $this->backendBlogContextService->getAccessibleIds($blogSetups),
-        );
-    }
-
-    protected function getCommentsForBlogSelection(?string $filter, ?int $blogSetup, array $accessibleBlogSetupIds): iterable
-    {
-        if (!$this->backendAccessService->canReadTable('tx_blog_domain_model_comment')) {
-            return [];
-        }
-        if ($blogSetup !== null) {
-            return $this->commentRepository->findAllByFilter($filter, $blogSetup);
-        }
-
-        return $this->commentRepository->findAllByFilterAndBlogSetups($filter, $accessibleBlogSetupIds);
-    }
-
-    /**
-     * @return array{all: int, pending: int, approved: int, declined: int, deleted: int}
-     */
-    protected function getCommentCountsForBlogSelection(?int $blogSetup, array $accessibleBlogSetupIds): array
-    {
-        if (!$this->backendAccessService->canReadTable('tx_blog_domain_model_comment')) {
-            return [
-                'all' => 0,
-                'pending' => 0,
-                'approved' => 0,
-                'declined' => 0,
-                'deleted' => 0,
-            ];
-        }
-
-        return $this->commentRepository->countByFilterForBlogSetups($blogSetup, $accessibleBlogSetupIds);
     }
 
     protected function translate(string $key): string

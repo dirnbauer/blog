@@ -248,14 +248,13 @@ class PostController extends ActionController
      */
     public function relatedPostsAction(): ResponseInterface
     {
-        $post = $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
+        $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
         $posts = $this->relatedPostsService->findRelatedPosts(
             (int)$this->settings['relatedPosts']['categoryMultiplier'],
             (int)$this->settings['relatedPosts']['tagMultiplier'],
             (int)$this->settings['relatedPosts']['limit'],
         );
         $this->view->assign('type', 'related');
-        $this->view->assign('post', $post);
         $this->view->assign('posts', $posts);
 
         return $this->htmlResponse();

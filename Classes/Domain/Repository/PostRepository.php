@@ -158,17 +158,11 @@ class PostRepository extends Repository
     public function findAllByPid(?int $blogSetup = null): QueryResultInterface
     {
         $query = $this->getFindAllQuery();
-
-        if ($blogSetup !== null) {
-            $constraints = [];
-            if ($query->getConstraint() !== null) {
-                $constraints[] = $query->getConstraint();
-            }
-            $constraints[] = $query->equals('pid', $blogSetup);
-            $query->matching($query->logicalAnd(...$constraints));
+        if ($blogSetup === null) {
+            return $query->execute();
         }
 
-        return $query->execute();
+        return $this->executeFindAllWithPids($query, [$blogSetup]);
     }
 
     /**
@@ -181,15 +175,7 @@ class PostRepository extends Repository
 
     public function findAllByPidForBackend(int $blogSetup): QueryResultInterface
     {
-        $query = $this->getFindAllQuery(forBackend: true);
-        $constraints = [];
-        if ($query->getConstraint() !== null) {
-            $constraints[] = $query->getConstraint();
-        }
-        $constraints[] = $query->equals('pid', $blogSetup);
-        $query->matching($query->logicalAnd(...$constraints));
-
-        return $query->execute();
+        return $this->executeFindAllWithPids($this->getFindAllQuery(forBackend: true), [$blogSetup]);
     }
 
     /**
@@ -197,20 +183,12 @@ class PostRepository extends Repository
      */
     public function findAllByPids(array $blogSetups): QueryResultInterface|array
     {
-        $blogSetups = array_values(array_unique(array_filter(array_map('intval', $blogSetups), static fn (int $pid): bool => $pid > 0)));
+        $blogSetups = $this->normalizePids($blogSetups);
         if ($blogSetups === []) {
             return [];
         }
 
-        $query = $this->getFindAllQuery();
-        $constraints = [];
-        if ($query->getConstraint() !== null) {
-            $constraints[] = $query->getConstraint();
-        }
-        $constraints[] = $query->in('pid', $blogSetups);
-        $query->matching($query->logicalAnd(...$constraints));
-
-        return $query->execute();
+        return $this->executeFindAllWithPids($this->getFindAllQuery(), $blogSetups);
     }
 
     /**
@@ -218,20 +196,12 @@ class PostRepository extends Repository
      */
     public function findAllByPidsForBackend(array $blogSetups): QueryResultInterface|array
     {
-        $blogSetups = array_values(array_unique(array_filter(array_map('intval', $blogSetups), static fn (int $pid): bool => $pid > 0)));
+        $blogSetups = $this->normalizePids($blogSetups);
         if ($blogSetups === []) {
             return [];
         }
 
-        $query = $this->getFindAllQuery(forBackend: true);
-        $constraints = [];
-        if ($query->getConstraint() !== null) {
-            $constraints[] = $query->getConstraint();
-        }
-        $constraints[] = $query->in('pid', $blogSetups);
-        $query->matching($query->logicalAnd(...$constraints));
-
-        return $query->execute();
+        return $this->executeFindAllWithPids($this->getFindAllQuery(forBackend: true), $blogSetups);
     }
 
     public function findAllWithLimit(int $limit): QueryResultInterface
@@ -470,6 +440,33 @@ class PostRepository extends Repository
         }
 
         return $pids;
+    }
+
+    /**
+     * @param list<int> $pids
+     */
+    private function executeFindAllWithPids(QueryInterface $query, array $pids): QueryResultInterface
+    {
+        $constraints = [];
+        if ($query->getConstraint() !== null) {
+            $constraints[] = $query->getConstraint();
+        }
+        $constraints[] = count($pids) === 1
+            ? $query->equals('pid', $pids[0])
+            : $query->in('pid', $pids);
+        $query->matching($query->logicalAnd(...$constraints));
+
+        return $query->execute();
+    }
+
+    /**
+     * @param list<int|string> $pids
+     *
+     * @return list<int>
+     */
+    private function normalizePids(array $pids): array
+    {
+        return array_values(array_unique(array_filter(array_map('intval', $pids), static fn (int $pid): bool => $pid > 0)));
     }
 
     private function getRequest(): ServerRequestInterface
