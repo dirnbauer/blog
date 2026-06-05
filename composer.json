@@ -42,11 +42,11 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "14.3.x-dev"
+            "dev-master": "15.0.x-dev"
         },
         "typo3/cms": {
             "extension-key": "blog",
-            "version": "14.3.0",
+            "version": "15.0.0",
             "web-dir": ".build/public",
             "Package": {
                 "providesPackages": {}

@@ -1,5 +1,11 @@
 # Unreleased
 
+# 15.0.0
+
+## BREAKING
+
+- [BREAKING] Major version bump to `15.0.0` for the TYPO3 14.3 modernization release line
+
 ## SECURITY
 
 - [SECURITY] Require admin role at entry of `BackendController::createBlogAction` (defense in depth)
@@ -33,6 +39,13 @@
 - [TASK] Modernize repository metadata, issue templates, and GitHub workflows for TYPO3 v14
 - [TASK] Replace the DDEV-only HTTP smoke test path with Playwright browser smoke tests
 - [TASK] Refresh README and extension documentation for a DDEV-optional local workflow
+- [TASK] Refactor backend and repository layer: scoped backend queries, `BlogSetupSummary`, comment moderation service, RSS metadata factory, and post page context service
+- [TASK] Extract `BackendBlogListingService`, `PostRepositoryConstraintBuilder`, and unified comment filter/moderation enums
+- [TASK] Deduplicate post and comment repository query assembly; replace brittle source-scan tests with behavior-focused unit tests
+
+## Contributors
+
+- Kurt Dirnbauer
 
 # 14.1.0
 

@@ -9,7 +9,7 @@ title: "[BUG] "
 
 ## Checklist
 
-- [ ] I reproduced this with the latest supported `14.x` release of `t3g/blog`
+- [ ] I reproduced this with the latest supported `15.x` release of `t3g/blog`
 - [ ] I checked open and closed issues for duplicates
 - [ ] I can provide TYPO3, PHP, and database versions
 
