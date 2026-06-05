@@ -39,6 +39,6 @@ class CommentViewHelper extends AbstractBackendLinkViewHelper
             'returnUrl' => RequestUtility::getRequestUri($request),
         ]);
 
-        return $this->renderUriOrTag($uri, TypeUtility::toString($this->renderChildren(), TypeUtility::toString($comment->getName())));
+        return $this->renderUriOrTag($uri, TypeUtility::toString($this->renderChildren(), TypeUtility::toString($comment->getComment())));
     }
 }

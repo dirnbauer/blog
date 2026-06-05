@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupCreateRequest;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
 use T3G\AgencyPack\Blog\Service\BackendAccessService;
@@ -74,7 +75,7 @@ class BackendController extends ActionController
     {
         $view = $this->moduleTemplateFactory->create($this->request);
         $view->assignMultiple([
-            'blogSetups' => $this->backendBlogContextService->getAccessibleSetups(),
+            'blogSetups' => $this->setupService->determineBlogSetups(),
         ]);
 
         return $view->renderResponse('Backend/SetupWizard');
@@ -82,7 +83,7 @@ class BackendController extends ActionController
 
     public function postsAction(?int $blogSetup = null): ResponseInterface
     {
-        $blogSetups = $this->backendBlogContextService->getAccessibleSetups();
+        $blogSetups = $this->setupService->determineBlogSetups();
         $activeBlogSetup = $this->backendBlogContextService->resolveActiveBlogSetup($blogSetup, $blogSetups);
 
         $view = $this->moduleTemplateFactory->create($this->request);
@@ -97,7 +98,7 @@ class BackendController extends ActionController
 
     public function commentsAction(?string $filter = null, ?int $blogSetup = null): ResponseInterface
     {
-        $blogSetups = $this->backendBlogContextService->getAccessibleSetups();
+        $blogSetups = $this->setupService->determineBlogSetups();
         $activeBlogSetup = $this->backendBlogContextService->resolveActiveBlogSetup($blogSetup, $blogSetups);
         $accessibleIds = $this->backendBlogContextService->getAccessibleIds($blogSetups);
 
@@ -163,8 +164,9 @@ class BackendController extends ActionController
             return new RedirectResponse($this->uriBuilder->reset()->uriFor('setupWizard'));
         }
 
-        if ($data !== null) {
-            $this->setupService->createBlogSetup($data);
+        $createRequest = BlogSetupCreateRequest::fromRequestData($data);
+        if ($createRequest instanceof BlogSetupCreateRequest) {
+            $this->setupService->createBlogSetup($createRequest);
             $this->addFlashMessage(
                 $this->translate('flash.setup.created.message'),
                 $this->translate('flash.setup.created.title'),

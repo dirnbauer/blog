@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Service;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupCreateRequest;
 use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 use T3G\AgencyPack\Blog\Utility\DataHandlerUidReplacer;
 use T3G\AgencyPack\Blog\Utility\TypeUtility;
@@ -87,9 +88,12 @@ class SetupService
         return $this->backendAccessService->filterAccessibleBlogSetups(array_values($setups));
     }
 
-    public function createBlogSetup(array $data = []): void
+    public function createBlogSetup(BlogSetupCreateRequest|array $data = []): void
     {
-        $title = array_key_exists('title', $data) ? (string)$data['title'] : null;
+        $request = $data instanceof BlogSetupCreateRequest
+            ? $data
+            : BlogSetupCreateRequest::fromRequestData($data) ?? new BlogSetupCreateRequest();
+        $title = $request->title;
 
         $blogSetup = require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRecords.php');
         if ($title !== null) {

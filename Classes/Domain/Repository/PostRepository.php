@@ -40,18 +40,15 @@ class PostRepository extends Repository
 {
     protected array $settings = [];
     protected array $defaultConstraints = [];
+    private bool $defaultConstraintsInitialized = false;
 
     public function initializeObject(): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
 
-        // createQuery() internally resolves TypoScript through
-        // BackendConfigurationManager which requires a valid rootline.
-        // Workspace-only pages without a live counterpart break rootline
-        // resolution, which throws PageNotFoundException
-        // when the editor is in LIVE context.  In that case we skip the
-        // default constraints — the repository stays instantiable so the
-        // DI container does not crash on the Page Layout view.
+        // Query settings can be configured without a valid page rootline.
+        // Default constraints call createQuery() and are built lazily on the
+        // first finder call so workspace-only pages do not break DI bootstrap.
         try {
             $this->settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'blog');
 
@@ -62,18 +59,40 @@ class PostRepository extends Repository
             );
             $querySettings->setRespectStoragePage(false);
             $this->setDefaultQuerySettings($querySettings);
-
-            $context = GeneralUtility::makeInstance(Context::class);
-            $constraintBuilder = GeneralUtility::makeInstance(PostRepositoryConstraintBuilder::class, $context);
-            $query = $this->createQuery();
-            $this->defaultConstraints = $constraintBuilder->buildDefaultConstraints($query);
+            $this->initializeDefaultConstraints();
         } catch (PageNotFoundException) {
-            // Constraint setup failed — see comment above.
+            // Constraints are retried lazily via ensureDefaultConstraints().
         }
 
         $this->defaultOrderings = [
             'publish_date' => QueryInterface::ORDER_DESCENDING,
         ];
+    }
+
+    private function initializeDefaultConstraints(): void
+    {
+        if ($this->defaultConstraintsInitialized) {
+            return;
+        }
+
+        $context = GeneralUtility::makeInstance(Context::class);
+        $constraintBuilder = GeneralUtility::makeInstance(PostRepositoryConstraintBuilder::class, $context);
+        $query = $this->createQuery();
+        $this->defaultConstraints = $constraintBuilder->buildDefaultConstraints($query);
+        $this->defaultConstraintsInitialized = true;
+    }
+
+    private function ensureDefaultConstraints(): void
+    {
+        if ($this->defaultConstraintsInitialized) {
+            return;
+        }
+
+        try {
+            $this->initializeDefaultConstraints();
+        } catch (PageNotFoundException) {
+            // Rootline still unavailable — baseConstraints() applies doktype fallback.
+        }
     }
 
     public function findByUidForBackend(int $uid): ?Post
@@ -378,6 +397,7 @@ class PostRepository extends Repository
      */
     protected function baseConstraints(QueryInterface $query, bool $withStoragePid = true): array
     {
+        $this->ensureDefaultConstraints();
         $constraints = $this->defaultConstraints;
         if ($constraints === []) {
             $constraints[] = $query->equals('doktype', Constants::DOKTYPE_BLOG_POST);

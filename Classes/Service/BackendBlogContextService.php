@@ -14,23 +14,10 @@ namespace T3G\AgencyPack\Blog\Service;
 use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 
 /**
- * Resolves accessible blog setups and the active blog root for backend modules.
+ * Resolves the active blog root for backend modules from accessible setups.
  */
 final class BackendBlogContextService
 {
-    public function __construct(
-        private readonly SetupService $setupService,
-    ) {
-    }
-
-    /**
-     * @return list<BlogSetupSummary>
-     */
-    public function getAccessibleSetups(): array
-    {
-        return $this->setupService->determineBlogSetups();
-    }
-
     /**
      * @param list<BlogSetupSummary> $setups
      *

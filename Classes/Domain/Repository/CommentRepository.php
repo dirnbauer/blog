@@ -81,16 +81,50 @@ class CommentRepository extends Repository
      */
     public function countByFilterForBlogSetups(?int $blogSetup, array $blogSetupIds): array
     {
-        $counts = [];
+        $emptyCounts = [
+            'all' => 0,
+            'pending' => 0,
+            'approved' => 0,
+            'declined' => 0,
+            'deleted' => 0,
+        ];
         $blogSetups = $blogSetup !== null ? [$blogSetup] : $blogSetupIds;
-        foreach (CommentListFilter::countableCases() as $filter) {
-            $counts[$filter->value] = $this->countAllByFilterAndBlogSetups(
-                $filter->toRepositoryFilter(),
-                $blogSetups,
-            );
+        $postPids = $this->getPostPidsByRootPids($blogSetups);
+        if ($postPids === []) {
+            return $emptyCounts;
         }
 
-        return $counts;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_blog_domain_model_comment');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $row = $queryBuilder
+            ->addSelectLiteral('SUM(CASE WHEN status <> ' . Comment::STATUS_DELETED . ' THEN 1 ELSE 0 END) AS all_count')
+            ->addSelectLiteral('SUM(CASE WHEN status = ' . Comment::STATUS_PENDING . ' THEN 1 ELSE 0 END) AS pending_count')
+            ->addSelectLiteral('SUM(CASE WHEN status = ' . Comment::STATUS_APPROVED . ' THEN 1 ELSE 0 END) AS approved_count')
+            ->addSelectLiteral('SUM(CASE WHEN status = ' . Comment::STATUS_DECLINED . ' THEN 1 ELSE 0 END) AS declined_count')
+            ->addSelectLiteral('SUM(CASE WHEN status = ' . Comment::STATUS_DELETED . ' THEN 1 ELSE 0 END) AS deleted_count')
+            ->from('tx_blog_domain_model_comment')
+            ->where($queryBuilder->expr()->in(
+                'pid',
+                $queryBuilder->createNamedParameter($postPids, Connection::PARAM_INT_ARRAY),
+            ))
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (!is_array($row)) {
+            return $emptyCounts;
+        }
+
+        return [
+            'all' => (int)($row['all_count'] ?? 0),
+            'pending' => (int)($row['pending_count'] ?? 0),
+            'approved' => (int)($row['approved_count'] ?? 0),
+            'declined' => (int)($row['declined_count'] ?? 0),
+            'deleted' => (int)($row['deleted_count'] ?? 0),
+        ];
     }
 
     public function countAllByFilterAndBlogSetups(?string $filter = null, ?array $blogSetups = null): int
