@@ -1,5 +1,24 @@
 # Unreleased
 
+# 15.0.1
+
+## BUGFIX
+
+- [BUGFIX] Restore `CommentViewHelper` default link text from `getComment()` after the backend link refactor
+- [BUGFIX] Lazily initialize `PostRepository` default constraints so workspace-only pages do not break DI bootstrap
+
+## TASK
+
+- [TASK] Collapse backend comment status counts into one aggregate SQL query in `CommentRepository`
+- [TASK] Add `BlogSetupCreateRequest` DTO and type `BackendController::createBlogAction` input
+- [TASK] Drop redundant `BackendBlogContextService::getAccessibleSetups()` pass-through
+- [TASK] Add unit tests for RSS feed argument resolution, blog setup create request, and backend blog context
+- [TASK] Scope workspace-safety template tests to blog page templates only
+
+## Contributors
+
+- Kurt Dirnbauer
+
 # 15.0.0
 
 ## BREAKING

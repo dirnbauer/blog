@@ -46,7 +46,7 @@
         },
         "typo3/cms": {
             "extension-key": "blog",
-            "version": "15.0.0",
+            "version": "15.0.1",
             "web-dir": ".build/public",
             "Package": {
                 "providesPackages": {}
