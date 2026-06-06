@@ -22,7 +22,7 @@ final class CommentModerationService
     }
 
     /**
-     * @param array<string, mixed> $comments
+     * @param array<array-key, mixed> $comments
      *
      * @return list<int>
      */

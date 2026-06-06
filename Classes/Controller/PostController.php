@@ -29,6 +29,7 @@ use T3G\AgencyPack\Blog\Service\RelatedPostsService;
 use T3G\AgencyPack\Blog\Service\RssFeedMetadataFactory;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
@@ -74,7 +75,7 @@ class PostController extends ActionController
      */
     public function listRecentPostsAction(int $currentPage = 1): ResponseInterface
     {
-        $maximumItems = (int) ($this->settings['lists']['posts']['maximumDisplayedItems'] ?? 0);
+        $maximumItems = TypeUtility::toInt(TypeUtility::nested($this->settings, 'lists', 'posts', 'maximumDisplayedItems'));
         $posts = (0 === $maximumItems)
             ? $this->postRepository->findAll()
             : $this->postRepository->findAllWithLimit($maximumItems);
@@ -91,7 +92,7 @@ class PostController extends ActionController
      */
     public function listByDemandAction(): ResponseInterface
     {
-        $repositoryDemand = $this->postRepositoryDemandFactory->createFromSettings($this->settings['demand'] ?? []);
+        $repositoryDemand = $this->postRepositoryDemandFactory->createFromSettings(TypeUtility::toArray($this->settings['demand'] ?? null));
 
         $this->view->assign('type', 'demand');
         $this->view->assign('demand', $repositoryDemand);
@@ -105,7 +106,7 @@ class PostController extends ActionController
      */
     public function listLatestPostsAction(): ResponseInterface
     {
-        $maximumItems = (int) ($this->settings['latestPosts']['limit'] ?? 3);
+        $maximumItems = TypeUtility::toInt(TypeUtility::nested($this->settings, 'latestPosts', 'limit'), 3);
         $posts = $this->postRepository->findAllWithLimit($maximumItems);
 
         $this->view->assign('type', 'latest');
@@ -253,9 +254,9 @@ class PostController extends ActionController
     {
         $this->postPageContextService->assignCurrentPostToView($this->view, $this->getRequest());
         $posts = $this->relatedPostsService->findRelatedPosts(
-            (int)$this->settings['relatedPosts']['categoryMultiplier'],
-            (int)$this->settings['relatedPosts']['tagMultiplier'],
-            (int)$this->settings['relatedPosts']['limit'],
+            TypeUtility::toInt(TypeUtility::nested($this->settings, 'relatedPosts', 'categoryMultiplier')),
+            TypeUtility::toInt(TypeUtility::nested($this->settings, 'relatedPosts', 'tagMultiplier')),
+            TypeUtility::toInt(TypeUtility::nested($this->settings, 'relatedPosts', 'limit')),
         );
         $this->view->assign('type', 'related');
         $this->view->assign('posts', $posts);
@@ -281,10 +282,10 @@ class PostController extends ActionController
 
     protected function getPagination(QueryResultInterface $objects, int $currentPage = 1): ?BlogPagination
     {
-        $maximumNumberOfLinks = (int) ($this->settings['lists']['pagination']['maximumNumberOfLinks'] ?? 0);
+        $maximumNumberOfLinks = TypeUtility::toInt(TypeUtility::nested($this->settings, 'lists', 'pagination', 'maximumNumberOfLinks'));
         $itemsPerPage = 10;
         if ($this->request->getFormat() === 'html') {
-            $itemsPerPage = (int) ($this->settings['lists']['pagination']['itemsPerPage'] ?? 10);
+            $itemsPerPage = TypeUtility::toInt(TypeUtility::nested($this->settings, 'lists', 'pagination', 'itemsPerPage'), 10);
         }
 
         $paginator = new QueryResultPaginator($objects, $currentPage, $itemsPerPage);

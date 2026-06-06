@@ -106,14 +106,18 @@ class SetupService
             : BlogSetupCreateRequest::fromRequestData($data) ?? new BlogSetupCreateRequest();
         $title = $request->title;
 
-        $blogSetup = require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRecords.php');
+        $blogSetup = TypeUtility::toArray(require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRecords.php'));
         if ($title !== null) {
-            $blogSetup['pages']['NEW_blogRoot']['title'] = $title;
+            $pages = TypeUtility::toArray($blogSetup['pages'] ?? null);
+            $blogRoot = TypeUtility::toArray($pages['NEW_blogRoot'] ?? null);
+            $blogRoot['title'] = $title;
+            $pages['NEW_blogRoot'] = $blogRoot;
+            $blogSetup['pages'] = $pages;
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($blogSetup, []);
         $dataHandler->process_datamap();
-        $recordUidArray = $dataHandler->substNEWwithIDs;
+        $recordUidArray = $this->normalizeSubstitutions($dataHandler->substNEWwithIDs);
 
         $blogRootUid = TypeUtility::toInt($recordUidArray['NEW_blogRoot'] ?? null);
 
@@ -152,13 +156,30 @@ class SetupService
             ],
         );
 
-        $blogSetupRelations = require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRelations.php');
+        $blogSetupRelations = TypeUtility::toArray(require GeneralUtility::getFileAbsFileName('EXT:blog/Configuration/DataHandler/BlogSetupRelations.php'));
         $blogSetupRelations = $this->dataHandlerUidReplacer->replace($blogSetupRelations, $recordUidArray);
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($blogSetupRelations, []);
         $dataHandler->process_datamap();
 
         BackendUtility::setUpdateSignal('updatePageTree');
+    }
+
+    /**
+     * @param array<array-key, mixed> $substitutions
+     *
+     * @return array<string, int|string>
+     */
+    private function normalizeSubstitutions(array $substitutions): array
+    {
+        $normalized = [];
+        foreach ($substitutions as $placeholder => $uid) {
+            if (is_int($uid) || is_string($uid)) {
+                $normalized[(string)$placeholder] = $uid;
+            }
+        }
+
+        return $normalized;
     }
 
     protected function getQueryBuilderForTable(string $table): QueryBuilder

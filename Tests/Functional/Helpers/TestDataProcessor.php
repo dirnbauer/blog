@@ -16,6 +16,7 @@ use T3G\AgencyPack\Blog\Domain\Repository\CategoryRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
@@ -30,27 +31,33 @@ class TestDataProcessor implements DataProcessorInterface
         $postRepository = GeneralUtility::makeInstance(PostRepository::class);
         $tagRepository = GeneralUtility::makeInstance(TagRepository::class);
 
-        if (!isset($processorConfiguration['data.'])) {
+        $dataConfig = $processorConfiguration['data.'] ?? null;
+        if (!is_iterable($dataConfig)) {
             return $processedData;
         }
 
         $result = [];
-        foreach ($processorConfiguration['data.'] as $config) {
-            switch ($config['type']) {
+        foreach ($dataConfig as $config) {
+            if (!is_array($config)) {
+                continue;
+            }
+            $as = TypeUtility::toString($config['as'] ?? null);
+            $uid = TypeUtility::toInt($config['uid'] ?? null);
+            switch ($config['type'] ?? null) {
                 case 'author':
-                    $result[$config['as']] = $authorRepository->findByUid($config['uid']);
+                    $result[$as] = $authorRepository->findByUid($uid);
                     break;
                 case 'category':
-                    $result[$config['as']] = $categoryRepository->findByUid($config['uid']);
+                    $result[$as] = $categoryRepository->findByUid($uid);
                     break;
                 case 'comment':
-                    $result[$config['as']] = $commentRepository->findByUid($config['uid']);
+                    $result[$as] = $commentRepository->findByUid($uid);
                     break;
                 case 'post':
-                    $result[$config['as']] = $postRepository->findByUid($config['uid']);
+                    $result[$as] = $postRepository->findByUid($uid);
                     break;
                 case 'tag':
-                    $result[$config['as']] = $tagRepository->findByUid($config['uid']);
+                    $result[$as] = $tagRepository->findByUid($uid);
                     break;
             }
         }

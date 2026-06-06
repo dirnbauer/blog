@@ -24,6 +24,9 @@ class MailContent
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public function render(ServerRequestInterface $request, string $template, array $arguments): string
     {
         $view = $this->getTemplateObject($request);

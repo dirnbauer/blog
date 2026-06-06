@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\AvatarProvider\GravatarProvider;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
@@ -31,7 +32,7 @@ final class AvatarProviderUpdate extends AbstractUpdate implements UpgradeWizard
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $this->updateRecord($this->table, (int) $record['uid'], [
+            $this->updateRecord($this->table, TypeUtility::toInt($record['uid'] ?? null), [
                 'avatar_provider' => GravatarProvider::class,
             ]);
         }
@@ -39,6 +40,9 @@ final class AvatarProviderUpdate extends AbstractUpdate implements UpgradeWizard
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $queryBuilder = $this->createQueryBuilder($this->table);

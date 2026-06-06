@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Finisher\CommentFormFinisher;
 use T3G\AgencyPack\Blog\Domain\Validator\GoogleCaptchaValidator;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -41,27 +42,31 @@ class CommentFormFactory extends AbstractFormFactory
         $prototypeName = 'standard';
         $formConfigurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $prototypeConfiguration = $formConfigurationService->getPrototypeConfiguration($prototypeName);
-        $prototypeConfiguration['formElementsDefinition']['BlogGoogleCaptcha'] = $prototypeConfiguration['formElementsDefinition']['BlogGoogleCaptcha'] ?? [];
+        $formElementsDefinition = TypeUtility::toArray($prototypeConfiguration['formElementsDefinition'] ?? null);
+        $blogGoogleCaptcha = TypeUtility::toArray($formElementsDefinition['BlogGoogleCaptcha'] ?? null);
         ArrayUtility::mergeRecursiveWithOverrule(
-            $prototypeConfiguration['formElementsDefinition']['BlogGoogleCaptcha'],
+            $blogGoogleCaptcha,
             [
-                'implementationClassName' => 'TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement',
+                'implementationClassName' => GenericFormElement::class,
             ],
         );
+        $formElementsDefinition['BlogGoogleCaptcha'] = $blogGoogleCaptcha;
+        $prototypeConfiguration['formElementsDefinition'] = $formElementsDefinition;
 
         $settings = GeneralUtility::makeInstance(ConfigurationManagerInterface::class)
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
         $captcha = [];
-        $captcha['enable'] = (bool) ($settings['comments']['google_recaptcha']['enable'] ?? false);
-        $captcha['sitekey'] = (string) trim($settings['comments']['google_recaptcha']['website_key'] ?? '');
-        $captcha['secret'] = (string) trim($settings['comments']['google_recaptcha']['secret_key'] ?? '');
+        $captcha['enable'] = TypeUtility::toBool(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'enable'));
+        $captcha['sitekey'] = trim(TypeUtility::toString(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'website_key')));
+        $captcha['secret'] = trim(TypeUtility::toString(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'secret_key')));
 
         $form = GeneralUtility::makeInstance(FormDefinition::class, 'postcomment', $prototypeConfiguration);
         $form->setRenderingOption('controllerAction', 'form');
         $form->setRenderingOption('submitButtonLabel', LocalizationUtility::translate('form.comment.submit', 'blog'));
         $renderingOptions = $form->getRenderingOptions();
-        $renderingOptions['partialRootPaths'][-1634043971] = 'EXT:blog/Resources/Private/Partials/Form/';
-        $form->setRenderingOption('partialRootPaths', $renderingOptions['partialRootPaths']);
+        $partialRootPaths = TypeUtility::toArray($renderingOptions['partialRootPaths'] ?? null);
+        $partialRootPaths[-1634043971] = 'EXT:blog/Resources/Private/Partials/Form/';
+        $form->setRenderingOption('partialRootPaths', $partialRootPaths);
 
         $page = $form->createPage('commentform');
 
@@ -77,7 +82,7 @@ class CommentFormFactory extends AbstractFormFactory
         $emailField->addValidator(GeneralUtility::makeInstance(NotEmptyValidator::class));
         $emailField->addValidator(GeneralUtility::makeInstance(EmailAddressValidator::class));
 
-        if ((bool) $settings['comments']['features']['urls']) {
+        if (TypeUtility::toBool(TypeUtility::nested($settings, 'comments', 'features', 'urls'))) {
             /** @var GenericFormElement $urlField */
             $urlField = $page->createElement('url', 'Text');
             $urlField->setLabel((string) LocalizationUtility::translate('form.comment.url', 'blog'));

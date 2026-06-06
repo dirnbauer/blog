@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\Service;
 
 use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -65,16 +66,16 @@ final class BackendAccessService
             return true;
         }
 
-        $rawWebmounts = array_filter(
-            array_map('intval', explode(',', (string)($backendUser->user['db_mountpoints'] ?? ''))),
+        $rawWebmounts = array_values(array_filter(
+            array_map('intval', explode(',', TypeUtility::toString($backendUser->user['db_mountpoints'] ?? null))),
             static fn (int $webmount): bool => $webmount > 0,
-        );
+        ));
         if ($rawWebmounts === []) {
             return false;
         }
 
         foreach (BackendUtility::BEgetRootLine($pageUid, '', true) as $rootlinePage) {
-            if (in_array((int)($rootlinePage['uid'] ?? 0), $rawWebmounts, true)) {
+            if (in_array(TypeUtility::toInt(TypeUtility::nested($rootlinePage, 'uid')), $rawWebmounts, true)) {
                 return true;
             }
         }

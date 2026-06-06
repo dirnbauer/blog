@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\Domain\Validator;
 
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
@@ -53,14 +54,14 @@ class GoogleCaptchaValidator extends AbstractValidator
             $request->getAttribute(self::REQUEST_ATTRIBUTE) !== true
             && ($requestData['action'] ?? null) === $action
             && ($requestData['controller'] ?? null) === $controller
-            && (int)($settings['comments']['google_recaptcha']['enable'] ?? 0) === 1
+            && TypeUtility::toInt(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'enable')) === 1
         ) {
-            $captchaResponse = is_array($bodyData) ? (string)($bodyData['g-recaptcha-response'] ?? '') : '';
+            $captchaResponse = is_array($bodyData) ? TypeUtility::toString($bodyData['g-recaptcha-response'] ?? null) : '';
             $additionalOptions = [
                 'headers' => ['Content-type' => 'application/x-www-form-urlencoded'],
                 'timeout' => self::VERIFY_TIMEOUT_SECONDS,
                 'query' => [
-                    'secret' => $settings['comments']['google_recaptcha']['secret_key'],
+                    'secret' => TypeUtility::toString(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'secret_key')),
                     'response' => $captchaResponse,
                     'remoteip' => RequestUtility::getNormalizedParams($request)->getRemoteAddress(),
                 ],

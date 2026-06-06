@@ -42,16 +42,16 @@ final class CategorySlugUpdate extends AbstractUpdate implements UpgradeWizardIn
 
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $recordId = (int)$record['uid'];
-            $pid = (int)$record['pid'];
+            $recordId = TypeUtility::toInt($record['uid'] ?? null);
+            $pid = TypeUtility::toInt($record['pid'] ?? null);
 
             // Respect Workspace
             if ($pid === -1) {
                 $queryBuilder = $this->createQueryBuilder($this->table);
-                $criteria = [$this->createEqualIntCriteria($queryBuilder, 'uid', $record['t3ver_oid'])];
-                $records = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
-                if (isset($records[0])) {
-                    $pid = (int)$records[0]['pid'];
+                $criteria = [$this->createEqualIntCriteria($queryBuilder, 'uid', TypeUtility::toInt($record['t3ver_oid'] ?? null))];
+                $workspaceRecords = $this->getRecordsByCriteria($queryBuilder, $this->table, $criteria);
+                if (isset($workspaceRecords[0])) {
+                    $pid = TypeUtility::toInt($workspaceRecords[0]['pid'] ?? null);
                 }
             }
 
@@ -74,6 +74,9 @@ final class CategorySlugUpdate extends AbstractUpdate implements UpgradeWizardIn
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $queryBuilder = $this->createQueryBuilder($this->table);

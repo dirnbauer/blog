@@ -12,6 +12,7 @@ declare(strict_types=1);
 use T3G\AgencyPack\Blog\Constants;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
+/** @var array<string, array<string, array<string, mixed>>> $data */
 $data = [];
 
 // Pages

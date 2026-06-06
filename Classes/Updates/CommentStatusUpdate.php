@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Updates;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
@@ -36,7 +37,7 @@ final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardI
             } elseif ($record['status'] === 0 && $record['hidden'] === 1 && $record['deleted'] === 1) {
                 $status = 50;
             }
-            $this->updateRecord($this->table, (int) $record['uid'], [
+            $this->updateRecord($this->table, TypeUtility::toInt($record['uid'] ?? null), [
                 'status' => (string) $status,
             ]);
         }
@@ -44,6 +45,9 @@ final class CommentStatusUpdate extends AbstractUpdate implements UpgradeWizardI
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $records = [];

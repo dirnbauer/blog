@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
@@ -31,10 +32,10 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $this->updateRecord('sys_file_reference', (int) $record['uid'], [
+            $this->updateRecord('sys_file_reference', TypeUtility::toInt($record['uid'] ?? null), [
                 'fieldname' => 'featured_image',
             ]);
-            $this->updateRecord('pages', (int) $record['uid_foreign'], [
+            $this->updateRecord('pages', TypeUtility::toInt($record['uid_foreign'] ?? null), [
                 'featured_image' => 1,
                 'media' => 0,
             ]);
@@ -43,6 +44,9 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedPages(): array
     {
         $queryBuilder = $this->createQueryBuilder('pages');
@@ -56,12 +60,13 @@ final class FeaturedImageUpdate extends AbstractUpdate implements UpgradeWizardI
         return $records;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $pages = array_map(
-            function ($page) {
-                return $page['uid'];
-            },
+            static fn (array $page): int => TypeUtility::toInt($page['uid'] ?? null),
             $this->getAffectedPages(),
         );
 

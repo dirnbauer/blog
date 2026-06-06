@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
@@ -31,14 +32,17 @@ final class DatabasePublishDateUpdate extends AbstractUpdate implements UpgradeW
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $this->updateRecord($this->table, (int) $record['uid'], [
-                'publish_date' => $record['crdate'] ?? time(),
+            $this->updateRecord($this->table, TypeUtility::toInt($record['uid'] ?? null), [
+                'publish_date' => TypeUtility::toInt($record['crdate'] ?? time()),
             ]);
         }
 
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $queryBuilder = $this->createQueryBuilder($this->table);

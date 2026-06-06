@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\Tests\Functional\Hooks;
 
 use PHPUnit\Framework\Attributes\Test;
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
@@ -77,8 +78,8 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $liveRecord = BackendUtility::getRecord('pages', 3);
         self::assertIsArray($liveRecord);
-        self::assertSame(7, (int)$liveRecord['crdate_month']);
-        self::assertSame(2023, (int)$liveRecord['crdate_year']);
+        self::assertSame(7, TypeUtility::toInt($liveRecord['crdate_month'] ?? null));
+        self::assertSame(2023, TypeUtility::toInt($liveRecord['crdate_year'] ?? null));
 
         $this->setWorkspaceId(1);
 
@@ -96,7 +97,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
         $liveRecordAfter = BackendUtility::getRecord('pages', 3);
         self::assertIsArray($liveRecordAfter);
         self::assertSame('Live Post', $liveRecordAfter['title']);
-        self::assertSame(7, (int)$liveRecordAfter['crdate_month']);
+        self::assertSame(7, TypeUtility::toInt($liveRecordAfter['crdate_month'] ?? null));
     }
 
     #[Test]
@@ -128,7 +129,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
         ], []);
         $dataHandler->process_datamap();
 
-        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . implode(', ', $dataHandler->errorLog));
+        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . $this->formatErrorLog($dataHandler->errorLog));
     }
 
     #[Test]
@@ -152,7 +153,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $liveRecord = BackendUtility::getRecord('pages', 3);
         self::assertIsArray($liveRecord);
-        self::assertSame(7, (int)$liveRecord['crdate_month']);
+        self::assertSame(7, TypeUtility::toInt($liveRecord['crdate_month'] ?? null));
 
         $this->setWorkspaceId(1);
 
@@ -169,8 +170,8 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
         $this->setWorkspaceId(0);
         $liveRecordUnchanged = BackendUtility::getRecord('pages', 3);
         self::assertIsArray($liveRecordUnchanged);
-        self::assertSame(7, (int)$liveRecordUnchanged['crdate_month']);
-        self::assertSame(2023, (int)$liveRecordUnchanged['crdate_year']);
+        self::assertSame(7, TypeUtility::toInt($liveRecordUnchanged['crdate_month'] ?? null));
+        self::assertSame(2023, TypeUtility::toInt($liveRecordUnchanged['crdate_year'] ?? null));
     }
 
     #[Test]
@@ -186,7 +187,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        $tagUid = $dataHandler->substNEWwithIDs['NEW_tag'];
+        $tagUid = TypeUtility::toInt($dataHandler->substNEWwithIDs['NEW_tag'] ?? null);
         self::assertGreaterThan(0, $tagUid);
 
         $this->setWorkspaceId(1);
@@ -200,7 +201,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . implode(', ', $dataHandler->errorLog));
+        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . $this->formatErrorLog($dataHandler->errorLog));
 
         $this->setWorkspaceId(0);
         $liveTag = BackendUtility::getRecord('tx_blog_domain_model_tag', $tagUid);
@@ -227,7 +228,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        $authorUid = $dataHandler->substNEWwithIDs['NEW_author'];
+        $authorUid = TypeUtility::toInt($dataHandler->substNEWwithIDs['NEW_author'] ?? null);
         self::assertGreaterThan(0, $authorUid);
 
         $this->setWorkspaceId(1);
@@ -241,7 +242,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . implode(', ', $dataHandler->errorLog));
+        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . $this->formatErrorLog($dataHandler->errorLog));
 
         $this->setWorkspaceId(0);
         $liveAuthor = BackendUtility::getRecord('tx_blog_domain_model_author', $authorUid);
@@ -283,7 +284,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        $commentUid = $dataHandler->substNEWwithIDs['NEW_comment'];
+        $commentUid = TypeUtility::toInt($dataHandler->substNEWwithIDs['NEW_comment'] ?? null);
 
         $this->setWorkspaceId(1);
 
@@ -296,12 +297,12 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . implode(', ', $dataHandler->errorLog));
+        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . $this->formatErrorLog($dataHandler->errorLog));
 
         $this->setWorkspaceId(0);
         $comment = BackendUtility::getRecord('tx_blog_domain_model_comment', $commentUid);
         self::assertIsArray($comment);
-        self::assertSame(10, (int)$comment['status'], 'Comment should be live-edited even in workspace context');
+        self::assertSame(10, TypeUtility::toInt($comment['status'] ?? null), 'Comment should be live-edited even in workspace context');
     }
 
     #[Test]
@@ -322,7 +323,7 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
             ],
         ], []);
         $dataHandler->process_datamap();
-        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . implode(', ', $dataHandler->errorLog));
+        self::assertEmpty($dataHandler->errorLog, 'DataHandler errors: ' . $this->formatErrorLog($dataHandler->errorLog));
 
         $this->setWorkspaceId(0);
 
@@ -340,5 +341,13 @@ final class DataHandlerHookWorkspaceTest extends FunctionalTestCase
 
         $titles = array_column($liveRecords, 'title');
         self::assertNotContains('Workspace-Only Post', $titles);
+    }
+
+    /**
+     * @param array<int|string, mixed> $errorLog
+     */
+    private function formatErrorLog(array $errorLog): string
+    {
+        return implode(', ', array_map(static fn (mixed $error): string => TypeUtility::toString($error), $errorLog));
     }
 }

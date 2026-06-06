@@ -31,7 +31,13 @@ final class TtContentTcaRegistrationTest extends TestCase
         }
 
         $existingTca = $GLOBALS['TCA'] ?? [];
-        $this->originalTca = is_array($existingTca) ? $existingTca : [];
+        $normalizedTca = [];
+        if (is_array($existingTca)) {
+            foreach ($existingTca as $key => $value) {
+                $normalizedTca[(string)$key] = $value;
+            }
+        }
+        $this->originalTca = $normalizedTca;
         $GLOBALS['TCA'] = [
             'tt_content' => [
                 'ctrl' => [

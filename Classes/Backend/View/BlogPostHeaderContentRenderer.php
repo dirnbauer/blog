@@ -14,6 +14,7 @@ namespace T3G\AgencyPack\Blog\Backend\View;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -46,7 +47,7 @@ class BlogPostHeaderContentRenderer implements SingletonInterface
             return '';
         }
 
-        $pageUid = (int)($request->getQueryParams()['id'] ?? 0);
+        $pageUid = TypeUtility::toInt($request->getQueryParams()['id'] ?? null);
         $pageInfo = BackendUtility::readPageAccess($pageUid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW));
         if (!is_array($pageInfo)) {
             return '';

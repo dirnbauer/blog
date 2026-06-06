@@ -18,6 +18,7 @@ use T3G\AgencyPack\Blog\Domain\Model\Tag;
 use T3G\AgencyPack\Blog\Domain\Repository\CategoryRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
 use T3G\AgencyPack\Blog\Utility\TcaUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PostRepositoryDemandFactory
@@ -31,9 +32,9 @@ class PostRepositoryDemandFactory
     public function createFromSettings(array $settings): PostRepositoryDemand
     {
         $demand = new PostRepositoryDemand();
-        $demand->setPosts(GeneralUtility::intExplode(',', $settings['posts'] ?? '', true));
+        $demand->setPosts(GeneralUtility::intExplode(',', TypeUtility::toString($settings['posts'] ?? null), true));
 
-        foreach ($this->categoryRepository->findByUids(GeneralUtility::intExplode(',', $settings['categories'] ?? '')) as $category) {
+        foreach ($this->categoryRepository->findByUids(GeneralUtility::intExplode(',', TypeUtility::toString($settings['categories'] ?? null))) as $category) {
             if ($category instanceof Category) {
                 $demand->addCategory($category);
             }
@@ -43,7 +44,7 @@ class PostRepositoryDemandFactory
             $demand->setCategoriesConjunction($settings['categoriesConjunction']);
         }
 
-        foreach ($this->tagRepository->findByUids(GeneralUtility::intExplode(',', $settings['tags'] ?? '')) as $tag) {
+        foreach ($this->tagRepository->findByUids(GeneralUtility::intExplode(',', TypeUtility::toString($settings['tags'] ?? null))) as $tag) {
             if ($tag instanceof Tag) {
                 $demand->addTag($tag);
             }
@@ -56,7 +57,7 @@ class PostRepositoryDemandFactory
         $pagesColumns = TcaUtility::getNestedArray(TcaUtility::getTableTca('pages'), ['columns']);
         $sortBy = $settings['sortBy'] ?? null;
         if (is_string($sortBy) && isset($pagesColumns[$sortBy])) {
-            $direction = strtoupper($settings['sortDirection'] ?? 'ASC');
+            $direction = strtoupper(TypeUtility::toString($settings['sortDirection'] ?? 'ASC'));
             if (!in_array($direction, ['ASC', 'DESC'], true)) {
                 $direction = 'ASC';
             }
@@ -64,7 +65,7 @@ class PostRepositoryDemandFactory
             $demand->setOrdering($sortBy, $direction);
         }
 
-        $demand->setLimit((int)($settings['limit'] ?? 0));
+        $demand->setLimit(TypeUtility::toInt($settings['limit'] ?? null));
 
         return $demand;
     }

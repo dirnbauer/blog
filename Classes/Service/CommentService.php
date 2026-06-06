@@ -15,6 +15,7 @@ use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Repository\CommentRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -49,9 +50,9 @@ class CommentService
         if (trim((string) $comment->getHp()) !== '') {
             return $result;
         }
-        if ((int)$this->settings['active'] === 1 && $post->getCommentsActive()) {
+        if (TypeUtility::toInt($this->settings['active'] ?? null) === 1 && $post->getCommentsActive()) {
             $result = self::STATE_SUCCESS;
-            switch ((int)$this->settings['moderation']) {
+            switch (TypeUtility::toInt($this->settings['moderation'] ?? null)) {
                 case 0:
                     $comment->setStatus(Comment::STATUS_APPROVED);
                     break;

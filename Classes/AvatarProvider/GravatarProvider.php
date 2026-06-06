@@ -16,6 +16,7 @@ use T3G\AgencyPack\Blog\Service\Avatar\AvatarResourceResolverInterface;
 use T3G\AgencyPack\Blog\Service\Avatar\Gravatar\GravatarResourceResolver;
 use T3G\AgencyPack\Blog\Service\Avatar\Gravatar\GravatarUriBuilder;
 use T3G\AgencyPack\Blog\Service\Avatar\Gravatar\GravatarUriBuilderInterface;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
@@ -54,8 +55,10 @@ class GravatarProvider implements AvatarProviderInterface, SingletonInterface
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
 
-        $rating = trim($rating = (string)($settings['authors']['avatar']['provider']['rating'] ?? '')) === '' ? null : $rating;
-        $default = trim($default = (string)($settings['authors']['avatar']['provider']['default'] ?? '')) === '' ? null : $default;
+        $rating = trim(TypeUtility::toString(TypeUtility::nested($settings, 'authors', 'avatar', 'provider', 'rating')));
+        $rating = $rating === '' ? null : $rating;
+        $default = trim(TypeUtility::toString(TypeUtility::nested($settings, 'authors', 'avatar', 'provider', 'default')));
+        $default = $default === '' ? null : $default;
 
         $gravatarUri = $this->gravatarUriBuilder->getUri(
             $author->getEmail(),

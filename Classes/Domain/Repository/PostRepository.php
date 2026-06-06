@@ -350,7 +350,7 @@ class PostRepository extends Repository
             // check the whole language-fallback chain
             $fallbacks = $languageConfiguration->getFallbackLanguageIds();
             foreach ($fallbacks as $fallbackLanguageId) {
-                $post = $this->getPostWithLanguage($pageId, $fallbackLanguageId);
+                $post = $this->getPostWithLanguage($pageId, TypeUtility::toInt($fallbackLanguageId));
                 if ($post !== null) {
                     return $post;
                 }
@@ -430,9 +430,12 @@ class PostRepository extends Repository
         return $query;
     }
 
+    /**
+     * @return list<int>
+     */
     protected function getStoragePidsFromTypoScript(): array
     {
-        return GeneralUtility::intExplode(',', TypeUtility::toString($this->settings['persistence']['storagePid'] ?? ''));
+        return GeneralUtility::intExplode(',', TypeUtility::toString(TypeUtility::nested($this->settings, 'persistence', 'storagePid')));
     }
 
     protected function getStoragePidConstraint(QueryInterface $query): ?ComparisonInterface
@@ -446,12 +449,16 @@ class PostRepository extends Repository
         return null;
     }
 
+    /**
+     * @return list<int>
+     */
     protected function getPidsForConstraints(): array
     {
-        // only add non empty pids (pid 0 will be removed as well
-        $pids = array_filter($this->getStoragePidsFromTypoScript(), function ($value) {
-            return $value !== '' && (int) $value !== 0;
-        });
+        // only add non empty pids (pid 0 will be removed as well)
+        $pids = array_values(array_filter(
+            $this->getStoragePidsFromTypoScript(),
+            static fn (int $value): bool => $value !== 0,
+        ));
 
         if (count($pids) === 0) {
             $pageInformation = RequestUtility::getPageInformation($this->getRequest());

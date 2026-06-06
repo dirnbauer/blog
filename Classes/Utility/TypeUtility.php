@@ -39,6 +39,29 @@ final class TypeUtility
         return $default;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function toArray(mixed $value): array
+    {
+        return is_array($value) ? $value : [];
+    }
+
+    /**
+     * Safely walk a nested array structure that may contain mixed values.
+     */
+    public static function nested(mixed $value, int|string ...$keys): mixed
+    {
+        foreach ($keys as $key) {
+            if (!is_array($value) || !array_key_exists($key, $value)) {
+                return null;
+            }
+            $value = $value[$key];
+        }
+
+        return $value;
+    }
+
     public static function toBool(mixed $value, bool $default = false): bool
     {
         if (is_bool($value)) {

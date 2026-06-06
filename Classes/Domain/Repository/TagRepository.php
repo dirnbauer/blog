@@ -48,6 +48,9 @@ class TagRepository extends Repository
         return $query->execute();
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     public function findTopByUsage(int $limit = 20): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -61,7 +64,7 @@ class TagRepository extends Repository
             ->orderBy('cnt', 'DESC')
             ->setMaxResults($limit);
 
-        $storagePidSetting = TypeUtility::toString($this->settings['persistence']['storagePid'] ?? '');
+        $storagePidSetting = TypeUtility::toString(TypeUtility::nested($this->settings, 'persistence', 'storagePid'));
         if ($storagePidSetting !== '') {
             $storagePids = GeneralUtility::intExplode(',', $storagePidSetting, true);
             $queryBuilder->where(

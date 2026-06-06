@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Tests\Functional;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -90,13 +91,16 @@ abstract class SiteBasedTestCase extends FunctionalTestCase
         );
     }
 
+    /**
+     * @param array<array-key, array<string, mixed>> $instructions
+     */
     protected function renderFluidTemplateInTestSite(string $template, array $instructions = []): string
     {
         $instructionString = '';
         foreach ($instructions as $key => $values) {
             $instructionString .= "\n";
             foreach ($values as $name => $value) {
-                $instructionString .= "\n" . $key . '.' . $name . ' = ' . $value;
+                $instructionString .= "\n" . $key . '.' . $name . ' = ' . TypeUtility::toString($value);
             }
         }
 

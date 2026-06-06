@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\DataTransferObject;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
+
 /**
  * Input for the backend blog setup wizard create action.
  */
@@ -22,7 +24,7 @@ final readonly class BlogSetupCreateRequest
     }
 
     /**
-     * @param array{title?: string|null}|null $data
+     * @param array<array-key, mixed>|null $data
      */
     public static function fromRequestData(?array $data): ?self
     {
@@ -30,7 +32,7 @@ final readonly class BlogSetupCreateRequest
             return null;
         }
 
-        $title = array_key_exists('title', $data) ? (string)$data['title'] : null;
+        $title = array_key_exists('title', $data) ? TypeUtility::toString($data['title']) : null;
 
         return new self(title: $title !== '' ? $title : null);
     }

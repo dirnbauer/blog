@@ -21,6 +21,7 @@ use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Domain\Repository\TagRepository;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Utility\ArchiveUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class WidgetController extends ActionController
@@ -37,10 +38,10 @@ class WidgetController extends ActionController
     public function categoriesAction(): ResponseInterface
     {
         // @todo allow post?
-        $requestParameters = $this->request->getQueryParams()['tx_blog_category'] ?? [];
+        $requestParameters = TypeUtility::toArray($this->request->getQueryParams()['tx_blog_category'] ?? null);
         $currentCategory = 0;
         if (($requestParameters['category'] ?? null) !== null) {
-            $currentCategory = (int)$requestParameters['category'];
+            $currentCategory = TypeUtility::toInt($requestParameters['category']);
         }
         $categories = $this->categoryRepository->findAll();
         $this->view->assign('categories', $categories);
@@ -56,25 +57,27 @@ class WidgetController extends ActionController
     public function tagsAction(): ResponseInterface
     {
         // @todo allow post?
-        $requestParameters = $this->request->getQueryParams()['tx_blog_tag'] ?? [];
+        $requestParameters = TypeUtility::toArray($this->request->getQueryParams()['tx_blog_tag'] ?? null);
         $currentTag = 0;
         if (($requestParameters['tag'] ?? null) !== null) {
-            $currentTag = (int)$requestParameters['tag'];
+            $currentTag = TypeUtility::toInt($requestParameters['tag']);
         }
-        $limit = (int)($this->settings['widgets']['tags']['limit'] ?? 20);
-        $minSize = (int)($this->settings['widgets']['tags']['minSize'] ?? 100);
-        $maxSize = (int)($this->settings['widgets']['tags']['maxSize'] ?? 100);
+        $limit = TypeUtility::toInt(TypeUtility::nested($this->settings, 'widgets', 'tags', 'limit'), 20);
+        $minSize = TypeUtility::toInt(TypeUtility::nested($this->settings, 'widgets', 'tags', 'minSize'), 100);
+        $maxSize = TypeUtility::toInt(TypeUtility::nested($this->settings, 'widgets', 'tags', 'maxSize'), 100);
         $tags = $this->tagRepository->findTopByUsage($limit);
         $minimumCount = null;
         $maximumCount = 0;
         foreach ($tags as $tag) {
-            if ($tag['cnt'] > $maximumCount) {
-                $maximumCount = $tag['cnt'];
+            $count = TypeUtility::toInt($tag['cnt'] ?? null);
+            if ($count > $maximumCount) {
+                $maximumCount = $count;
             }
-            if ($minimumCount === null || $tag['cnt'] < $minimumCount) {
-                $minimumCount = $tag['cnt'];
+            if ($minimumCount === null || $count < $minimumCount) {
+                $minimumCount = $count;
             }
         }
+        $minimumCount ??= 0;
         $spread = $maximumCount - $minimumCount;
 
         if ($spread === 0) {
@@ -82,12 +85,12 @@ class WidgetController extends ActionController
         }
 
         foreach ($tags as &$tagReference) {
-            $size = $minSize + ($tagReference['cnt'] - $minimumCount) * ($maxSize - $minSize) / $spread;
+            $size = $minSize + (TypeUtility::toInt($tagReference['cnt'] ?? null) - $minimumCount) * ($maxSize - $minSize) / $spread;
             $tagReference['size'] = floor($size);
         }
         unset($tagReference);
         foreach ($tags as $tag) {
-            $this->cacheService->addTagToPage($this->request, 'tx_blog_tag_' . (int)$tag['uid']);
+            $this->cacheService->addTagToPage($this->request, 'tx_blog_tag_' . TypeUtility::toInt($tag['uid'] ?? null));
         }
         $this->view->assign('tags', $tags);
         $this->view->assign('currentTag', $currentTag);
@@ -96,7 +99,7 @@ class WidgetController extends ActionController
 
     public function recentPostsAction(): ResponseInterface
     {
-        $limit = (int)($this->settings['widgets']['recentposts']['limit'] ?? 0);
+        $limit = TypeUtility::toInt(TypeUtility::nested($this->settings, 'widgets', 'recentposts', 'limit'));
 
         $posts = $limit > 0
             ? $this->postRepository->findAllWithLimit($limit)
@@ -113,8 +116,9 @@ class WidgetController extends ActionController
 
     public function commentsAction(): ResponseInterface
     {
-        $limit = (int)($this->settings['widgets']['comments']['limit'] ?? 5);
-        $blogSetup = isset($this->settings['widgets']['comments']['blogSetup']) ? (int) $this->settings['widgets']['comments']['blogSetup'] : null;
+        $limit = TypeUtility::toInt(TypeUtility::nested($this->settings, 'widgets', 'comments', 'limit'), 5);
+        $blogSetupValue = TypeUtility::nested($this->settings, 'widgets', 'comments', 'blogSetup');
+        $blogSetup = $blogSetupValue !== null ? TypeUtility::toInt($blogSetupValue) : null;
         $comments = $this->commentRepository->findActiveComments($limit, $blogSetup);
         $this->view->assign('comments', $comments);
         foreach ($comments as $comment) {

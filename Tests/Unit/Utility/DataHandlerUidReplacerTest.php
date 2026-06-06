@@ -39,7 +39,9 @@ final class DataHandlerUidReplacerTest extends TestCase
         ]);
 
         self::assertArrayHasKey('99', $result);
-        self::assertSame('42', $result['99']['pid']);
+        $entry = $result['99'];
+        self::assertIsArray($entry);
+        self::assertSame('42', $entry['pid'] ?? null);
     }
 
     #[Test]

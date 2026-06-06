@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
@@ -31,15 +32,18 @@ final class DatabaseMonthYearUpdate extends AbstractUpdate implements UpgradeWiz
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $timestamp = $record['crdate'] ?? time();
-            $this->updateRecord($this->table, (int) $record['uid'], [
-                'crdate_month' => date('n', (int)$timestamp),
-                'crdate_year' => date('Y', (int)$timestamp),
+            $timestamp = TypeUtility::toInt($record['crdate'] ?? time());
+            $this->updateRecord($this->table, TypeUtility::toInt($record['uid'] ?? null), [
+                'crdate_month' => date('n', $timestamp),
+                'crdate_year' => date('Y', $timestamp),
             ]);
         }
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $queryBuilder = $this->createQueryBuilder($this->table);

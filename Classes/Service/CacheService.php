@@ -14,6 +14,7 @@ namespace T3G\AgencyPack\Blog\Service;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\CacheTag;
@@ -41,7 +42,7 @@ class CacheService
         foreach ($post->getTags() as $tag) {
             $this->addTagToPage($request, 'tx_blog_tag_' . $tag->getUid());
         }
-        if (isset($settings['comments']['active']) && $settings['comments']['active']) {
+        if (TypeUtility::toBool(TypeUtility::nested($settings, 'comments', 'active'))) {
             foreach ($post->getActiveComments() as $comment) {
                 if ($comment instanceof Comment) {
                     $this->addTagToPage($request, 'tx_blog_comment_' . $comment->getUid());
@@ -55,6 +56,9 @@ class CacheService
         $this->addTagsToPage($request, [$tag]);
     }
 
+    /**
+     * @param list<string> $tags
+     */
     public function addTagsToPage(ServerRequestInterface $request, array $tags): void
     {
         $cacheCollector = $request->getAttribute('frontend.cache.collector');
@@ -72,6 +76,9 @@ class CacheService
         $this->flushCacheByTags([$tag]);
     }
 
+    /**
+     * @param list<string> $tags
+     */
     public function flushCacheByTags(array $tags): void
     {
         $this->cacheManager

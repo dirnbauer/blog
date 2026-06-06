@@ -12,19 +12,25 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Backend\FormDataProvider;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 
 class CategoryDefaultValueProvider implements FormDataProviderInterface
 {
     public function addData(array $result): array
     {
-        if ($result['command'] !== 'new' ||
-            $result['tableName'] !== 'sys_category' ||
-            $result['parentPageRow']['module'] !== 'blog') {
+        $parentPageRow = TypeUtility::toArray($result['parentPageRow'] ?? null);
+        if (($result['command'] ?? null) !== 'new' ||
+            ($result['tableName'] ?? null) !== 'sys_category' ||
+            ($parentPageRow['module'] ?? null) !== 'blog') {
             return $result;
         }
 
-        $result['databaseRow']['record_type'][0] = (string) Constants::CATEGORY_TYPE_BLOG;
+        $databaseRow = TypeUtility::toArray($result['databaseRow'] ?? null);
+        $recordType = TypeUtility::toArray($databaseRow['record_type'] ?? null);
+        $recordType[0] = (string) Constants::CATEGORY_TYPE_BLOG;
+        $databaseRow['record_type'] = $recordType;
+        $result['databaseRow'] = $databaseRow;
         $result['recordTypeValue'] = (string) Constants::CATEGORY_TYPE_BLOG;
 
         return $result;

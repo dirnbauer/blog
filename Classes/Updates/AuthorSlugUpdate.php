@@ -42,8 +42,8 @@ final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInte
 
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $recordId = (int)$record['uid'];
-            $pid = (int)$record['pid'];
+            $recordId = TypeUtility::toInt($record['uid'] ?? null);
+            $pid = TypeUtility::toInt($record['pid'] ?? null);
 
             // Build Slug
             $slug = $slugHelper->generate($record, $pid);
@@ -64,6 +64,9 @@ final class AuthorSlugUpdate extends AbstractUpdate implements UpgradeWizardInte
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $queryBuilder = $this->createQueryBuilder($this->table);

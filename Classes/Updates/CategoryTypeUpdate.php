@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace T3G\AgencyPack\Blog\Updates;
 
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
@@ -33,7 +34,7 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
     {
         $records = $this->getAffectedRecords();
         foreach ($records as $record) {
-            $this->updateRecord($this->table, (int) $record['uid'], [
+            $this->updateRecord($this->table, TypeUtility::toInt($record['uid'] ?? null), [
                 'record_type' => Constants::CATEGORY_TYPE_BLOG,
             ]);
         }
@@ -41,12 +42,13 @@ final class CategoryTypeUpdate extends AbstractUpdate implements UpgradeWizardIn
         return true;
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function getAffectedRecords(): array
     {
         $pages = array_map(
-            function ($page) {
-                return $page['uid'];
-            },
+            static fn (array $page): int => TypeUtility::toInt($page['uid'] ?? null),
             $this->getBlogStorageFolders(),
         );
 

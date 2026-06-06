@@ -121,6 +121,11 @@ abstract class AbstractUpdate
         return new IsNullCriteria($queryBuilder, $field);
     }
 
+    /**
+     * @param list<CriteriaInterface> $criteria
+     *
+     * @return list<array<string, mixed>>
+     */
     protected function getRecordsByCriteria(QueryBuilder $queryBuilder, string $table, array $criteria, string $condition = self::CONDITION_AND): array
     {
         $queryBuilder->select('*');
@@ -149,6 +154,9 @@ abstract class AbstractUpdate
         $queryBuilder->executeStatement();
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     protected function getBlogStorageFolders(): array
     {
         $pageQueryBuilder = $this->createQueryBuilder('pages');

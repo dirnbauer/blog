@@ -33,12 +33,17 @@ class ArchiveUtility
     {
         $archiveData = [];
         foreach ($data as $result) {
-            if (($archiveData[$result['year'] ?? null] ?? null) === null) {
-                $archiveData[$result['year']] = [];
+            if (!is_array($result)) {
+                continue;
             }
-            $dateTime = new \DateTimeImmutable(sprintf('%d-%d-1', (int)($result['year'] ?? 0), (int)($result['month'] ?? 0)));
+            $year = TypeUtility::toInt($result['year'] ?? null);
+            $month = TypeUtility::toInt($result['month'] ?? null);
+            if (!isset($archiveData[$year])) {
+                $archiveData[$year] = [];
+            }
+            $dateTime = new \DateTimeImmutable(sprintf('%d-%d-1', $year, $month));
             $result['timestamp'] = $dateTime->getTimestamp();
-            $archiveData[$result['year']][] = $result;
+            $archiveData[$year][] = $result;
         }
 
         return $archiveData;

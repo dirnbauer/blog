@@ -17,6 +17,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class NotificationManager
 {
+    /**
+     * @var array<int|string, list<string>>
+     */
     protected array $visitorsRegistry = [];
 
     public function __construct()

@@ -17,6 +17,7 @@ use T3G\AgencyPack\Blog\Notification\CommentAddedNotification;
 use T3G\AgencyPack\Blog\Notification\NotificationManager;
 use T3G\AgencyPack\Blog\Service\CacheService;
 use T3G\AgencyPack\Blog\Service\CommentService;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -33,6 +34,9 @@ use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
  */
 class CommentFormFinisher extends AbstractFinisher
 {
+    /**
+     * @var array<string, array{title: string, text: string, severity: ContextualFeedbackSeverity}>
+     */
     protected static array $messages = [
         CommentService::STATE_ERROR => [
             'title' => 'message.addComment.error.title',
@@ -58,16 +62,16 @@ class CommentFormFinisher extends AbstractFinisher
         $postRepository = GeneralUtility::makeInstance(PostRepository::class);
         $cacheService = GeneralUtility::makeInstance(CacheService::class);
         $commentService = GeneralUtility::makeInstance(CommentService::class);
-        $commentService->setSettings($settings['comments']);
+        $commentService->setSettings(TypeUtility::toArray($settings['comments'] ?? null));
 
         // Create Comment
         $values = $this->finisherContext->getFormValues();
         $comment = new Comment();
-        $comment->setName($values['name'] ?? '');
-        $comment->setEmail($values['email'] ?? '');
-        $comment->setUrl($values['url'] ?? '');
-        $comment->setComment($values['comment'] ?? '');
-        $comment->setHp((string) ($values['hp'] ?? ''));
+        $comment->setName(TypeUtility::toString($values['name'] ?? null));
+        $comment->setEmail(TypeUtility::toString($values['email'] ?? null));
+        $comment->setUrl(TypeUtility::toString($values['url'] ?? null));
+        $comment->setComment(TypeUtility::toString($values['comment'] ?? null));
+        $comment->setHp(TypeUtility::toString($values['hp'] ?? null));
         $post = $postRepository->findCurrentPost();
         if ($post === null) {
             return null;

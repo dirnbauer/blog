@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\ExpressionLanguage;
 
 use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Utility\RequestUtility;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 
 class BlogVariableProvider
 {
@@ -40,6 +41,6 @@ class BlogVariableProvider
         }
 
         $pageRecord = $pageInformation->getPageRecord();
-        return (int)($pageRecord['doktype'] ?? 0);
+        return TypeUtility::toInt($pageRecord['doktype'] ?? null);
     }
 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace T3G\AgencyPack\Blog\Domain\Repository;
 
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,7 +35,7 @@ class CategoryRepository extends Repository
             GeneralUtility::makeInstance(Context::class),
             $configurationManager,
         );
-        $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', (string) $this->settings['persistence']['storagePid']));
+        $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', TypeUtility::toString(TypeUtility::nested($this->settings, 'persistence', 'storagePid'))));
         $this->setDefaultQuerySettings($querySettings);
 
         $this->defaultOrderings = [

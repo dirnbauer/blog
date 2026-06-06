@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -165,7 +166,10 @@ class CommentRepository extends Repository
 
     protected function getPostPidsByRootPids(array $blogRootPids): array
     {
-        $blogRootPids = array_values(array_unique(array_filter(array_map('intval', $blogRootPids), static fn (int $pid): bool => $pid > 0)));
+        $blogRootPids = array_values(array_unique(array_filter(
+            array_map(static fn (mixed $pid): int => TypeUtility::toInt($pid), $blogRootPids),
+            static fn (int $pid): bool => $pid > 0,
+        )));
         if ($blogRootPids === []) {
             return [];
         }
@@ -218,6 +222,9 @@ class CommentRepository extends Repository
         return $query;
     }
 
+    /**
+     * @return list<ConstraintInterface>
+     */
     protected function buildFilterConstraints(QueryInterface $query, ?string $filter): array
     {
         return match (CommentListFilter::tryFromRequest($filter)) {
@@ -231,20 +238,21 @@ class CommentRepository extends Repository
         };
     }
 
+    /**
+     * @param list<ConstraintInterface> $constraints
+     *
+     * @return list<ConstraintInterface>
+     */
     public function fillConstraintsBySettings(QueryInterface $query, array $constraints): array
     {
-        $respectCommentsModeration = isset($this->settings['comments']['moderation'])
-            ? (int)$this->settings['comments']['moderation']
-            : 0;
+        $respectCommentsModeration = TypeUtility::toInt(TypeUtility::nested($this->settings, 'comments', 'moderation'));
         if ($respectCommentsModeration >= 1) {
             $constraints[] = $query->equals('status', Comment::STATUS_APPROVED);
         } else {
             $constraints[] = $query->lessThan('status', Comment::STATUS_DECLINED);
         }
 
-        $respectPostLanguageId = isset($this->settings['comments']['respectPostLanguageId'])
-            ? (bool) $this->settings['comments']['respectPostLanguageId']
-            : false;
+        $respectPostLanguageId = TypeUtility::toBool(TypeUtility::nested($this->settings, 'comments', 'respectPostLanguageId'));
         if ($respectPostLanguageId) {
             $constraints[] = $query->logicalOr(
                 $query->equals('postLanguageId', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId()),
