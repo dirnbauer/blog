@@ -114,7 +114,10 @@ GitHub Actions runs:
 - an opt-in Playwright job that only runs when the ``BLOG_BASE_URL``
   repository secret is set (and emits a clear warning otherwise)
 
-Tagged releases use Tailor to publish the extension to TER.
+This fork does not publish to the TYPO3 Extension Repository (TER). The
+``Publish`` workflow keeps TER uploads disabled via ``TER_PUBLISH_ENABLED:
+false`` in ``.github/workflows/publish.yml``. Releases are distributed through
+GitHub and Packagist only.
 
 .. _template-migration-notes:
 

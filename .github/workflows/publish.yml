@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+env:
+  # Explicit opt-out: this repository does not publish to the TYPO3 Extension Repository (TER).
+  TER_PUBLISH_ENABLED: 'false'
+
 jobs:
   publish:
     name: Publish new version to TER
@@ -48,10 +52,13 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
 
-      - name: Check TER publish credentials
+      - name: Check TER publish opt-in
         id: ter
         run: |
-          if [[ -z "${TYPO3_API_TOKEN}" ]]; then
+          if [[ "${TER_PUBLISH_ENABLED}" != "true" ]]; then
+            echo "::notice::TER publish is disabled for this repository."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          elif [[ -z "${TYPO3_API_TOKEN}" ]]; then
             echo "::warning::TYPO3_API_TOKEN is not configured. Skipping TER publish."
             echo "publish=false" >> "$GITHUB_OUTPUT"
           else
