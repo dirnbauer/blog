@@ -29,8 +29,13 @@ final class CommentModerationService
     public function resolveCommentIds(array $comments, ?int $singleCommentId = null): array
     {
         $ids = [];
-        foreach ($comments['__identity'] ?? [] as $commentId) {
-            $ids[] = (int)$commentId;
+        $identities = $comments['__identity'] ?? [];
+        if (is_iterable($identities)) {
+            foreach ($identities as $commentId) {
+                if (is_scalar($commentId)) {
+                    $ids[] = (int)$commentId;
+                }
+            }
         }
         if ($singleCommentId !== null) {
             $ids[] = $singleCommentId;

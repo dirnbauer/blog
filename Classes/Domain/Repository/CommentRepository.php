@@ -15,6 +15,7 @@ use T3G\AgencyPack\Blog\Constants;
 use T3G\AgencyPack\Blog\Domain\Enum\CommentListFilter;
 use T3G\AgencyPack\Blog\Domain\Model\Comment;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
+use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -119,11 +120,11 @@ class CommentRepository extends Repository
         }
 
         return [
-            'all' => (int)($row['all_count'] ?? 0),
-            'pending' => (int)($row['pending_count'] ?? 0),
-            'approved' => (int)($row['approved_count'] ?? 0),
-            'declined' => (int)($row['declined_count'] ?? 0),
-            'deleted' => (int)($row['deleted_count'] ?? 0),
+            'all' => TypeUtility::toInt($row['all_count'] ?? 0),
+            'pending' => TypeUtility::toInt($row['pending_count'] ?? 0),
+            'approved' => TypeUtility::toInt($row['approved_count'] ?? 0),
+            'declined' => TypeUtility::toInt($row['declined_count'] ?? 0),
+            'deleted' => TypeUtility::toInt($row['deleted_count'] ?? 0),
         ];
     }
 

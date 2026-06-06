@@ -81,7 +81,7 @@ class Author extends AbstractEntity
 
     /**
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

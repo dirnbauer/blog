@@ -104,6 +104,16 @@ final class RssFeedMetadataFactoryTest extends TestCase
     {
         $method = (new ReflectionClass(RssFeedMetadataFactory::class))->getMethod('resolveTranslationArguments');
 
-        return $method->invoke($this->subject, $request);
+        $result = $method->invoke($this->subject, $request);
+        self::assertIsArray($result);
+
+        $arguments = [];
+        foreach ($result as $value) {
+            if (is_int($value) || is_string($value)) {
+                $arguments[] = $value;
+            }
+        }
+
+        return $arguments;
     }
 }

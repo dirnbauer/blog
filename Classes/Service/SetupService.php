@@ -59,7 +59,18 @@ class SetupService
             $blogUid = TypeUtility::toInt($blogRootPage['uid'] ?? null);
             $blogTitle = TypeUtility::toString($blogRootPage['title'] ?? null);
             if (!array_key_exists($blogUid, $setups)) {
-                $rootline = array_reverse(GeneralUtility::makeInstance(RootlineUtility::class, $blogUid)->get());
+                $rawRootline = GeneralUtility::makeInstance(RootlineUtility::class, $blogUid)->get();
+                $rootline = [];
+                foreach (array_reverse($rawRootline) as $page) {
+                    if (!is_array($page)) {
+                        continue;
+                    }
+                    $normalizedPage = [];
+                    foreach ($page as $key => $value) {
+                        $normalizedPage[(string)$key] = $value;
+                    }
+                    $rootline[] = $normalizedPage;
+                }
 
                 $queryBuilder = $this->getQueryBuilderForTable('pages');
                 $articleCount = $queryBuilder

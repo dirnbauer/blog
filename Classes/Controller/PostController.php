@@ -154,7 +154,10 @@ class PostController extends ActionController
             if ($referenceUid !== null) {
                 $categories = $this->categoryRepository->getByReference('tt_content', $referenceUid);
                 if ($categories !== null && $categories->count() > 0) {
-                    $category = $categories->getFirst();
+                    $firstCategory = $categories->getFirst();
+                    if ($firstCategory instanceof Category) {
+                        $category = $firstCategory;
+                    }
                 }
             }
         }

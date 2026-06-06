@@ -16,6 +16,7 @@ use T3G\AgencyPack\Blog\Utility\RequestUtility;
 use T3G\AgencyPack\Blog\Utility\TypeUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -29,7 +30,7 @@ final class PostRepositoryConstraintBuilder
     }
 
     /**
-     * @return list<object>
+     * @return list<ConstraintInterface>
      */
     public function buildDefaultConstraints(QueryInterface $query): array
     {

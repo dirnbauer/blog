@@ -14,7 +14,7 @@ namespace T3G\AgencyPack\Blog\Service;
 use Psr\Http\Message\ServerRequestInterface;
 use T3G\AgencyPack\Blog\Domain\Model\Post;
 use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
-use TYPO3Fluid\Fluid\View\ViewInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
  * Loads the current blog post for frontend plugins and assigns it to the view.

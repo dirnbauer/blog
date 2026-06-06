@@ -18,7 +18,6 @@ use T3G\AgencyPack\Blog\Domain\Repository\PostRepository;
 use T3G\AgencyPack\Blog\Service\BackendAccessService;
 use T3G\AgencyPack\Blog\Service\BackendBlogContextService;
 use T3G\AgencyPack\Blog\Service\BackendBlogListingService;
-use T3G\AgencyPack\Blog\Service\SetupService;
 
 final class BackendBlogListingServiceTest extends TestCase
 {
@@ -29,7 +28,7 @@ final class BackendBlogListingServiceTest extends TestCase
         $this->subject = new BackendBlogListingService(
             $this->createMock(PostRepository::class),
             $this->createMock(CommentRepository::class),
-            new BackendBlogContextService($this->createMock(SetupService::class)),
+            new BackendBlogContextService(),
             new BackendAccessService(),
         );
     }

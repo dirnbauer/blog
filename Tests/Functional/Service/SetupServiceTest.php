@@ -13,6 +13,7 @@ namespace T3G\AgencyPack\Blog\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
 use T3G\AgencyPack\Blog\Constants;
+use T3G\AgencyPack\Blog\DataTransferObject\BlogSetupSummary;
 use T3G\AgencyPack\Blog\Service\SetupService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -112,8 +113,10 @@ final class SetupServiceTest extends FunctionalTestCase
         $blogSetups = $setupService->determineBlogSetups();
 
         $blogSetup1 = array_shift($blogSetups);
+        self::assertInstanceOf(BlogSetupSummary::class, $blogSetup1);
         self::assertEquals('TEST 1 / Data', $blogSetup1->path);
         $blogSetup2 = array_shift($blogSetups);
+        self::assertInstanceOf(BlogSetupSummary::class, $blogSetup2);
         self::assertEquals('TEST 2 / Data', $blogSetup2->path);
     }
 
@@ -124,12 +127,12 @@ final class SetupServiceTest extends FunctionalTestCase
         $setupService->createBlogSetup(['title' => 'TEST 1']);
         $setupService->createBlogSetup(['title' => 'TEST 2']);
 
-        $blogSetups = array_values($setupService->determineBlogSetups());
+        $blogSetups = $setupService->determineBlogSetups();
         $firstSetup = $blogSetups[0];
         $this->createRestrictedBackendUser(2, $firstSetup->uid);
         $this->setUpLanguageForBackendUser(2);
 
-        $restrictedBlogSetups = array_values($setupService->determineBlogSetups());
+        $restrictedBlogSetups = $setupService->determineBlogSetups();
 
         self::assertCount(1, $restrictedBlogSetups);
         self::assertSame($firstSetup->uid, $restrictedBlogSetups[0]->uid);

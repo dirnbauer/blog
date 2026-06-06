@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -39,6 +40,10 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class PostRepository extends Repository
 {
     protected array $settings = [];
+
+    /**
+     * @var list<ConstraintInterface>
+     */
     protected array $defaultConstraints = [];
     private bool $defaultConstraintsInitialized = false;
 
@@ -393,7 +398,7 @@ class PostRepository extends Repository
     }
 
     /**
-     * @return list<ComparisonInterface|object>
+     * @return list<ConstraintInterface>
      */
     protected function baseConstraints(QueryInterface $query, bool $withStoragePid = true): array
     {
@@ -480,13 +485,16 @@ class PostRepository extends Repository
     }
 
     /**
-     * @param list<int|string> $pids
+     * @param array<array-key, mixed> $pids
      *
      * @return list<int>
      */
     private function normalizePids(array $pids): array
     {
-        return array_values(array_unique(array_filter(array_map('intval', $pids), static fn (int $pid): bool => $pid > 0)));
+        return array_values(array_unique(array_filter(
+            array_map(static fn (mixed $pid): int => TypeUtility::toInt($pid), $pids),
+            static fn (int $pid): bool => $pid > 0,
+        )));
     }
 
     private function getRequest(): ServerRequestInterface
