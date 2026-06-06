@@ -23,7 +23,7 @@ jobs:
         run: |
           if ! [[ "${GITHUB_REF}" =~ ^refs/tags/v?[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
             echo "Unexpected tag format: ${GITHUB_REF}" >&2
-            echo "Expected refs/tags/15.0.2 or refs/tags/v15.0.2" >&2
+            echo "Expected refs/tags/X.Y.Z or refs/tags/vX.Y.Z" >&2
             exit 1
           fi
 
@@ -35,7 +35,10 @@ jobs:
 
       - name: Derive release comment
         run: |
-          comment=$(git tag -l "${VERSION}" --format='%(contents)')
+          comment=$(git tag -l "v${VERSION}" --format='%(contents)' 2>/dev/null || true)
+          if [[ -z "${comment// }" ]]; then
+            comment=$(git tag -l "${VERSION}" --format='%(contents)' 2>/dev/null || true)
+          fi
           if [[ -z "${comment// }" ]]; then
             comment="Released version ${VERSION}"
           fi
@@ -45,7 +48,18 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
 
+      - name: Check TER publish credentials
+        id: ter
+        run: |
+          if [[ -z "${TYPO3_API_TOKEN}" ]]; then
+            echo "::warning::TYPO3_API_TOKEN is not configured. Skipping TER publish."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up PHP
+        if: steps.ter.outputs.publish == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
@@ -54,8 +68,15 @@ jobs:
           coverage: none
 
       - name: Install Tailor
+        if: steps.ter.outputs.publish == 'true'
         run: composer global require typo3/tailor:^1.7 --prefer-dist --no-progress --no-suggest
 
+      - name: Sync extension version
+        if: steps.ter.outputs.publish == 'true'
+        run: |
+          "$(composer global config bin-dir --absolute)/tailor" set-version "${VERSION}"
+
       - name: Publish to TER
+        if: steps.ter.outputs.publish == 'true'
         run: |
           "$(composer global config bin-dir --absolute)/tailor" ter:publish --comment "${TAILOR_COMMENT}" "${VERSION}"
