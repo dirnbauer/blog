@@ -37,8 +37,8 @@ final class RssFeedMetadataFactoryTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request->method('getControllerActionName')->willReturn('listPostsByAuthor');
-        $request->method('hasArgument')->with('author')->willReturn(true);
-        $request->method('getArgument')->with('author')->willReturn($author);
+        $request->method('hasArgument')->willReturnCallback(static fn (string $name): bool => $name === 'author');
+        $request->method('getArgument')->willReturnCallback(static fn (string $name): ?Author => $name === 'author' ? $author : null);
 
         self::assertSame(['Jane Doe'], $this->resolveTranslationArguments($request));
     }
@@ -51,8 +51,8 @@ final class RssFeedMetadataFactoryTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request->method('getControllerActionName')->willReturn('listPostsByCategory');
-        $request->method('hasArgument')->with('category')->willReturn(true);
-        $request->method('getArgument')->with('category')->willReturn($category);
+        $request->method('hasArgument')->willReturnCallback(static fn (string $name): bool => $name === 'category');
+        $request->method('getArgument')->willReturnCallback(static fn (string $name): ?Category => $name === 'category' ? $category : null);
 
         self::assertSame(['News'], $this->resolveTranslationArguments($request));
     }
@@ -65,8 +65,8 @@ final class RssFeedMetadataFactoryTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request->method('getControllerActionName')->willReturn('listPostsByTag');
-        $request->method('hasArgument')->with('tag')->willReturn(true);
-        $request->method('getArgument')->with('tag')->willReturn($tag);
+        $request->method('hasArgument')->willReturnCallback(static fn (string $name): bool => $name === 'tag');
+        $request->method('getArgument')->willReturnCallback(static fn (string $name): ?Tag => $name === 'tag' ? $tag : null);
 
         self::assertSame(['TYPO3'], $this->resolveTranslationArguments($request));
     }
