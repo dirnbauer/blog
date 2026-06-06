@@ -1,5 +1,21 @@
 # Unreleased
 
+# 15.0.2
+
+## BUGFIX
+
+- [BUGFIX] Stub `Request` arguments via callbacks in `RssFeedMetadataFactoryTest` for PHPUnit compatibility on PHP 8.4
+
+## TASK
+
+- [TASK] Raise PHPStan from level 9 to level max and resolve strict mixed-handling errors across the blog layer
+- [TASK] Add `TypeUtility::toArray()` and `TypeUtility::nested()` helpers for safe TypoScript, database row, and DataHandler access
+- [TASK] Tighten repository constraint, upgrade wizard, service, and test return types for PHPStan level max
+
+## Contributors
+
+- Kurt Dirnbauer
+
 # 15.0.1
 
 ## BUGFIX

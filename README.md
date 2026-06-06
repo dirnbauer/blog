@@ -118,7 +118,13 @@ composer test:php:unit
 composer test:php:functional
 
 # Static analysis
+
+Static analysis runs at PHPStan level max (strictest rules, including strict
+mixed handling) with `saschaegerer/phpstan-typo3`:
+
+```bash
 composer phpstan
+```
 
 # Code style
 composer cgl

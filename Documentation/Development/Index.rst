@@ -29,7 +29,9 @@ Build the frontend assets:
 PHP Checks
 ==========
 
-The extension exposes the main PHP checks through Composer scripts:
+The extension exposes the main PHP checks through Composer scripts.
+Static analysis runs at PHPStan level max with ``saschaegerer/phpstan-typo3``,
+including strict mixed-handling rules:
 
 .. code-block:: bash
 
@@ -51,6 +53,15 @@ scripts and can run individual suites:
    Build/Scripts/runTests.sh -s unit
    Build/Scripts/runTests.sh -s functional
    Build/Scripts/runTests.sh -s all
+
+Type Safety
+===========
+
+Release ``15.0.2`` raised PHPStan from level 9 to level max. Mixed values from
+TypoScript settings, database rows, and DataHandler datamaps are normalized
+through ``Classes/Utility/TypeUtility.php`` helpers such as ``toInt()``,
+``toString()``, ``toArray()``, and ``nested()`` instead of unchecked casts or
+offset access.
 
 Functional Tests
 ================
@@ -96,8 +107,8 @@ Continuous Integration
 
 GitHub Actions runs:
 
-- PHP linting, coding standards, PHPStan, unit tests, and functional tests
-  against PHP 8.2, 8.3, and 8.4
+- PHP linting, coding standards, PHPStan level max, unit tests, and functional
+  tests against PHP 8.2, 8.3, and 8.4
 - a frontend build job on Node.js 22 that verifies committed assets are up
   to date
 - an opt-in Playwright job that only runs when the ``BLOG_BASE_URL``
