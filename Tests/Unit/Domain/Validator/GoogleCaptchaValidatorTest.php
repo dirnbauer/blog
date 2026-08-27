@@ -119,6 +119,35 @@ final class GoogleCaptchaValidatorTest extends UnitTestCase
     }
 
     #[Test]
+    public function enabledCaptchaIsVerifiedWithoutExtbaseRouteArguments(): void
+    {
+        $configurationManager = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManager->method('getConfiguration')->willReturn([
+            'comments' => [
+                'google_recaptcha' => [
+                    'enable' => 1,
+                    'secret_key' => 'super-secret',
+                ],
+            ],
+        ]);
+
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->method('getContents')->willReturn((string) json_encode(['success' => false]));
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getStatusCode')->willReturn(200);
+        $response->method('getBody')->willReturn($stream);
+
+        $requestFactory = $this->createMock(RequestFactory::class);
+        $requestFactory->expects(self::once())->method('request')->willReturn($response);
+
+        $validator = new GoogleCaptchaValidator($configurationManager, $requestFactory);
+        $validator->setRequest($this->buildRequest(['g-recaptcha-response' => 'token']));
+
+        self::assertTrue($validator->validate('captcha-field-present')->hasErrors());
+    }
+
+    #[Test]
     public function httpClientExceptionIsTranslatedToValidationError(): void
     {
         $configurationManager = $this->createMock(ConfigurationManagerInterface::class);

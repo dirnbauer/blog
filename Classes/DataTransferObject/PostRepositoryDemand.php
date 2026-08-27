@@ -78,15 +78,19 @@ class PostRepositoryDemand
 
     public function addCategory(Category $category): self
     {
-        if (!isset($this->categories[$category->getUid()])) {
-            $this->categories[$category->getUid()] = $category;
+        $uid = $category->getUid();
+        if ($uid !== null && !isset($this->categories[$uid])) {
+            $this->categories[$uid] = $category;
         }
         return $this;
     }
 
     public function removeCategory(Category $category): self
     {
-        unset($this->categories[$category->getUid()]);
+        $uid = $category->getUid();
+        if ($uid !== null) {
+            unset($this->categories[$uid]);
+        }
         return $this;
     }
 
@@ -115,15 +119,19 @@ class PostRepositoryDemand
 
     public function addTag(Tag $tag): self
     {
-        if (!isset($this->tags[$tag->getUid()])) {
-            $this->tags[$tag->getUid()] = $tag;
+        $uid = $tag->getUid();
+        if ($uid !== null && !isset($this->tags[$uid])) {
+            $this->tags[$uid] = $tag;
         }
         return $this;
     }
 
     public function removeTag(Tag $tag): self
     {
-        unset($this->tags[$tag->getUid()]);
+        $uid = $tag->getUid();
+        if ($uid !== null) {
+            unset($this->tags[$uid]);
+        }
         return $this;
     }
 

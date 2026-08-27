@@ -1,5 +1,19 @@
 # Unreleased
 
+# 15.0.3
+
+## SECURITY
+
+- [SECURITY] Require TYPO3 14.3.6 and verify enabled reCAPTCHA fields even when Extbase route arguments are absent
+
+## BUGFIX
+
+- [BUGFIX] Register TYPO3 v14-compatible `isBlogPage()` and `isBlogPost()` expression functions
+- [BUGFIX] Resolve lazy category parents before returning them
+- [BUGFIX] Use the archive target setting and create visible setup roots
+- [BUGFIX] Migrate FlexForm select items to the TYPO3 v14 label/value format
+- [BUGFIX] Reject transient domain objects in backend link rendering and ignore them in persisted-record filters
+
 # 15.0.2
 
 ## BUGFIX

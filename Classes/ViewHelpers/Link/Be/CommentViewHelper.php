@@ -32,10 +32,14 @@ class CommentViewHelper extends AbstractBackendLinkViewHelper
         $request = $this->getRequest();
         /** @var Comment $comment */
         $comment = $this->arguments['comment'];
+        $uid = $comment->getUid();
+        if ($uid === null) {
+            throw new \LogicException('Cannot create a backend link for a comment without a persistent UID.', 1787841003);
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-            'edit' => ['tx_blog_domain_model_comment' => [$comment->getUid() => 'edit']],
+            'edit' => ['tx_blog_domain_model_comment' => [$uid => 'edit']],
             'returnUrl' => RequestUtility::getRequestUri($request),
         ]);
 

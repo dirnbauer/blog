@@ -46,7 +46,7 @@
         },
         "typo3/cms": {
             "extension-key": "blog",
-            "version": "15.0.2",
+            "version": "15.0.3",
             "web-dir": ".build/public",
             "Package": {
                 "providesPackages": {}
@@ -99,12 +99,12 @@
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "psr/http-message": "^1.1 || ^2.0",
-        "typo3/cms-backend": "^14.3",
-        "typo3/cms-core": "^14.3",
-        "typo3/cms-extbase": "^14.3",
-        "typo3/cms-fluid": "^14.3",
-        "typo3/cms-form": "^14.3",
-        "typo3/cms-frontend": "^14.3"
+        "typo3/cms-backend": "^14.3.6",
+        "typo3/cms-core": "^14.3.6",
+        "typo3/cms-extbase": "^14.3.6",
+        "typo3/cms-fluid": "^14.3.6",
+        "typo3/cms-form": "^14.3.6",
+        "typo3/cms-frontend": "^14.3.6"
     },
     "require-dev": {
         "bk2k/bootstrap-package": "^15.0 || 16.*.*@dev",
@@ -116,17 +116,17 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "saschaegerer/phpstan-typo3": "^3.0",
-        "typo3/cms-belog": "^14.3",
-        "typo3/cms-beuser": "^14.3",
-        "typo3/cms-filelist": "^14.3",
-        "typo3/cms-fluid-styled-content": "^14.3",
-        "typo3/cms-lowlevel": "^14.3",
-        "typo3/cms-redirects": "^14.3",
-        "typo3/cms-rte-ckeditor": "^14.3",
-        "typo3/cms-seo": "^14.3",
-        "typo3/cms-setup": "^14.3",
-        "typo3/cms-tstemplate": "^14.3",
-        "typo3/cms-workspaces": "^14.3",
+        "typo3/cms-belog": "^14.3.6",
+        "typo3/cms-beuser": "^14.3.6",
+        "typo3/cms-filelist": "^14.3.6",
+        "typo3/cms-fluid-styled-content": "^14.3.6",
+        "typo3/cms-lowlevel": "^14.3.6",
+        "typo3/cms-redirects": "^14.3.6",
+        "typo3/cms-rte-ckeditor": "^14.3.6",
+        "typo3/cms-seo": "^14.3.6",
+        "typo3/cms-setup": "^14.3.6",
+        "typo3/cms-tstemplate": "^14.3.6",
+        "typo3/cms-workspaces": "^14.3.6",
         "typo3/testing-framework": "^9.0.0 || dev-main"
     }
 }

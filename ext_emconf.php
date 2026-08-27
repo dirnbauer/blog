@@ -16,12 +16,12 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'stable',
     'author' => 'TYPO3 GmbH',
     'author_email' => 'info@typo3.com',
-    'version' => '15.0.2',
+    'version' => '15.0.3',
     'constraints' => [
         'depends' => [
             'php' => '8.2.0-8.4.99',
-            'typo3' => '14.3.0-14.99.99',
-            'form' => '14.3.0-14.99.99',
+            'typo3' => '14.3.6-14.99.99',
+            'form' => '14.3.6-14.99.99',
         ],
         'conflicts' => [],
         'suggests' => [],

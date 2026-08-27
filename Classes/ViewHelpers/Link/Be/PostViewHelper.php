@@ -34,15 +34,19 @@ class PostViewHelper extends AbstractBackendLinkViewHelper
         $request = $this->getRequest();
         /** @var Post $post */
         $post = $this->arguments['post'];
+        $uid = $post->getUid();
+        if ($uid === null) {
+            throw new \LogicException('Cannot create a backend link for a post without a persistent UID.', 1787841004);
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $uri = match ($this->arguments['action']) {
             'edit' => (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                'edit' => ['pages' => [$post->getUid() => 'edit']],
+                'edit' => ['pages' => [$uid => 'edit']],
                 'returnUrl' => RequestUtility::getRequestUri($request),
             ]),
             default => (string)$uriBuilder->buildUriFromRoute('web_layout', [
-                'id' => $post->getUid(),
+                'id' => $uid,
             ]),
         };
 

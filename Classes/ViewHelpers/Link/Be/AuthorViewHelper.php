@@ -32,10 +32,14 @@ class AuthorViewHelper extends AbstractBackendLinkViewHelper
         $request = $this->getRequest();
         /** @var Author $author */
         $author = $this->arguments['author'];
+        $uid = $author->getUid();
+        if ($uid === null) {
+            throw new \LogicException('Cannot create a backend link for an author without a persistent UID.', 1787841001);
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-            'edit' => ['tx_blog_domain_model_author' => [$author->getUid() => 'edit']],
+            'edit' => ['tx_blog_domain_model_author' => [$uid => 'edit']],
             'returnUrl' => RequestUtility::getRequestUri($request),
         ]);
 

@@ -32,10 +32,14 @@ class TagViewHelper extends AbstractBackendLinkViewHelper
         $request = $this->getRequest();
         /** @var Tag $tag */
         $tag = $this->arguments['tag'];
+        $uid = $tag->getUid();
+        if ($uid === null) {
+            throw new \LogicException('Cannot create a backend link for a tag without a persistent UID.', 1787841005);
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-            'edit' => ['tx_blog_domain_model_tag' => [$tag->getUid() => 'edit']],
+            'edit' => ['tx_blog_domain_model_tag' => [$uid => 'edit']],
             'returnUrl' => RequestUtility::getRequestUri($request),
         ]);
 

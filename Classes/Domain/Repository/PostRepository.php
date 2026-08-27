@@ -161,7 +161,10 @@ class PostRepository extends Repository
             // Sort manually selected posts by defined order in group field
             $sortedPosts = array_flip($repositoryDemand->getPosts());
             foreach ($result as $post) {
-                $sortedPosts[$post->getUid()] = $post;
+                $uid = $post->getUid();
+                if ($uid !== null) {
+                    $sortedPosts[$uid] = $post;
+                }
             }
             $result = array_values(array_filter($sortedPosts, static function ($value): bool {
                 return $value instanceof Post;

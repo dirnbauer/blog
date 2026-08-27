@@ -32,10 +32,14 @@ class CategoryViewHelper extends AbstractBackendLinkViewHelper
         $request = $this->getRequest();
         /** @var Category $category */
         $category = $this->arguments['category'];
+        $uid = $category->getUid();
+        if ($uid === null) {
+            throw new \LogicException('Cannot create a backend link for a category without a persistent UID.', 1787841002);
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-            'edit' => ['sys_category' => [$category->getUid() => 'edit']],
+            'edit' => ['sys_category' => [$uid => 'edit']],
             'returnUrl' => RequestUtility::getRequestUri($request),
         ]);
 

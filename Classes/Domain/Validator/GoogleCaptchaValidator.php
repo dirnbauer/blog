@@ -34,26 +34,13 @@ class GoogleCaptchaValidator extends AbstractValidator
 
     public function isValid(mixed $value): void
     {
-        $action = 'form';
-        $controller = 'Comment';
         $settings = $this->configurationManager
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'blog');
         $request = $this->resolveRequest();
-        $queryData = $request->getQueryParams()['tx_blog_commentform'] ?? [];
-        if (!is_array($queryData)) {
-            $queryData = [];
-        }
         $bodyData = $request->getParsedBody();
-        $postData = is_array($bodyData) ? ($bodyData['tx_blog_commentform'] ?? []) : [];
-        if (!is_array($postData)) {
-            $postData = [];
-        }
-        $requestData = array_merge($queryData, $postData);
 
         if (
             $request->getAttribute(self::REQUEST_ATTRIBUTE) !== true
-            && ($requestData['action'] ?? null) === $action
-            && ($requestData['controller'] ?? null) === $controller
             && TypeUtility::toInt(TypeUtility::nested($settings, 'comments', 'google_recaptcha', 'enable')) === 1
         ) {
             $captchaResponse = is_array($bodyData) ? TypeUtility::toString($bodyData['g-recaptcha-response'] ?? null) : '';

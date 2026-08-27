@@ -21,5 +21,6 @@ class ConditionProvider extends AbstractProvider
         $this->expressionLanguageVariables = [
             'blog' => GeneralUtility::makeInstance(BlogVariableProvider::class),
         ];
+        $this->expressionLanguageProviders[] = BlogFunctionsProvider::class;
     }
 }

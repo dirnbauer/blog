@@ -63,7 +63,15 @@ final class PagesDoktypeRegistrationTest extends TestCase
         $GLOBALS['TCA'] = ['pages' => $pagesTca];
         require self::getExtensionPath() . '/Configuration/TCA/Overrides/pages.php';
 
-        $pages = $GLOBALS['TCA']['pages'];
+        $tca = $GLOBALS['TCA'] ?? null;
+        if (!is_array($tca)) {
+            self::fail('TCA must be an array.');
+        }
+
+        $pages = $tca['pages'] ?? null;
+        if (!is_array($pages)) {
+            self::fail('pages TCA must be an array.');
+        }
 
         $columns = $pages['columns'] ?? [];
         if (!is_array($columns)) {
